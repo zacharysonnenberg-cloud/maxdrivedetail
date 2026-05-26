@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — MaxDriveDetail · Vienna, VA</title>
+  <meta name="description" content="Get in touch with MaxDriveDetail — mobile auto detailing in Vienna, VA. Call, text, or send a message. We serve Vienna, McLean, Reston, Herndon, and surrounding areas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#1A1A1A; --bg2:#222222; --surface:#2A2A2A; --surface2:#333333; --border:#333333; --blue:#8B1A1A; --blue-mid:#C0392B; --blue-lite:#C0392B; --white:#f0f0f0; --gray:#888; --muted:#3d3d3d; --radius-sm:6px; --radius:12px; --radius-lg:18px; --max-w:1200px; --nav-h:64px; }
+    [data-theme="light"] { --bg:#F5F5F5; --bg2:#EAECEF; --surface:#FFFFFF; --surface2:#F7F8FA; --border:#E0E2E6; --white:#1A1A1A; --gray:#5A6070; --muted:#999999; }
+    [data-theme="light"] body { background:var(--bg); color:var(--white); }
+    [data-theme="light"] #nav { background:rgba(245,245,245,.96); }
+    [data-theme="light"] .nav-links a { color:rgba(26,26,26,.55); }
+    [data-theme="light"] .nav-links a:hover, [data-theme="light"] .nav-links a.active { color:#1A1A1A; }
+    [data-theme="light"] .page-hero { background:var(--bg2); }
+    [data-theme="light"] .info-card { background:#FFFFFF; }
+    [data-theme="light"] .field input, [data-theme="light"] .field textarea, [data-theme="light"] .field select { background:#FFFFFF; color:#1A1A1A; }
+    [data-theme="light"] .faq-item { background:#FFFFFF; }
+    [data-theme="light"] footer { background:#1A1A1A; color:#F5F5F5; }
+    [data-theme="light"] .footer-bottom a { color:#888; }
+    @keyframes nav-cta-glow { 0%,100%{box-shadow:0 0 0 0 rgba(139,26,26,0);}50%{box-shadow:0 0 18px 4px rgba(139,26,26,.45);} }
+    .btn-primary { animation: nav-cta-glow 3s ease-in-out infinite; }
+    .btn-primary:hover { animation: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    .theme-toggle { display:flex; align-items:center; justify-content:center; width:34px; height:34px; background:none; border:1px solid rgba(139,26,26,.3); border-radius:6px; cursor:pointer; color:#888; font-size:15px; transition:border-color .2s,color .2s; flex-shrink:0; }
+    .theme-toggle:hover { border-color:var(--blue); color:var(--blue); }
+    .theme-toggle .icon-sun { display:none; }
+    .theme-toggle .icon-moon { display:block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.028; pointer-events:none; z-index:9999; }
+    .brand-text { background: linear-gradient(120deg,var(--blue),var(--blue-lite)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--blue-lite); display:block; }
+    .btn { display:inline-flex; align-items:center; gap:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:14px 28px; border-radius:7px; cursor:pointer; border:none; transition:transform .18s, box-shadow .18s, background .18s, border-color .18s; }
+    .btn-primary { background:linear-gradient(135deg,var(--blue) 0%,#6B1010 100%); color:#fff; box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 2px 8px rgba(139,26,26,.25); }
+    .btn-primary:hover { background:linear-gradient(135deg,var(--blue-lite) 0%,var(--blue) 100%); transform:translateY(-1px); box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 8px 28px rgba(139,26,26,.4); }
+    .btn-ghost { background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.32); }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.6); background:rgba(255,255,255,.05); color:#fff; }
+    .btn .arr { transition:transform .18s; }
+    .btn:hover .arr { transform:translateX(3px); }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-d1 { transition-delay:.1s; } .reveal-d2 { transition-delay:.2s; } .reveal-d3 { transition-delay:.3s; }
+
+    /* NAV */
+    #nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; padding:0 40px; background:rgba(26,26,26,.94); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .nav-inner { max-width:var(--max-w); margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; position:relative; }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo img { height:34px; width:auto; }
+    .nav-logo-text { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:#f0f0f0; }
+    .nav-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
+    .nav-links { position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:40px; list-style:none; }
+    .nav-links a { font-family:'Barlow Condensed',sans-serif; color:rgba(255,255,255,.45); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; transition:color .2s; }
+    .nav-links a:hover, .nav-links a.active { color:#fff; }
+    .nav-right { display:flex; align-items:center; gap:12px; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; transition:all .25s; }
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);} .hamburger.open span:nth-child(2){opacity:0;} .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mobile-menu { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:rgba(26,26,26,.97); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); padding:16px 40px 32px; z-index:199; flex-direction:column; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-family:'Barlow Condensed',sans-serif; color:var(--gray); text-decoration:none; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:2px; padding:16px 0; border-bottom:1px solid var(--border); transition:color .2s; }
+    .mobile-menu a:hover { color:#fff; }
+    .mobile-menu .m-cta { margin-top:20px; } .mobile-menu .m-cta a { border-bottom:none; display:block; text-align:center; }
+
+    /* HERO */
+    .page-hero { padding-top: var(--nav-h); border-bottom: 1px solid rgba(255,255,255,.05); }
+    .page-hero-inner { max-width:var(--max-w); margin:0 auto; padding:52px 40px 44px; }
+    .ph-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--blue-lite); margin-bottom:18px; display:block; }
+    .ph-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(58px,9vw,112px); font-weight:900; letter-spacing:-.02em; line-height:.86; text-transform:uppercase; margin-bottom:20px; }
+    .ph-desc { font-size:14px; color:var(--gray); line-height:1.75; max-width:520px; }
+
+    /* CONTACT MAIN LAYOUT */
+    .contact-section { padding:100px 0 120px; }
+    .contact-inner { max-width:var(--max-w); margin:0 auto; padding:0 40px; display:grid; grid-template-columns:1fr 440px; gap:80px; align-items:start; }
+
+    /* CONTACT FORM */
+    .form-head .label { margin-bottom:14px; }
+    .form-head h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(28px,3.5vw,48px); font-weight:900; letter-spacing:.02em; line-height:1; text-transform:uppercase; margin-bottom:12px; }
+    .form-head p { font-size:13px; color:var(--gray); line-height:1.8; margin-bottom:40px; }
+
+    .contact-form { display:flex; flex-direction:column; gap:16px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .field { display:flex; flex-direction:column; gap:7px; }
+    .field label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); }
+    .field input, .field textarea, .field select {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+      color:var(--white); font-family:'Inter',sans-serif; font-size:13px; padding:13px 16px;
+      outline:none; transition:border-color .2s, box-shadow .2s; resize:none;
+      -webkit-appearance:none; appearance:none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color:var(--muted); }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color:rgba(139,26,26,.5); box-shadow:0 0 0 3px rgba(139,26,26,.1); }
+    .field select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; cursor:pointer; }
+    .field select option { background:var(--surface2); }
+    .field textarea { min-height:120px; }
+
+    .form-submit { display:flex; align-items:center; gap:16px; margin-top:8px; flex-wrap:wrap; }
+    .form-submit .btn { padding:14px 28px; }
+    .form-note { font-size:11px; color:var(--muted); line-height:1.6; }
+
+    .form-success { display:none; background:rgba(139,26,26,.08); border:1px solid rgba(139,26,26,.25); border-radius:var(--radius); padding:28px; text-align:center; }
+    .form-success.show { display:block; }
+    .form-success .check { font-size:32px; margin-bottom:12px; }
+    .form-success h3 { font-size:18px; font-weight:800; margin-bottom:8px; }
+    .form-success p { font-size:13px; color:var(--gray); }
+
+    /* SIDEBAR */
+    .contact-sidebar { display:flex; flex-direction:column; gap:0; }
+
+    .info-card { background:transparent; border:none; border-top:1px solid rgba(255,255,255,.07); border-radius:0; padding:28px 0; }
+    .info-card:first-child { border-top:none; padding-top:0; }
+    .info-card-label { display:none; }
+
+    .info-phone-big { font-family:'Barlow Condensed',sans-serif; font-size:clamp(30px,3.5vw,40px); font-weight:900; letter-spacing:-.01em; color:var(--white); text-decoration:none; display:block; margin-bottom:4px; transition:color .2s; line-height:1; }
+    .info-phone-big:hover { color:var(--blue-lite); }
+    .info-phone-note { font-size:12px; color:var(--gray); margin-bottom:20px; }
+
+    .info-row { display:flex; flex-direction:column; gap:3px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+    .info-row:last-child { border-bottom:none; padding-bottom:0; }
+    .info-row:first-of-type { padding-top:0; }
+    .info-icon { display:none; }
+    .info-text {}
+    .info-label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+    .info-value { font-size:13px; font-weight:500; color:var(--white); }
+    .info-value a { color:var(--white); text-decoration:none; transition:color .2s; }
+    .info-value a:hover { color:var(--blue-lite); }
+    .info-sub { display:none; }
+
+    .social-row { display:flex; gap:20px; padding-top:4px; }
+    .social-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--gray); text-decoration:none; transition:color .2s; background:none; border:none; padding:0; }
+    .social-btn:hover { color:var(--white); }
+    .social-btn svg { opacity:.55; }
+
+    /* SERVICE AREA */
+    .area-section { padding:80px 0 100px; background:var(--bg2); border-top:1px solid var(--border); }
+    .area-inner { max-width:var(--max-w); margin:0 auto; padding:0 40px; }
+    .area-head { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:end; margin-bottom:56px; }
+    .area-head .label { margin-bottom:12px; }
+    .area-head h2 { font-size:clamp(32px,4.5vw,56px); font-weight:900; letter-spacing:-2px; line-height:.92; text-transform:uppercase; }
+    .area-head p { font-size:13px; color:var(--gray); line-height:1.9; padding-bottom:6px; }
+
+    .area-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+    .area-card { background:var(--surface); border:1px solid var(--border); padding:24px; position:relative; overflow:hidden; }
+    .area-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:transparent; transition:background .2s; }
+    .area-card:hover::before { background:var(--blue); }
+    .area-card:hover { background:var(--surface2); }
+    .area-name { font-size:16px; font-weight:800; letter-spacing:-.4px; margin-bottom:4px; }
+    .area-dist { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+    .area-home { background:rgba(139,26,26,.06); border-color:rgba(139,26,26,.2); }
+    .area-home .area-name { color:var(--blue-lite); }
+    .area-home .area-dist { color:var(--blue-mid); }
+
+    /* FAQ */
+    .faq-section { padding:80px 0 100px; }
+    .faq-inner { max-width:var(--max-w); margin:0 auto; padding:0 40px; display:grid; grid-template-columns:380px 1fr; gap:80px; align-items:start; }
+    .faq-left .label { margin-bottom:14px; }
+    .faq-left h2 { font-size:clamp(28px,3.5vw,44px); font-weight:900; letter-spacing:-2px; line-height:.95; text-transform:uppercase; margin-bottom:20px; }
+    .faq-left p { font-size:13px; color:var(--gray); line-height:1.9; }
+
+    .faq-list { display:flex; flex-direction:column; gap:2px; }
+    .faq-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; }
+    .faq-q { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; cursor:pointer; font-size:13px; font-weight:700; line-height:1.45; transition:color .2s; }
+    .faq-q:hover { color:var(--blue-lite); }
+    .faq-icon { width:20px; height:20px; border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; color:var(--muted); transition:transform .25s, background .2s, border-color .2s; }
+    .faq-item.open .faq-icon { transform:rotate(45deg); background:var(--blue); border-color:var(--blue); color:#fff; }
+    .faq-a { font-size:12px; color:var(--gray); line-height:1.85; padding:0 24px; max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease; }
+    .faq-item.open .faq-a { max-height:300px; padding:0 24px 20px; }
+
+    /* CTA STRIP */
+    .cta-strip { background:var(--blue); padding:52px 40px; position:relative; overflow:hidden; }
+    .cta-strip::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,0,0,.3) 0%,transparent 55%); pointer-events:none; }
+    .cta-inner { position:relative; z-index:1; max-width:var(--max-w); margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; }
+    .cta-strip h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(32px,4vw,52px); font-weight:900; letter-spacing:-.01em; text-transform:uppercase; color:#fff; line-height:.9; }
+    .cta-strip p { font-size:13px; color:rgba(255,255,255,.6); margin-top:8px; }
+    .cta-btns { display:flex; gap:10px; flex-shrink:0; flex-wrap:wrap; }
+
+    /* FOOTER */
+    footer { background:var(--bg); border-top:1px solid var(--border); }
+    .footer-bottom { max-width:var(--max-w); margin:0 auto; padding:22px 40px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--muted); }
+    .footer-bottom a { color:var(--muted); text-decoration:none; transition:color .2s; }
+    .footer-bottom a:hover { color:var(--gray); }
+
+    @media (max-width:960px) {
+      #nav { padding:0 24px; } .nav-links, .nav-right .btn { display:none; } .hamburger { display:flex; }
+      .page-hero-inner { padding:40px 24px 32px; }
+      .contact-inner { grid-template-columns:1fr; padding:0 24px; gap:48px; }
+      .contact-sidebar { order:-1; }
+      .area-head { grid-template-columns:1fr; }
+      .area-grid { grid-template-columns:repeat(2,1fr); padding:0; }
+      .area-inner { padding:0 24px; }
+      .faq-inner { grid-template-columns:1fr; padding:0 24px; gap:40px; }
+      .cta-strip { padding:44px 24px; }
+      .cta-inner { flex-direction:column; align-items:flex-start; gap:24px; }
+      .footer-bottom { padding:20px 24px; flex-direction:column; gap:8px; text-align:center; }
+    }
+    @media (max-width:600px) {
+      :root { --nav-h:60px; }
+      .form-row { grid-template-columns:1fr; }
+      .area-grid { grid-template-columns:1fr 1fr; }
+      .cta-btns { flex-direction:column; align-items:center; }
+      .cta-btns .btn { width:100%; justify-content:center; max-width:300px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="Logo.png" alt="MaxDriveDetail" class="nav-logo-img">
+      <span class="nav-logo-text"><span class="brand-text">Max</span>DriveDetail</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="book.html" class="btn btn-primary" style="padding:9px 20px;font-size:11px;">Book Now <span class="arr">→</span></a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mmenu">
+  <a href="index.html" onclick="closeMM()">Home</a>
+  <a href="services.html" onclick="closeMM()">Services</a>
+  <a href="gallery.html" onclick="closeMM()">Gallery</a>
+  <a href="contact.html" onclick="closeMM()">Contact</a>
+  <div class="m-cta"><a href="book.html" class="btn btn-primary">Book Now →</a></div>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <p class="ph-eyebrow">Vienna, VA</p>
+    <h1 class="ph-title">Got a<br>Question?</h1>
+    <p class="ph-desc">Not sure which service fits your car, want a quote on something specific, or just have a question? Use the form or text me directly — I reply same day.</p>
+  </div>
+</section>
+
+<!-- CONTACT MAIN -->
+<section class="contact-section">
+  <div class="contact-inner">
+
+    <!-- FORM -->
+    <div>
+      <div class="form-head reveal">
+        <h2>I'll Reply<br>Same Day</h2>
+        <p>Fill this in and I'll get back to you. If it's urgent, just text (571) 278-7350 — that's faster.</p>
+      </div>
+
+      <form class="contact-form reveal reveal-d1" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="fname" placeholder="Zach" required>
+          </div>
+          <div class="field">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(703) 555-0100">
+          </div>
+        </div>
+        <div class="field">
+          <label for="subject">What's this about?</label>
+          <select id="subject" name="subject">
+            <option value="">— Select a topic —</option>
+            <option value="quote">Custom Quote</option>
+            <option value="question">Service Question</option>
+            <option value="booking">Booking Help</option>
+            <option value="ceramic">Ceramic Coating Inquiry</option>
+            <option value="other">Something Else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="vehicle">Vehicle (optional)</label>
+          <input type="text" id="vehicle" name="vehicle" placeholder="e.g. 2021 Honda Pilot, black">
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me what you need..." required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary" id="submitBtn">Send Message <span class="arr">→</span></button>
+          <span class="form-note">No spam. Ever. Just real replies from a real person.</span>
+        </div>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="check">✓</div>
+        <h3>Message Sent</h3>
+        <p>Got it — you'll hear back within a few hours. For something urgent, text (571) 278-7350 directly.</p>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="contact-sidebar">
+
+      <div class="info-card reveal">
+        <a href="tel:5712787350" class="info-phone-big">(571) 278-7350</a>
+        <p class="info-phone-note">Text for fastest reply</p>
+        <div class="info-row">
+          <div class="info-text">
+            <div class="info-label">Email</div>
+            <div class="info-value"><a href="mailto:zacharysonnenberg@gmail.com">zacharysonnenberg@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-text">
+            <div class="info-label">Location</div>
+            <div class="info-value">Vienna, VA — we come to you</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-text">
+            <div class="info-label">Hours</div>
+            <div class="info-value">Mon–Sat, 8 AM – 6 PM</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="social-row">
+            <a href="https://www.instagram.com/maxdrivedetail/" target="_blank" rel="noopener" class="social-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              @maxdrivedetail
+            </a>
+            <a href="https://www.tiktok.com/@maxdrivedetail" target="_blank" rel="noopener" class="social-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              @maxdrivedetail
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card reveal reveal-d1" style="display:flex;flex-direction:column;gap:10px;">
+        <a href="book.html" class="btn btn-primary" style="width:100%;justify-content:center;">Book Appointment <span class="arr">→</span></a>
+        <a href="https://share.google/R7SeGQyOxR5cV5J1h" target="_blank" rel="noopener" class="btn btn-ghost" style="width:100%;justify-content:center;">Leave a Google Review</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE AREA -->
+<section class="area-section">
+  <div class="area-inner">
+    <div class="area-head reveal">
+      <div>
+        <span class="label">Service Area</span>
+        <h2>We Come<br>to You.</h2>
+      </div>
+      <p>Based in Vienna, we serve all of Northern Virginia. No shop to drive to — book online and we show up at your home, office, or wherever your car is parked.</p>
+    </div>
+    <div class="area-grid reveal reveal-d1">
+      <div class="area-card area-home">
+        <div class="area-name">Vienna</div>
+        <div class="area-dist">Home base</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">McLean</div>
+        <div class="area-dist">~10 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Reston</div>
+        <div class="area-dist">~12 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Herndon</div>
+        <div class="area-dist">~15 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Tysons</div>
+        <div class="area-dist">~8 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Falls Church</div>
+        <div class="area-dist">~12 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Great Falls</div>
+        <div class="area-dist">~18 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Oakton</div>
+        <div class="area-dist">~10 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Chantilly</div>
+        <div class="area-dist">~20 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Sterling</div>
+        <div class="area-dist">~20 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Arlington</div>
+        <div class="area-dist">~20 min</div>
+      </div>
+      <div class="area-card">
+        <div class="area-name">Alexandria</div>
+        <div class="area-dist">~25 min</div>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:24px;font-size:12px;color:var(--muted);padding:0 2px;">Not on the list? <a href="tel:5712787350" style="color:var(--blue-lite);text-decoration:none;">Text us</a> — if we can get there, we will.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-left reveal">
+      <span class="label">FAQ</span>
+      <h2>Common<br>Questions</h2>
+      <p>Stuff people ask before booking. If yours isn't here, just text me.</p>
+    </div>
+    <div class="faq-list reveal reveal-d1" id="faqList">
+
+      <div class="faq-item">
+        <div class="faq-q">Do you need access to water or power at my location? <span class="faq-icon">+</span></div>
+        <div class="faq-a">No — the setup is fully self-contained. We bring our own pressure washer, generator, water supply, and all chemicals and equipment. All we need is access to your vehicle and some space to work.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How long does a detail take? <span class="faq-icon">+</span></div>
+        <div class="faq-a">It depends on the service. A basic interior refresh runs about 1 hour. A full interior + exterior package takes 3–4 hours. Ceramic coating or paint correction can take a full day. Exact times are shown on the booking page for each service.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What's your cancellation policy? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Cancel or reschedule for free up to 24 hours before your appointment. Within 24 hours, the 15% deposit is non-refundable. No-shows forfeit the deposit. Life happens — just communicate and we'll work with you.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Do I need to be home during the detail? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Nope. As long as we have access to the vehicle and a safe space to work, you're free to do your thing. We'll send a text when we arrive and when we're done.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What payment methods do you accept? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Cash, Venmo, Zelle, and all major cards. A 15% deposit is collected at booking; the remainder is due when the job is complete.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can you detail my car if it's raining? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Interior-only services can usually proceed in any weather. For exterior work, we need dry conditions to ensure the best results. If rain is forecasted, we'll reach out to reschedule at no penalty to you.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I get a ceramic coating quote? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Ceramic coating is priced after an inspection — every car's paint condition is different. Use the contact form above, select "Ceramic Coating Inquiry," and tell us your vehicle. We'll set up a quick assessment and quote from there.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <div>
+      <h2>Book in<br>Minutes.</h2>
+      <p>Takes 2 minutes online. I handle everything from there.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="book.html" class="btn" style="background:#fff;color:#000;">Book Online <span class="arr">→</span></a>
+      <a href="tel:5712787350" class="btn btn-ghost" style="border-color:rgba(255,255,255,.35);color:#fff;">(571) 278-7350</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <span>&copy; 2026 MaxDriveDetail LLC · Vienna, VA</span>
+    <span>
+      <a href="tel:5712787350">(571) 278-7350</a> &nbsp;·&nbsp;
+      <a href="services.html">Services</a> &nbsp;·&nbsp;
+      <a href="book.html">Book</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  // --- NAV ---
+  const ham = document.getElementById('ham');
+  const mmenu = document.getElementById('mmenu');
+  function closeMM() { ham.classList.remove('open'); mmenu.classList.remove('open'); }
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); mmenu.classList.toggle('open'); });
+
+  // --- SCROLL REVEAL ---
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  // --- FAQ ---
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // --- CONTACT FORM ---
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Replace with your Google Apps Script URL once deployed
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqGGGLx8-6MCl2o1uuDCcYN7XGilM8Z8LsYT7ZRNQbcJowBjqrYjo2kp9E2JPNcxBt/exec';
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = {
+      type: 'contact',
+      name: form.fname.value.trim() + ' ' + form.lname.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      subject: form.subject.value,
+      vehicle: form.vehicle.value.trim(),
+      message: form.message.value.trim()
+    };
+
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled = true;
+
+    if (APPS_SCRIPT_URL) {
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          mode: 'no-cors'
+        });
+      } catch(err) { /* silent */ }
+    } else {
+      const body = encodeURIComponent(
+        'Name: ' + data.name + '\nEmail: ' + data.email + '\nPhone: ' + data.phone +
+        '\nSubject: ' + data.subject + '\nVehicle: ' + data.vehicle + '\n\n' + data.message
+      );
+      window.location.href = 'mailto:3sdetailingva@gmail.com?subject=' +
+        encodeURIComponent('Website Inquiry — ' + (data.subject || 'General')) + '&body=' + body;
+    }
+
+    form.style.display = 'none';
+    success.classList.add('show');
+  });
+
+  /* Dark / Light Mode */
+  (function(){
+    const root = document.documentElement;
+    const saved = localStorage.getItem('mdd-theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', saved || sys);
+    const btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function(){
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mdd-theme', next);
+    });
+  })();
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>

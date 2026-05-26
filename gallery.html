@@ -1,0 +1,572 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — MaxDriveDetail · Vienna, VA</title>
+  <meta name="description" content="Real results from MaxDriveDetail — mobile auto detailing in Vienna, VA. Watch before & after transformations, exterior washes, and interior deep cleans.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#1A1A1A; --bg2:#222222; --surface:#2A2A2A; --surface2:#333333;
+      --border:rgba(139,26,26,.15); --border2:rgba(139,26,26,.30);
+      --gold:#8B1A1A; --gold-l:#C0392B; --gold-d:#6B1010;
+      --white:#f0f0f0; --chrome:#b0b8c8; --graphite:#555d6e;
+      --radius-sm:6px; --radius:12px; --max-w:1280px; --nav-h:68px;
+    }
+    [data-theme="light"] { --bg:#F5F5F5; --bg2:#EAECEF; --surface:#FFFFFF; --surface2:#F7F8FA; --border:rgba(139,26,26,.2); --white:#1A1A1A; --chrome:#5A6070; --graphite:#999999; }
+    [data-theme="light"] body { background:var(--bg); color:var(--white); }
+    [data-theme="light"] #nav { background:rgba(245,245,245,.96); }
+    [data-theme="light"] .nav-links a { color:rgba(26,26,26,.55); }
+    [data-theme="light"] .nav-links a:hover, [data-theme="light"] .nav-links a.active { color:#1A1A1A; }
+    [data-theme="light"] .page-hero { background:var(--bg2); }
+    [data-theme="light"] .filter-bar { background:rgba(245,245,245,.92); }
+    [data-theme="light"] .filter-btn { color:var(--graphite); border-color:rgba(0,0,0,.15); }
+    [data-theme="light"] .media-card { background:#FFFFFF; }
+    [data-theme="light"] footer { background:#1A1A1A; color:#F5F5F5; }
+    [data-theme="light"] .footer-bottom a { color:#888; }
+    @keyframes nav-cta-glow { 0%,100%{box-shadow:0 0 0 0 rgba(139,26,26,0);}50%{box-shadow:0 0 18px 4px rgba(139,26,26,.45);} }
+    .btn-primary { animation: nav-cta-glow 3s ease-in-out infinite; }
+    .btn-primary:hover { animation: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    .theme-toggle { display:flex; align-items:center; justify-content:center; width:34px; height:34px; background:none; border:1px solid rgba(139,26,26,.3); border-radius:6px; cursor:pointer; color:#888; font-size:15px; transition:border-color .2s,color .2s; flex-shrink:0; }
+    .theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+    .theme-toggle .icon-sun { display:none; }
+    .theme-toggle .icon-moon { display:block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.028; pointer-events:none; z-index:9999; }
+
+    .btn { display:inline-flex; align-items:center; gap:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:13px 28px; border-radius:var(--radius-sm); cursor:pointer; border:none; transition:transform .18s, box-shadow .18s, background .18s; position:relative; overflow:hidden; white-space:nowrap; }
+    .btn::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent); transform:translateX(-110%); }
+    .btn:hover::after { animation:shimmer .5s ease forwards; }
+    @keyframes shimmer { to { transform:translateX(110%); } }
+    .btn-primary { background:linear-gradient(135deg,#8B1A1A,#6B1010); color:#fff; box-shadow:0 2px 16px rgba(139,26,26,.3); }
+    .btn-primary:hover { transform:translateY(-1px); box-shadow:0 8px 28px rgba(139,26,26,.45); }
+    .btn-ghost { background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.32); }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.6); }
+    .btn .arr { transition:transform .18s; }
+    .btn:hover .arr { transform:translateX(3px); }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-d1{transition-delay:.1s;} .reveal-d2{transition-delay:.2s;}
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    #nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; padding:0 48px; background:rgba(26,26,26,.94); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .nav-inner { max-width:var(--max-w); margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; position:relative; }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo-img { height:34px; width:auto; display:block; mix-blend-mode:screen; }
+    .nav-logo-text { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:var(--white); }
+    .brand-text { background: linear-gradient(135deg, #C0392B 0%, #8B1A1A 50%, #6B1010 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-links { position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:40px; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,.45); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; transition:color .2s; }
+    .nav-links a:hover, .nav-links a.active { color:#fff; }
+    .nav-right { display:flex; align-items:center; gap:12px; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; transition:all .25s; }
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);} .hamburger.open span:nth-child(2){opacity:0;} .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mobile-menu { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:rgba(26,26,26,.97); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); padding:16px 40px 32px; z-index:199; flex-direction:column; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { color:var(--graphite); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; padding:16px 0; border-bottom:1px solid var(--border); transition:color .2s; }
+    .mobile-menu a:hover { color:#fff; }
+    .mobile-menu .m-cta { margin-top:20px; }
+
+    /* ── PAGE HERO ───────────────────────────────────────── */
+    .page-hero { padding-top:var(--nav-h); background:var(--bg2); border-bottom:1px solid var(--border); }
+    .page-hero-inner { max-width:var(--max-w); margin:0 auto; padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; align-items:end; gap:60px; }
+    .ph-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--gold-l); margin-bottom:16px; }
+    .ph-eyebrow::before { content:'◆'; display:inline-block; margin-right:8px; font-size:.6em; }
+    .ph-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(52px,7vw,96px); font-weight:900; letter-spacing:-.02em; line-height:.9; text-transform:uppercase; color:var(--white); }
+    .ph-title em { font-style:normal; color:var(--gold-l); }
+    .ph-desc { font-size:15px; color:var(--chrome); line-height:1.8; margin-bottom:28px; font-weight:300; }
+
+    /* ── FILTER BAR ──────────────────────────────────────── */
+    .filter-bar { position:sticky; top:var(--nav-h); z-index:100; background:rgba(26,26,26,.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .filter-inner { max-width:var(--max-w); margin:0 auto; padding:0 64px; display:flex; align-items:center; gap:8px; height:56px; overflow-x:auto; scrollbar-width:none; }
+    .filter-inner::-webkit-scrollbar { display:none; }
+    .filter-btn { flex-shrink:0; height:30px; padding:0 16px; border-radius:9999px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:background .2s,color .2s,border-color .2s; background:transparent; color:var(--graphite); border:1px solid rgba(255,255,255,.1); }
+    .filter-btn:hover { color:var(--white); border-color:rgba(255,255,255,.25); }
+    .filter-btn.active { background:var(--gold); color:#fff; border-color:var(--gold); }
+    .filter-count { margin-left:auto; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:var(--graphite); font-weight:700; letter-spacing:2px; text-transform:uppercase; flex-shrink:0; }
+
+    /* ── GALLERY GRID ────────────────────────────────────── */
+    .gallery-section { padding:80px 0 120px; }
+    .gallery-grid { max-width:var(--max-w); margin:0 auto; padding:0 64px; display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+
+    .gallery-item { position:relative; overflow:hidden; cursor:pointer; background:var(--surface); }
+    .gallery-item.photo { aspect-ratio:9/16; }
+    .gallery-item.video { aspect-ratio:9/16; }
+    .gallery-item video,
+    .gallery-item img   { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s cubic-bezier(.16,1,.3,1); }
+    .gallery-item:hover video,
+    .gallery-item:hover img   { transform:scale(1.04); }
+    .gallery-item.hidden { display:none; }
+
+    .gallery-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.1) 45%,transparent 70%); opacity:0; transition:opacity .3s; pointer-events:none; }
+    .gallery-item:hover .gallery-overlay { opacity:1; }
+    .gallery-meta { position:absolute; bottom:0; left:0; right:0; padding:20px; transform:translateY(8px); opacity:0; transition:transform .3s,opacity .3s; }
+    .gallery-item:hover .gallery-meta { transform:none; opacity:1; }
+    .gallery-meta-tag { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--gold-l); margin-bottom:5px; }
+    .gallery-meta-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:#fff; line-height:1.2; }
+
+    .play-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9); opacity:0; transition:opacity .2s,transform .2s; width:52px; height:52px; background:rgba(139,26,26,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .video-item .play-icon,
+    .gallery-item.video .play-icon { display:flex; }
+    .gallery-item.photo .play-icon { display:none; }
+    .gallery-item.video:hover .play-icon { opacity:1; transform:translate(-50%,-50%) scale(1); }
+
+    /* ── LIGHTBOX ────────────────────────────────────────── */
+    .lightbox { position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.96); display:none; align-items:center; justify-content:center; }
+    .lightbox.open { display:flex; }
+    .lb-backdrop { position:absolute; inset:0; cursor:pointer; }
+    .lb-content { position:relative; z-index:1; max-width:440px; width:90vw; }
+    .lb-media-wrap { border-radius:var(--radius); overflow:hidden; background:#000; aspect-ratio:9/16; }
+    .lb-media-wrap video,
+    .lb-media-wrap img   { width:100%; height:100%; object-fit:cover; display:block; }
+    .lb-info { padding:16px 0 0; }
+    .lb-tag { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--gold-l); margin-bottom:6px; }
+    .lb-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; color:var(--white); }
+    .lb-close { position:absolute; top:-14px; right:-14px; width:40px; height:40px; background:var(--surface2); border:1px solid var(--border2); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--graphite); font-size:18px; transition:color .2s,background .2s; z-index:2; }
+    .lb-close:hover { color:#fff; background:var(--gold); border-color:var(--gold); }
+    .lb-nav { display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
+    .lb-arrow { width:40px; height:40px; background:var(--surface); border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; color:var(--graphite); transition:color .2s,border-color .2s; }
+    .lb-arrow:hover { color:#fff; border-color:rgba(255,255,255,.3); }
+    .lb-counter { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:var(--graphite); font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+
+    /* ── FOOTER CTA ──────────────────────────────────────── */
+    .cta-strip { padding:100px 64px; text-align:center; position:relative; overflow:hidden; background:var(--bg2); border-top:1px solid var(--border); }
+    .cta-strip::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 100%,rgba(139,26,26,.08) 0%,transparent 65%); pointer-events:none; }
+    .cta-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--gold-l); margin-bottom:20px; display:block; }
+    .cta-eyebrow::before { content:'◆'; display:inline-block; margin-right:8px; font-size:.6em; }
+    .cta-strip h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(40px,6vw,80px); font-weight:900; letter-spacing:-.02em; text-transform:uppercase; color:var(--white); margin-bottom:12px; line-height:.9; }
+    .cta-strip h2 em { font-style:normal; color:var(--gold-l); }
+    .cta-strip p { font-size:15px; color:var(--chrome); margin-bottom:36px; font-weight:300; }
+    .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+    /* ── SIMPLE FOOTER ───────────────────────────────────── */
+    footer { background:var(--bg); border-top:1px solid var(--border); }
+    .footer-bottom { max-width:var(--max-w); margin:0 auto; padding:22px 64px; display:flex; justify-content:space-between; align-items:center; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--graphite); }
+    .footer-bottom a { color:var(--graphite); text-decoration:none; transition:color .2s; }
+    .footer-bottom a:hover { color:var(--chrome); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width:960px) {
+      #nav { padding:0 24px; }
+      .nav-links, .nav-right .btn { display:none; }
+      .hamburger { display:flex; }
+      .page-hero-inner { grid-template-columns:1fr; padding:52px 24px; }
+      .filter-inner { padding:0 24px; }
+      .gallery-grid { grid-template-columns:repeat(2,1fr); padding:0 24px; }
+      .cta-strip { padding:64px 24px; }
+      .footer-bottom { padding:20px 24px; }
+    }
+    @media (max-width:600px) {
+      :root { --nav-h:60px; }
+      .gallery-grid { grid-template-columns:1fr 1fr; padding:0 12px; gap:2px; }
+      .gallery-section { padding:40px 0 80px; }
+      .footer-bottom { flex-direction:column; gap:8px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="Logo.png" alt="MaxDriveDetail" class="nav-logo-img">
+      <span class="nav-logo-text"><span class="brand-text">Max</span>DriveDetail</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="book.html" class="btn btn-primary">Book Now <span class="arr">→</span></a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mmenu">
+  <a href="index.html" onclick="closeMM()">Home</a>
+  <a href="index.html#services" onclick="closeMM()">Services</a>
+  <a href="gallery.html" onclick="closeMM()">Gallery</a>
+  <a href="contact.html" onclick="closeMM()">Contact</a>
+  <div class="m-cta"><a href="book.html" class="btn btn-primary" style="width:100%;justify-content:center;">Book Now →</a></div>
+</div>
+
+<!-- ═══ PAGE HERO ═══ -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div>
+      <p class="ph-eyebrow">Portfolio</p>
+      <h1 class="ph-title">Real Cars.<br><em>Real Results.</em></h1>
+    </div>
+    <div>
+      <p class="ph-desc">Every clip and photo is an actual customer's car — no staged shots, no filters. Exterior washes, interior deep cleans, and before &amp; afters all done right here in Northern Virginia.</p>
+      <a href="book.html" class="btn btn-primary">Book Your Detail <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FILTER BAR ═══ -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="exterior">Exterior</button>
+    <button class="filter-btn" data-filter="interior">Interior</button>
+    <button class="filter-btn" data-filter="before-after">Before &amp; After</button>
+    <button class="filter-btn" data-filter="photos">Photos</button>
+    <button class="filter-btn" data-filter="bts">Behind the Scenes</button>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+</div>
+
+<!-- ═══ GALLERY GRID ═══ -->
+<section class="gallery-section">
+  <div class="gallery-grid" id="galleryGrid">
+
+    <!-- VIDEOS ─────────────────────────────────── -->
+    <div class="gallery-item video reveal" data-category="before-after" data-title="Minivan Food Disaster — Before" data-tag="Before & After" data-type="video">
+      <video src="media/post_27_minivan_food_disaster_before.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Before &amp; After</div><div class="gallery-meta-title">Minivan Food Disaster — Before</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d1" data-category="before-after" data-title="Minivan Clean Interior — After" data-tag="Before & After" data-type="video">
+      <video src="media/post_28_minivan_clean_interior_after.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Before &amp; After</div><div class="gallery-meta-title">Minivan Clean Interior — After</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d2" data-category="interior" data-title="Minivan Yellow Stain — Closeup" data-tag="Interior" data-type="video">
+      <video src="media/post_29_minivan_yellow_mess_closeup.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Interior</div><div class="gallery-meta-title">Minivan Yellow Stain — Closeup</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal" data-category="exterior" data-title="SUV Foam Cannon Full Blast" data-tag="Exterior" data-type="video">
+      <video src="media/post_30_suv_foam_cannon_full_blast.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">SUV Foam Cannon Full Blast</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d1" data-category="exterior" data-title="Explorer Wheel Arch Spray" data-tag="Exterior" data-type="video">
+      <video src="media/post_31_explorer_wheel_arch_spray.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Explorer Wheel Arch Spray</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d2" data-category="exterior" data-title="Q50 Wheel Spoke Detail" data-tag="Exterior" data-type="video">
+      <video src="media/post_32_q50_wheel_spoke_detail_brush.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Q50 Wheel Spoke Detail</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal" data-category="exterior" data-title="Q50 Full Setup — Pressure Wash" data-tag="Exterior" data-type="video">
+      <video src="media/post_33_q50_full_setup_pressure_wash.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Q50 Full Setup — Pressure Wash</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d1" data-category="interior" data-title="Pet Hair Floor Mat — Before" data-tag="Interior" data-type="video">
+      <video src="media/post_34_pet_hair_floor_mat_before.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Interior</div><div class="gallery-meta-title">Pet Hair Floor Mat — Before</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal reveal-d2" data-category="interior" data-title="Floor Mat Foam Scrub Action" data-tag="Interior" data-type="video">
+      <video src="media/post_35_floor_mat_foam_scrub_action.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Interior</div><div class="gallery-meta-title">Floor Mat Foam Scrub Action</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <div class="gallery-item video reveal" data-category="bts" data-title="Trunk Gear Reveal — Behind the Scenes" data-tag="Behind the Scenes" data-type="video">
+      <video src="media/post_36_trunk_gear_bts_reveal.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Behind the Scenes</div><div class="gallery-meta-title">Trunk Gear Reveal</div></div>
+      <div class="play-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 3l10 5-10 5V3z" fill="#fff"/></svg></div>
+    </div>
+
+    <!-- PHOTOS ─────────────────────────────────── -->
+    <div class="gallery-item photo reveal reveal-d1" data-category="photos" data-title="Infiniti Q50 — Exterior Finish" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4031.JPG" alt="Infiniti Q50 exterior finish" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Infiniti Q50 — Exterior Finish</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d2" data-category="photos" data-title="Infiniti Q50 — Side Profile" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4032.JPG" alt="Infiniti Q50 side profile" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Infiniti Q50 — Side Profile</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal" data-category="photos" data-title="Kia Carnival — Rear After Detail" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4543.JPG" alt="Kia Carnival rear after full detail" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Kia Carnival — Rear After Detail</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d1" data-category="photos" data-title="Kia Carnival — Front Three-Quarter" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4544.JPG" alt="Kia Carnival front three quarter" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Kia Carnival — Front Three-Quarter</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d2" data-category="photos" data-title="Kia Carnival — Front Detail" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4554.JPG" alt="Kia Carnival front detail close-up" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Kia Carnival — Front Detail</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal" data-category="photos" data-title="Ford Explorer — Gloss Panel" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4708.JPG" alt="Ford Explorer gloss paint panel" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Ford Explorer — Gloss Panel</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d1" data-category="bts" data-title="On-Site Foam Wash — Ford Explorer" data-tag="Behind the Scenes" data-type="photo">
+      <img src="media/IMG_4729.JPG" alt="Ford Explorer being washed on location" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Behind the Scenes</div><div class="gallery-meta-title">On-Site Foam Wash — Ford Explorer</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d2" data-category="bts" data-title="Two-Car Job — Vienna, VA" data-tag="Behind the Scenes" data-type="photo">
+      <img src="media/IMG_4551.JPG" alt="Two vehicles being detailed on location in Vienna VA" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Behind the Scenes</div><div class="gallery-meta-title">Two-Car Job — Vienna, VA</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal" data-category="bts" data-title="Full Setup — Two Cars One Drive" data-tag="Behind the Scenes" data-type="photo">
+      <img src="media/IMG_4562.JPG" alt="Full detailing setup two cars one driveway" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Behind the Scenes</div><div class="gallery-meta-title">Full Setup — Two Cars, One Drive</div></div>
+    </div>
+
+    <div class="gallery-item photo reveal reveal-d1" data-category="photos" data-title="Kia Carnival — Gloss Side Panel" data-tag="Photos" data-type="photo">
+      <img src="media/IMG_4732.JPG" alt="Kia Carnival gloss side panel after detail" loading="lazy">
+      <div class="gallery-overlay"></div>
+      <div class="gallery-meta"><div class="gallery-meta-tag">Exterior</div><div class="gallery-meta-title">Kia Carnival — Gloss Side Panel</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<div class="cta-strip">
+  <div>
+    <span class="cta-eyebrow">Ready?</span>
+    <h2>Your Car<br><em>Is Next.</em></h2>
+    <p>Mobile detailing at your door — Vienna, McLean, Reston, Herndon, and all of Northern Virginia.</p>
+    <div class="cta-btns">
+      <a href="book.html" class="btn btn-primary">Book Online <span class="arr">→</span></a>
+      <a href="tel:5712787350" class="btn btn-ghost">Call (571) 278-7350</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-bottom">
+    <span>&copy; 2026 MaxDriveDetail LLC · Vienna, VA · Zach Sonnenberg</span>
+    <span>
+      <a href="tel:5712787350">(571) 278-7350</a> &nbsp;·&nbsp;
+      <a href="index.html#services">Services</a> &nbsp;·&nbsp;
+      <a href="book.html">Book</a>
+    </span>
+  </div>
+</footer>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <div class="lb-content">
+    <button class="lb-close" id="lbClose">×</button>
+    <div class="lb-media-wrap" id="lbMediaWrap">
+      <!-- populated by JS -->
+    </div>
+    <div class="lb-info">
+      <div class="lb-tag" id="lbTag"></div>
+      <div class="lb-title" id="lbTitle"></div>
+    </div>
+    <div class="lb-nav">
+      <button class="lb-arrow" id="lbPrev">←</button>
+      <span class="lb-counter" id="lbCounter"></span>
+      <button class="lb-arrow" id="lbNext">→</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Mobile nav ──────────────────────────────────── */
+  const ham = document.getElementById('ham');
+  const mmenu = document.getElementById('mmenu');
+  function closeMM() { ham.classList.remove('open'); mmenu.classList.remove('open'); }
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); mmenu.classList.toggle('open'); });
+
+  /* ── Scroll reveal ───────────────────────────────── */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  /* ── Video hover play ────────────────────────────── */
+  document.querySelectorAll('.gallery-item.video').forEach(item => {
+    const vid = item.querySelector('video');
+    if (!vid) return;
+    item.addEventListener('mouseenter', () => vid.play());
+    item.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+  });
+
+  /* ── Filter ──────────────────────────────────────── */
+  const allItems = [...document.querySelectorAll('.gallery-item')];
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const countEl = document.getElementById('filterCount');
+
+  function updateCount() {
+    const vis = allItems.filter(i => !i.classList.contains('hidden')).length;
+    countEl.textContent = vis + ' item' + (vis !== 1 ? 's' : '');
+  }
+  updateCount();
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      allItems.forEach(item => {
+        const cat = item.dataset.category;
+        const type = item.dataset.type;
+        let match = false;
+        if (f === 'all') match = true;
+        else if (f === 'photos') match = type === 'photo';
+        else match = cat === f;
+        item.classList.toggle('hidden', !match);
+      });
+      updateCount();
+    });
+  });
+
+  /* ── Lightbox ────────────────────────────────────── */
+  const lb = document.getElementById('lightbox');
+  const lbMediaWrap = document.getElementById('lbMediaWrap');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbTag = document.getElementById('lbTag');
+  const lbCounter = document.getElementById('lbCounter');
+
+  let lbItems = [];
+  let lbIdx = 0;
+  let activeVideo = null;
+
+  function getVisible() {
+    return allItems.filter(i => !i.classList.contains('hidden'));
+  }
+
+  function showLbItem() {
+    const item = lbItems[lbIdx];
+    const type = item.dataset.type;
+
+    // Clean up previous media
+    if (activeVideo) { activeVideo.pause(); activeVideo.src = ''; }
+    lbMediaWrap.innerHTML = '';
+
+    if (type === 'video') {
+      const src = item.querySelector('video').src;
+      const vid = document.createElement('video');
+      vid.src = src; vid.controls = true; vid.playsinline = true;
+      vid.autoplay = true;
+      lbMediaWrap.appendChild(vid);
+      activeVideo = vid;
+    } else {
+      const src = item.querySelector('img').src;
+      const img = document.createElement('img');
+      img.src = src; img.alt = item.dataset.title;
+      lbMediaWrap.appendChild(img);
+      activeVideo = null;
+    }
+
+    lbTitle.textContent = item.dataset.title;
+    lbTag.textContent = item.dataset.tag;
+    lbCounter.textContent = (lbIdx + 1) + ' / ' + lbItems.length;
+  }
+
+  function openLightbox(idx) {
+    lbItems = getVisible();
+    lbIdx = idx;
+    showLbItem();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    if (activeVideo) { activeVideo.pause(); activeVideo.src = ''; activeVideo = null; }
+    lbMediaWrap.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  allItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const visible = getVisible();
+      const idx = visible.indexOf(item);
+      if (idx === -1) return;
+      lbItems = visible;
+      lbIdx = idx;
+      showLbItem();
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbBackdrop').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; showLbItem(); });
+  document.getElementById('lbNext').addEventListener('click', () => { lbIdx = (lbIdx + 1) % lbItems.length; showLbItem(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; showLbItem(); }
+    if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbItems.length; showLbItem(); }
+  });
+
+  /* Dark / Light Mode */
+  (function(){
+    const root = document.documentElement;
+    const saved = localStorage.getItem('mdd-theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', saved || sys);
+    const btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function(){
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mdd-theme', next);
+    });
+  })();
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>

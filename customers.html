@@ -1,0 +1,971 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaxDriveDetail — Customers</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══ */
+:root {
+  --bg:        #1A1A1A;
+  --bg2:       #222222;
+  --surface:   #2A2A2A;
+  --surface2:  #333333;
+  --card:      #2A2A2A;
+  --border:    #333333;
+  --border2:   rgba(255,255,255,.1);
+  --white:     #f0f0f0;
+  --gray:      #888;
+  --muted:     #3d3d3d;
+  --blue:      #8B1A1A;
+  --blue-mid:  #C0392B;
+  --blue-lite: #C0392B;
+  --blue-dim:  rgba(139,26,26,.14);
+  --green:     #22c55e;
+  --green-dim: rgba(34,197,94,.12);
+  --yellow:    #f59e0b;
+  --purple:    #8b5cf6;
+  --purple-dim:rgba(139,92,246,.12);
+  --red:       #ef4444;
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.028; pointer-events:none; z-index:9999;
+}
+
+/* ═══ LOCK SCREEN ═══ */
+#lock {
+  position:fixed; inset:0; z-index:500;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+}
+.lock-glow {
+  position:absolute; top:-120px; left:50%; transform:translateX(-50%);
+  width:600px; height:600px; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(139,26,26,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.lock-box {
+  position:relative; z-index:1; width:360px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:20px; padding:44px 36px 36px; text-align:center;
+}
+.lock-icon {
+  width:48px; height:48px; border-radius:14px;
+  background:var(--blue-dim); border:1px solid rgba(139,26,26,.3);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 24px;
+}
+.lock-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+.lock-sub { font-size:13px; color:var(--gray); margin-bottom:28px; }
+.lock-input {
+  width:100%; padding:12px 16px; background:var(--surface2);
+  border:1px solid var(--border); border-radius:var(--radius);
+  color:var(--white); font-family:'Inter',sans-serif; font-size:14px;
+  outline:none; letter-spacing:.08em; margin-bottom:12px;
+  transition:border-color .2s;
+}
+.lock-input:focus { border-color:rgba(139,26,26,.5); }
+.lock-input.shake { animation:shake .4s ease; }
+@keyframes shake {
+  0%,100%{ transform:translateX(0) }
+  20%{ transform:translateX(-6px) }
+  40%{ transform:translateX(6px) }
+  60%{ transform:translateX(-4px) }
+  80%{ transform:translateX(4px) }
+}
+.lock-btn {
+  width:100%; padding:12px; background:var(--blue);
+  border:none; border-radius:var(--radius); color:#fff;
+  font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
+  cursor:pointer; transition:opacity .2s;
+}
+.lock-btn:hover { opacity:.88; }
+.lock-btn:disabled { opacity:.5; cursor:not-allowed; }
+.lock-err {
+  margin-top:10px; font-size:12px; color:#f87171; min-height:18px;
+}
+
+/* ═══ APP SHELL ═══ */
+#app { display:none; min-height:100vh; }
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  height:56px;
+  background:rgba(26,26,26,.85); backdrop-filter:blur(16px) saturate(180%);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px; gap:16px;
+}
+.topbar-left { display:flex; align-items:center; gap:12px; }
+.topbar-logo {
+  font-size:15px; font-weight:800; letter-spacing:-.3px; color:var(--white);
+  text-decoration:none;
+}
+.topbar-logo span { color:var(--blue); }
+.topbar-divider { width:1px; height:18px; background:var(--border); }
+.topbar-page { font-size:13px; color:var(--gray); font-weight:500; }
+.topbar-right { display:flex; align-items:center; gap:8px; }
+.topbar-nav-link {
+  display:flex; align-items:center; gap:6px;
+  padding:6px 12px; border-radius:var(--radius-sm);
+  font-size:12px; font-weight:500; color:var(--gray);
+  text-decoration:none; border:1px solid transparent;
+  transition:color .2s, border-color .2s, background .2s;
+}
+.topbar-nav-link:hover { color:var(--white); border-color:var(--border); background:var(--surface2); }
+.topbar-nav-link.active { color:var(--white); border-color:var(--border); background:var(--surface2); }
+.topbar-btn {
+  display:flex; align-items:center; gap:7px;
+  padding:7px 14px;
+  background:transparent; border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--gray);
+  font-family:'Inter',sans-serif; font-size:12px; font-weight:500;
+  cursor:pointer; transition:border-color .2s, color .2s, background .2s;
+}
+.topbar-btn:hover { border-color:var(--border2); color:var(--white); }
+.topbar-btn svg { width:13px; height:13px; flex-shrink:0; }
+.topbar-btn-icon {
+  background:transparent; border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--gray);
+  padding:7px; cursor:pointer; display:flex; align-items:center;
+  transition:border-color .2s, color .2s;
+}
+.topbar-btn-icon:hover { border-color:var(--border2); color:var(--white); }
+.topbar-btn-icon svg { width:15px; height:15px; display:block; }
+
+/* ═══ CONTENT WRAPPER ═══ */
+.content { max-width:1160px; margin:0 auto; padding:32px 28px 60px; }
+
+/* ═══ PAGE HEADER ═══ */
+.page-header {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.page-title { font-size:24px; font-weight:800; letter-spacing:-.5px; }
+.page-sub { font-size:13px; color:var(--gray); margin-top:4px; }
+.last-updated { font-size:11px; color:var(--gray); letter-spacing:.5px; }
+
+/* ═══ STATS ═══ */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+@media(max-width:700px){ .stats{ grid-template-columns:repeat(2,1fr); } }
+.stat-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:22px 20px 18px; position:relative; overflow:hidden;
+}
+.stat-card.accent-blue  { border-color:rgba(139,26,26,.28);  background:linear-gradient(145deg,var(--card),rgba(139,26,26,.07)); }
+.stat-card.accent-green { border-color:rgba(34,197,94,.24);   background:linear-gradient(145deg,var(--card),rgba(34,197,94,.07)); }
+.stat-card.accent-purple{ border-color:rgba(139,92,246,.24);  background:linear-gradient(145deg,var(--card),rgba(139,92,246,.07)); }
+.stat-card.accent-yellow{ border-color:rgba(245,158,11,.24);  background:linear-gradient(145deg,var(--card),rgba(245,158,11,.07)); }
+.stat-label { font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray); margin-bottom:10px; }
+.stat-value { font-size:32px; font-weight:900; letter-spacing:-1.5px; line-height:1; color:var(--white); }
+.stat-card.accent-blue   .stat-value { color:var(--blue-lite); }
+.stat-card.accent-green  .stat-value { color:var(--green); }
+.stat-card.accent-purple .stat-value { color:#c4b5fd; }
+.stat-card.accent-yellow .stat-value { color:#fcd34d; }
+.stat-sub { font-size:11px; color:var(--gray); margin-top:6px; }
+.stat-value.skel {
+  background:linear-gradient(90deg,var(--surface2) 25%,var(--muted) 50%,var(--surface2) 75%);
+  background-size:200% 100%; animation:shimmer 1.4s infinite;
+  border-radius:6px; height:32px; width:80px; color:transparent;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* ═══ CONTROLS ═══ */
+.controls {
+  display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap;
+}
+.search-wrap { position:relative; flex:1; min-width:220px; }
+.search-wrap svg {
+  position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  width:15px; height:15px; color:var(--gray); pointer-events:none;
+}
+.search-input {
+  width:100%; padding:9px 12px 9px 36px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--white);
+  font-family:'Inter',sans-serif; font-size:13px; outline:none;
+  transition:border-color .2s;
+}
+.search-input:focus { border-color:rgba(139,26,26,.4); }
+.search-input::placeholder { color:var(--muted); }
+.filter-pills { display:flex; gap:6px; flex-wrap:wrap; }
+.pill {
+  padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600;
+  background:transparent; border:1px solid var(--border); color:var(--gray);
+  cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.pill:hover { border-color:var(--border2); color:var(--white); }
+.pill.active { background:var(--blue-dim); border-color:rgba(139,26,26,.4); color:var(--blue-lite); }
+.pill .count {
+  display:inline-flex; align-items:center; justify-content:center;
+  margin-left:6px; min-width:18px; height:18px; padding:0 5px;
+  background:rgba(255,255,255,.08); border-radius:10px;
+  font-size:10px; font-weight:700;
+}
+.sort-select {
+  padding:8px 28px 8px 12px; background:var(--surface2);
+  border:1px solid var(--border); border-radius:var(--radius-sm);
+  color:var(--white); font-family:'Inter',sans-serif; font-size:12px;
+  outline:none; cursor:pointer;
+  padding-right:28px;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 10px center;
+  -webkit-appearance:none; appearance:none;
+}
+
+/* ═══ CUSTOMER LIST ═══ */
+.customer-list { display:flex; flex-direction:column; gap:2px; }
+
+.customer-row {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+  transition:border-color .15s;
+}
+.customer-row:hover { border-color:#2a2a2a; }
+.customer-row.expanded { border-color:#222; }
+
+.customer-main {
+  display:grid;
+  grid-template-columns: 52px 1fr 140px 120px 120px 100px 90px;
+  align-items:center; gap:12px;
+  padding:14px 18px; cursor:pointer;
+  transition:background .15s;
+}
+.customer-main:hover { background:rgba(255,255,255,.02); }
+@media(max-width:900px){
+  .customer-main { grid-template-columns: 44px 1fr 100px 80px; }
+  .hide-mobile { display:none; }
+}
+
+/* Avatar */
+.avatar {
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:#fff; flex-shrink:0;
+  letter-spacing:-.3px;
+}
+
+/* Name + contact */
+.cust-name { font-size:14px; font-weight:600; color:var(--white); margin-bottom:3px; }
+.cust-contact { display:flex; gap:10px; flex-wrap:wrap; }
+.cust-contact a {
+  font-size:11px; color:var(--gray); text-decoration:none;
+  transition:color .15s;
+}
+.cust-contact a:hover { color:var(--blue-lite); }
+
+/* Meta columns */
+.cust-meta { font-size:13px; color:var(--white); font-weight:500; }
+.cust-meta-sub { font-size:11px; color:var(--gray); margin-top:2px; }
+
+/* Badge */
+.cust-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; border-radius:12px;
+  font-size:11px; font-weight:700; letter-spacing:.3px;
+}
+.badge-returning { background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.25); color:#86efac; }
+.badge-new       { background:rgba(139,26,26,.1); border:1px solid rgba(139,26,26,.25); color:var(--blue-lite); }
+
+/* Chevron */
+.cust-chevron {
+  display:flex; justify-content:flex-end; color:var(--muted);
+  transition:transform .25s, color .15s;
+}
+.customer-row.expanded .cust-chevron { transform:rotate(180deg); color:var(--gray); }
+
+/* ═══ EXPANDED HISTORY ═══ */
+.customer-history {
+  max-height:0; overflow:hidden;
+  transition:max-height .3s cubic-bezier(.4,0,.2,1);
+  border-top:0 solid var(--border);
+}
+.customer-row.expanded .customer-history {
+  max-height:600px;
+  border-top:1px solid var(--border);
+}
+.history-inner { padding:16px 18px 20px; }
+.history-label {
+  font-size:10px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:14px;
+}
+.booking-timeline { display:flex; flex-direction:column; gap:10px; }
+.booking-entry {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:12px 14px;
+  background:var(--surface2); border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+}
+.booking-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px;
+}
+.dot-upcoming { background:var(--blue); box-shadow:0 0 6px rgba(139,26,26,.5); }
+.dot-past     { background:var(--muted); }
+.dot-today    { background:var(--green); box-shadow:0 0 6px rgba(34,197,94,.5); }
+.booking-info { flex:1; min-width:0; }
+.booking-service { font-size:13px; font-weight:600; color:var(--white); margin-bottom:3px; }
+.booking-detail { font-size:11px; color:var(--gray); line-height:1.6; }
+.booking-amount {
+  font-size:13px; font-weight:700; color:var(--green);
+  white-space:nowrap; margin-left:auto; padding-left:12px;
+}
+.booking-amount.no-price { color:var(--muted); font-weight:400; font-size:12px; }
+
+/* ═══ EMPTY / ERROR ═══ */
+.empty-state {
+  text-align:center; padding:72px 20px;
+  color:var(--gray);
+}
+.empty-icon {
+  width:52px; height:52px; border-radius:16px;
+  background:var(--surface2); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px; color:var(--muted);
+}
+.empty-title { font-size:15px; font-weight:600; color:var(--white); margin-bottom:8px; }
+.empty-sub { font-size:13px; line-height:1.6; max-width:320px; margin:0 auto; }
+.error-box {
+  background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.2);
+  border-radius:var(--radius); padding:20px 24px;
+  color:#fca5a5; font-size:13px; line-height:1.7; text-align:center;
+}
+
+/* ═══ NOTES AREA ═══ */
+.notes-wrap { margin-top:14px; }
+.notes-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.notes-input {
+  width:100%; padding:10px 14px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--white);
+  font-family:'Inter',sans-serif; font-size:13px; resize:vertical;
+  min-height:72px; outline:none; transition:border-color .2s;
+}
+.notes-input:focus { border-color:rgba(139,26,26,.35); }
+.notes-input::placeholder { color:var(--muted); }
+.notes-save {
+  margin-top:8px; padding:7px 16px;
+  background:var(--blue-dim); border:1px solid rgba(139,26,26,.3);
+  border-radius:var(--radius-sm); color:var(--blue-lite);
+  font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+  cursor:pointer; transition:background .2s;
+}
+.notes-save:hover { background:rgba(139,26,26,.22); }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position:fixed; bottom:28px; right:28px; z-index:10000;
+  padding:12px 18px; border-radius:10px;
+  background:var(--card); border:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; font-weight:500;
+  transform:translateY(12px) scale(.97); opacity:0;
+  transition:transform .25s, opacity .25s;
+  pointer-events:none;
+}
+.toast.show { transform:translateY(0) scale(1); opacity:1; }
+.toast-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.toast-success { border-color:rgba(34,197,94,.25); color:#86efac; }
+.toast-success .toast-dot { background:var(--green); }
+.toast-error   { border-color:rgba(239,68,68,.25);  color:#fca5a5; }
+.toast-error   .toast-dot { background:var(--red); }
+.toast-info    { border-color:rgba(139,26,26,.25);  color:var(--blue-lite); }
+.toast-info    .toast-dot { background:var(--blue); }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  text-align:center; padding:28px 40px;
+  font-size:11px; color:rgba(255,255,255,.18);
+  border-top:1px solid var(--border); letter-spacing:.5px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOCK SCREEN ═════════════════════════════════════════════ -->
+<div id="lock">
+  <div class="lock-glow"></div>
+  <div class="lock-box">
+    <div class="lock-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B1A1A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <div class="lock-title">MaxDriveDetail</div>
+    <div class="lock-sub">Customers — enter your dashboard key</div>
+    <input type="password" class="lock-input" id="lockInput" placeholder="Dashboard key" autocomplete="current-password">
+    <button class="lock-btn" id="lockBtn" onclick="tryUnlock()">Unlock</button>
+    <div class="lock-err" id="lockErr"></div>
+  </div>
+</div>
+
+<!-- ══ APP ══════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="topbar-logo">3<span>S</span></a>
+      <div class="topbar-divider"></div>
+      <span class="topbar-page">Customers</span>
+    </div>
+    <div class="topbar-right">
+      <a href="dashboard.html" class="topbar-nav-link">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/>
+          <rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/>
+        </svg>
+        Bookings
+      </a>
+      <button class="topbar-btn" onclick="exportCSV()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2v9M5 8l3 3 3-3M3 14h10"/>
+        </svg>
+        Export
+      </button>
+      <button class="topbar-btn-icon" onclick="lockDash()" title="Lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div>
+        <div class="page-title">Customers</div>
+        <div class="page-sub">All customers grouped by contact info · click a row to see booking history</div>
+      </div>
+      <div class="last-updated" id="lastUpdated">—</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Customers</div>
+        <div class="stat-value skel" id="statTotal">—</div>
+        <div class="stat-sub" id="statTotalSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Returning</div>
+        <div class="stat-value skel" id="statReturning">—</div>
+        <div class="stat-sub" id="statReturningSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-blue">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value skel" id="statRevenue">—</div>
+        <div class="stat-sub" id="statRevenueSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Avg per Customer</div>
+        <div class="stat-value skel" id="statAvg">—</div>
+        <div class="stat-sub" id="statAvgSub">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-wrap">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5L14 14"/>
+        </svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search name, phone, email…">
+      </div>
+      <div class="filter-pills">
+        <button class="pill active" data-filter="all"   onclick="setFilter('all')">All <span class="count" id="countAll">0</span></button>
+        <button class="pill"        data-filter="returning" onclick="setFilter('returning')">Returning <span class="count" id="countReturning">0</span></button>
+        <button class="pill"        data-filter="new"   onclick="setFilter('new')">New <span class="count" id="countNew">0</span></button>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="renderList()">
+        <option value="spend">Highest Spend</option>
+        <option value="bookings">Most Bookings</option>
+        <option value="recent">Most Recent</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </div>
+
+    <!-- Customer list -->
+    <div class="customer-list" id="customerList"></div>
+
+  </div><!-- /content -->
+
+  <div class="footer">MaxDriveDetail &nbsp;·&nbsp; CUSTOMERS &nbsp;·&nbsp; ADMIN ONLY</div>
+</div><!-- /app -->
+
+<script>
+/* ─── CONFIG ─────────────────────────────────────────────────── */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqGGGLx8-6MCl2o1uuDCcYN7XGilM8Z8LsYT7ZRNQbcJowBjqrYjo2kp9E2JPNcxBt/exec';
+const DASHBOARD_KEY   = '3sdetailing2026';
+const SESSION_KEY     = '3s_dash_v1';
+
+/* ─── XSS ESCAPE ─────────────────────────────────────────────── */
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+/* ─── AUTH ───────────────────────────────────────────────────── */
+const MAX_ATTEMPTS = 5, LOCKOUT_MS = 30000;
+let failedAttempts = 0, lockoutUntil = 0;
+
+function tryUnlock() {
+  const now = Date.now();
+  if (now < lockoutUntil) {
+    const secs = Math.ceil((lockoutUntil - now) / 1000);
+    document.getElementById('lockErr').textContent = `Too many attempts. Wait ${secs}s.`;
+    return;
+  }
+  const val = document.getElementById('lockInput').value.trim();
+  if (val === DASHBOARD_KEY) {
+    sessionStorage.setItem(SESSION_KEY, btoa(DASHBOARD_KEY));
+    showApp();
+  } else {
+    failedAttempts++;
+    const inp = document.getElementById('lockInput');
+    inp.classList.remove('shake');
+    void inp.offsetWidth;
+    inp.classList.add('shake');
+    if (failedAttempts >= MAX_ATTEMPTS) {
+      lockoutUntil = Date.now() + LOCKOUT_MS;
+      failedAttempts = 0;
+      document.getElementById('lockErr').textContent = 'Too many attempts. Locked for 30s.';
+      document.getElementById('lockBtn').disabled = true;
+      setTimeout(() => {
+        document.getElementById('lockBtn').disabled = false;
+        document.getElementById('lockErr').textContent = '';
+      }, LOCKOUT_MS);
+    } else {
+      document.getElementById('lockErr').textContent =
+        `Incorrect key. ${MAX_ATTEMPTS - failedAttempts} attempt${MAX_ATTEMPTS - failedAttempts === 1 ? '' : 's'} left.`;
+    }
+  }
+}
+
+function showApp() {
+  document.getElementById('lock').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadData();
+}
+
+function lockDash() {
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('lock').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('lockInput').value = '';
+  document.getElementById('lockErr').textContent = '';
+}
+
+document.getElementById('lockInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') tryUnlock();
+});
+
+// Auto-unlock if session active
+if (sessionStorage.getItem(SESSION_KEY) === btoa(DASHBOARD_KEY)) showApp();
+
+/* ─── DATA ───────────────────────────────────────────────────── */
+let allCustomers = [];   // processed customer objects
+let activeFilter = 'all';
+
+async function loadData() {
+  try {
+    const url  = APPS_SCRIPT_URL + '?key=' + encodeURIComponent(DASHBOARD_KEY) + '&t=' + Date.now();
+    const resp = await fetch(url);
+    const json = await resp.json();
+    if (!json.ok) throw new Error(json.error || 'Bad response');
+    processBookings(json.bookings || []);
+    updateLastRefreshed();
+  } catch(err) {
+    document.getElementById('customerList').innerHTML = `
+      <div class="error-box">
+        Could not load bookings: ${esc(err.message)}<br>
+        <small style="opacity:.7">Make sure apps-script.js is deployed and your Apps Script URL is correct.</small>
+      </div>`;
+    setSkelDone();
+  }
+}
+
+/* ─── PROCESS BOOKINGS → CUSTOMERS ──────────────────────────── */
+function processBookings(bookings) {
+  const map = new Map(); // key → customer object
+
+  bookings.forEach(b => {
+    const name  = (b['Name']  || '').trim();
+    const email = (b['Email'] || '').trim().toLowerCase();
+    const phone = (b['Phone'] || '').trim().replace(/\D/g,'');
+    if (!name && !email && !phone) return;
+
+    // Build a de-dupe key: prefer email, fallback to phone, fallback to name
+    const key = email || phone || name.toLowerCase();
+
+    if (!map.has(key)) {
+      map.set(key, {
+        key, name, email,
+        phone: b['Phone'] || '',
+        bookings: [],
+        totalSpend: 0,
+        firstSeen: null,
+        lastSeen: null,
+      });
+    }
+    const cust = map.get(key);
+    // Always keep most complete name
+    if (name.length > cust.name.length) cust.name = name;
+    if (!cust.email && email) { cust.email = email; }
+    if (!cust.phone && b['Phone']) { cust.phone = b['Phone']; }
+
+    // Parse date
+    const dateObj = parseBookingDate(b);
+
+    // Parse spend
+    const spend = parseAmt(b['Total']);
+
+    cust.bookings.push({
+      service:  b['Service']  || '—',
+      vehicle:  b['Vehicle']  || '',
+      date:     b['Date']     || '',
+      time:     b['Time']     || '',
+      total:    b['Total']    || '',
+      size:     b['Size']     || '',
+      cond:     b['Condition']|| '',
+      addons:   b['Add-ons']  || '',
+      dateObj,
+      spend,
+    });
+
+    cust.totalSpend += spend;
+    if (dateObj) {
+      if (!cust.firstSeen || dateObj < cust.firstSeen) cust.firstSeen = dateObj;
+      if (!cust.lastSeen  || dateObj > cust.lastSeen)  cust.lastSeen  = dateObj;
+    }
+  });
+
+  // Sort each customer's bookings newest first
+  map.forEach(c => {
+    c.bookings.sort((a, b) => {
+      if (!a.dateObj && !b.dateObj) return 0;
+      if (!a.dateObj) return 1;
+      if (!b.dateObj) return -1;
+      return b.dateObj - a.dateObj;
+    });
+    c.returning = c.bookings.length > 1;
+  });
+
+  allCustomers = Array.from(map.values());
+  updateStats();
+  updateFilterCounts();
+  renderList();
+}
+
+/* ─── STATS ─────────────────────────────────────────────────── */
+function updateStats() {
+  const total     = allCustomers.length;
+  const returning = allCustomers.filter(c => c.returning).length;
+  const revenue   = allCustomers.reduce((s, c) => s + c.totalSpend, 0);
+  const avg       = total ? Math.round(revenue / total) : 0;
+
+  setStatDone('statTotal',     total,            total ? `${allCustomers.filter(c=>c.bookings.length===1).length} one-time · ${returning} returning` : 'No customers yet');
+  setStatDone('statReturning', returning,        returning ? `${Math.round(returning/total*100)}% of customers` : 'None yet');
+  setStatDone('statRevenue',   '$' + revenue,    revenue ? `Across ${total} customer${total===1?'':'s'}` : '');
+  setStatDone('statAvg',       avg ? '$' + avg : '—', avg ? 'per customer lifetime' : '');
+}
+
+function setStatDone(id, val, sub) {
+  const el = document.getElementById(id);
+  el.classList.remove('skel');
+  el.textContent = val;
+  const sub_el = el.nextElementSibling;
+  if (sub_el) sub_el.textContent = sub || '';
+}
+
+function setSkelDone() {
+  ['statTotal','statReturning','statRevenue','statAvg'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('skel');
+    el.textContent = '—';
+  });
+}
+
+/* ─── FILTER / SORT ──────────────────────────────────────────── */
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.filter === f));
+  renderList();
+}
+
+function updateFilterCounts() {
+  document.getElementById('countAll').textContent       = allCustomers.length;
+  document.getElementById('countReturning').textContent = allCustomers.filter(c => c.returning).length;
+  document.getElementById('countNew').textContent       = allCustomers.filter(c => !c.returning).length;
+}
+
+function getVisible() {
+  const q    = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+
+  let list = allCustomers.filter(c => {
+    if (activeFilter === 'returning' && !c.returning) return false;
+    if (activeFilter === 'new'       &&  c.returning) return false;
+    if (q) {
+      const hay = (c.name + ' ' + c.email + ' ' + c.phone).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  list.sort((a, b) => {
+    if (sort === 'spend')    return b.totalSpend - a.totalSpend;
+    if (sort === 'bookings') return b.bookings.length - a.bookings.length;
+    if (sort === 'recent') {
+      if (!a.lastSeen && !b.lastSeen) return 0;
+      if (!a.lastSeen) return 1;
+      if (!b.lastSeen) return -1;
+      return b.lastSeen - a.lastSeen;
+    }
+    if (sort === 'name') return a.name.localeCompare(b.name);
+    return 0;
+  });
+
+  return list;
+}
+
+/* ─── RENDER ─────────────────────────────────────────────────── */
+function renderList() {
+  const list = getVisible();
+  const el   = document.getElementById('customerList');
+
+  if (list.length === 0) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="empty-title">${allCustomers.length === 0 ? 'No customers yet' : 'No matches'}</div>
+        <div class="empty-sub">${allCustomers.length === 0
+          ? 'Customers will appear here once bookings are submitted and logged to your Sheet.'
+          : 'Try a different search term or filter.'}</div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = list.map((c, i) => buildCustomerRow(c, i)).join('');
+
+  // Restore notes from localStorage
+  list.forEach(c => {
+    const ta = document.getElementById('notes-' + c.key);
+    if (ta) ta.value = localStorage.getItem('3s_notes_' + c.key) || '';
+  });
+}
+
+function buildCustomerRow(c, i) {
+  const initials = c.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) || '?';
+  const color    = avatarColor(c.name);
+  const badge    = c.returning
+    ? `<span class="cust-badge badge-returning">Returning</span>`
+    : `<span class="cust-badge badge-new">New</span>`;
+  const lastDate = c.lastSeen  ? fmtShortDate(c.lastSeen)  : '—';
+  const firstDate= c.firstSeen ? fmtShortDate(c.firstSeen) : '—';
+  const spend    = c.totalSpend ? '$' + c.totalSpend : '—';
+  const bookingCount = c.bookings.length;
+
+  const contactLinks = [
+    c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '',
+    c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '',
+  ].filter(Boolean).join('');
+
+  const history = c.bookings.map(b => {
+    const isUpcoming = b.dateObj && b.dateObj > new Date();
+    const isToday    = b.dateObj && isSameDay(b.dateObj, new Date());
+    const dotClass   = isToday ? 'dot-today' : isUpcoming ? 'dot-upcoming' : 'dot-past';
+    const details    = [
+      b.date ? b.date : '',
+      b.time || '',
+      b.vehicle || '',
+      b.size ? b.size + ' size' : '',
+      b.addons && b.addons !== 'None' ? b.addons : '',
+    ].filter(Boolean).join(' · ');
+    const amountHtml = b.spend
+      ? `<div class="booking-amount">$${b.spend}</div>`
+      : `<div class="booking-amount no-price">—</div>`;
+    return `
+      <div class="booking-entry">
+        <div class="booking-dot ${dotClass}"></div>
+        <div class="booking-info">
+          <div class="booking-service">${esc(b.service)}</div>
+          <div class="booking-detail">${esc(details)}</div>
+        </div>
+        ${amountHtml}
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="customer-row" id="crow-${i}">
+      <div class="customer-main" onclick="toggleRow(${i})">
+        <div class="avatar" style="background:${color};">${esc(initials)}</div>
+        <div>
+          <div class="cust-name">${esc(c.name || 'Unknown')}</div>
+          <div class="cust-contact">${contactLinks || '<span style="font-size:11px;color:var(--muted)">No contact info</span>'}</div>
+        </div>
+        <div class="hide-mobile">
+          <div class="cust-meta">${bookingCount} booking${bookingCount === 1 ? '' : 's'}</div>
+          <div class="cust-meta-sub">since ${firstDate}</div>
+        </div>
+        <div class="hide-mobile">
+          <div class="cust-meta" style="color:var(--green);">${spend}</div>
+          <div class="cust-meta-sub">lifetime spend</div>
+        </div>
+        <div class="hide-mobile">
+          <div class="cust-meta">${lastDate}</div>
+          <div class="cust-meta-sub">last service</div>
+        </div>
+        <div class="hide-mobile">${badge}</div>
+        <div class="cust-chevron">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 5l5 5 5-5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="customer-history">
+        <div class="history-inner">
+          <div class="history-label">Booking History</div>
+          <div class="booking-timeline">${history || '<div style="font-size:13px;color:var(--muted)">No bookings recorded.</div>'}</div>
+          <div class="notes-wrap">
+            <div class="notes-label">Notes</div>
+            <textarea class="notes-input" id="notes-${esc(c.key)}" placeholder="Add private notes about this customer…" onblur="saveNote('${esc(c.key)}')"></textarea>
+            <button class="notes-save" onclick="saveNote('${esc(c.key)}')">Save Note</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleRow(i) {
+  const row = document.getElementById('crow-' + i);
+  row.classList.toggle('expanded');
+}
+
+/* ─── NOTES (localStorage) ───────────────────────────────────── */
+function saveNote(key) {
+  const ta = document.getElementById('notes-' + key);
+  if (!ta) return;
+  localStorage.setItem('3s_notes_' + key, ta.value);
+  showToast('Note saved', 'success');
+}
+
+/* ─── EXPORT CSV ─────────────────────────────────────────────── */
+function exportCSV() {
+  const list = getVisible();
+  if (!list.length) { showToast('No customers to export', 'info'); return; }
+  const header = ['Name','Email','Phone','Bookings','Total Spend','Last Service','First Service','Status'].join(',');
+  const rows   = list.map(c => [
+    '"' + c.name.replace(/"/g,'""') + '"',
+    '"' + c.email.replace(/"/g,'""') + '"',
+    '"' + c.phone.replace(/"/g,'""') + '"',
+    c.bookings.length,
+    c.totalSpend,
+    c.lastSeen  ? fmtShortDate(c.lastSeen)  : '',
+    c.firstSeen ? fmtShortDate(c.firstSeen) : '',
+    c.returning ? 'Returning' : 'New',
+  ].join(','));
+  const csv  = [header, ...rows].join('\r\n');
+  const a    = document.createElement('a');
+  a.href     = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = '3s-detailing-customers-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  showToast('Exported ' + list.length + ' customers', 'success');
+}
+
+/* ─── TOAST ──────────────────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg, type='info') {
+  let t = document.getElementById('toast-el');
+  if (t) { clearTimeout(toastTimer); t.remove(); }
+  t = document.createElement('div');
+  t.id = 'toast-el';
+  t.className = 'toast toast-' + type;
+  t.innerHTML = `<span class="toast-dot"></span>${esc(msg)}`;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  toastTimer = setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t && t.remove(), 300);
+  }, 2800);
+}
+
+/* ─── HELPERS ────────────────────────────────────────────────── */
+function parseBookingDate(b) {
+  try {
+    const raw = (b['Date'] || '').trim();
+    if (!raw) return null;
+    const clean = raw.replace(/^[A-Za-z]+,\s*/, '');
+    const d = new Date(clean);
+    return isNaN(d) ? null : d;
+  } catch(e) { return null; }
+}
+
+function parseAmt(s) {
+  return parseFloat((s || '').replace(/[^0-9.]/g,'')) || 0;
+}
+
+function fmtShortDate(d) {
+  if (!d) return '—';
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function isSameDay(a, b) {
+  return a.getFullYear() === b.getFullYear()
+      && a.getMonth()    === b.getMonth()
+      && a.getDate()     === b.getDate();
+}
+
+function updateLastRefreshed() {
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent =
+    'Updated ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+}
+
+// Avatar color — deterministic from name
+const AVATAR_COLORS = ['#8B1A1A','#8b5cf6','#0ea5e9','#10b981','#f59e0b','#ec4899','#14b8a6','#6366f1'];
+function avatarColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+}
+
+/* ─── LIVE SEARCH ────────────────────────────────────────────── */
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(renderList, 140);
+});
+</script>
+</body>
+</html>

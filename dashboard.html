@@ -1,0 +1,1155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaxDriveDetail — Bookings</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS (matches site design system) ═══ */
+:root {
+  --bg:        #1A1A1A;
+  --bg2:       #222222;
+  --surface:   #2A2A2A;
+  --surface2:  #333333;
+  --card:      #2A2A2A;
+  --border:    #333333;
+  --border2:   rgba(255,255,255,.1);
+  --white:     #f0f0f0;
+  --gray:      #888;
+  --muted:     #3d3d3d;
+  --blue:      #8B1A1A;
+  --blue-mid:  #C0392B;
+  --blue-lite: #C0392B;
+  --blue-dim:  rgba(139,26,26,.14);
+  --green:     #22c55e;
+  --green-dim: rgba(34,197,94,.12);
+  --yellow:    #f59e0b;
+  --red:       #ef4444;
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* Grain overlay — matches other pages */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.028; pointer-events:none; z-index:9999;
+}
+
+/* ═══ LOCK SCREEN ═══ */
+#lock {
+  position:fixed; inset:0; z-index:500;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+}
+.lock-glow {
+  position:absolute; top:-120px; left:50%; transform:translateX(-50%);
+  width:600px; height:600px; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(139,26,26,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.lock-box {
+  position:relative; z-index:1;
+  width:360px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:44px 36px 36px;
+  text-align:center;
+}
+.lock-icon {
+  width:48px; height:48px; border-radius:14px;
+  background:var(--blue-dim); border:1px solid rgba(139,26,26,.3);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 24px;
+}
+.lock-icon svg { width:22px; height:22px; }
+.lock-brand {
+  font-size:10px; font-weight:800; letter-spacing:3.5px;
+  text-transform:uppercase; color:var(--blue-lite); margin-bottom:10px;
+}
+.lock-box h2 {
+  font-size:22px; font-weight:800; letter-spacing:-.5px;
+  margin-bottom:8px;
+}
+.lock-box p {
+  font-size:13px; color:var(--gray); margin-bottom:28px; line-height:1.6;
+}
+.lock-label {
+  font-size:10px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gray);
+  text-align:left; margin-bottom:8px; display:block;
+}
+.lock-input {
+  width:100%; padding:13px 16px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:9px; color:var(--white);
+  font-size:15px; font-family:inherit; letter-spacing:3px;
+  outline:none; margin-bottom:12px;
+  transition:border-color .2s, box-shadow .2s;
+}
+.lock-input:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(139,26,26,.12);
+}
+.lock-input.shake { animation:shake .4s ease; }
+.lock-btn {
+  width:100%; padding:14px;
+  background:linear-gradient(160deg,#2172ff,#1055e0);
+  border:none; border-radius:9px; color:#fff;
+  font-family:inherit; font-size:11px; font-weight:800;
+  letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 2px 8px rgba(139,26,26,.25);
+  transition:transform .15s, box-shadow .15s;
+}
+.lock-btn:hover:not(:disabled) {
+  transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 8px 24px rgba(139,26,26,.4);
+}
+.lock-btn:disabled { opacity:.5; cursor:not-allowed; }
+.lock-err {
+  font-size:12px; color:var(--red); margin-top:12px;
+  min-height:18px; line-height:1.4;
+  transition:opacity .2s;
+}
+.lock-attempts {
+  font-size:11px; color:var(--gray); margin-top:20px;
+  letter-spacing:.5px;
+}
+@keyframes shake {
+  0%,100%{ transform:translateX(0); }
+  20%,60%{ transform:translateX(-7px); }
+  40%,80%{ transform:translateX(7px); }
+}
+
+/* ═══ MAIN APP ═══ */
+#app { display:none; }
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  height:62px;
+  background:rgba(26,26,26,.92); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.topbar-left { display:flex; align-items:center; gap:16px; }
+.topbar-wordmark {
+  display:flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:800; letter-spacing:2.5px;
+  text-transform:uppercase; text-decoration:none; color:var(--white);
+}
+.topbar-wordmark .dot {
+  width:8px; height:8px; border-radius:50%; background:var(--blue);
+  box-shadow:0 0 8px rgba(139,26,26,.7);
+}
+.topbar-divider {
+  width:1px; height:18px; background:var(--border);
+}
+.topbar-page {
+  font-size:12px; font-weight:600; color:var(--gray); letter-spacing:.5px;
+}
+.topbar-right { display:flex; align-items:center; gap:10px; }
+
+/* Status pill */
+.status-pill {
+  display:flex; align-items:center; gap:7px;
+  padding:5px 11px; border-radius:20px;
+  border:1px solid var(--border);
+  font-size:11px; font-weight:600; color:var(--gray);
+  transition:all .2s;
+}
+.status-pill .dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--green); box-shadow:0 0 5px var(--green);
+  animation:blink 2.4s infinite;
+}
+.status-pill.syncing .dot { background:var(--yellow); box-shadow:0 0 5px var(--yellow); }
+.status-pill.err     .dot { background:var(--red);    box-shadow:0 0 5px var(--red); animation:none; }
+.status-pill.syncing { color:var(--yellow); border-color:rgba(245,158,11,.2); }
+.status-pill.err     { color:var(--red);    border-color:rgba(239,68,68,.2);  }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+.topbar-btn {
+  display:flex; align-items:center; gap:7px;
+  padding:7px 14px;
+  background:transparent; border:1px solid var(--border);
+  border-radius:7px; color:var(--gray);
+  font-family:inherit; font-size:11px; font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.topbar-btn:hover { border-color:var(--border2); color:var(--white); }
+.topbar-btn.blue:hover  { border-color:rgba(139,26,26,.5); color:var(--blue-lite); background:var(--blue-dim); }
+.topbar-nav-link {
+  display:flex; align-items:center; gap:6px;
+  padding:6px 12px; border-radius:var(--radius-sm);
+  font-size:12px; font-weight:500; color:var(--gray);
+  text-decoration:none; border:1px solid transparent;
+  transition:color .2s, border-color .2s, background .2s;
+}
+.topbar-nav-link:hover { color:var(--white); border-color:var(--border); background:var(--surface2); }
+.topbar-btn svg { width:13px; height:13px; flex-shrink:0; }
+.topbar-btn-icon {
+  background:transparent; border:1px solid var(--border);
+  border-radius:7px; color:var(--gray); padding:7px 10px;
+  cursor:pointer; transition:border-color .2s, color .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.topbar-btn-icon:hover { border-color:var(--border2); color:var(--white); }
+.topbar-btn-icon svg { width:15px; height:15px; }
+
+/* ═══ CONTENT ═══ */
+.content { max-width:1320px; margin:0 auto; padding:36px 40px 60px; }
+
+/* ═══ PAGE HEADER ═══ */
+.page-header {
+  margin-bottom:32px;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+}
+.page-header-text { }
+.page-eyebrow {
+  font-size:10px; font-weight:700; letter-spacing:4px;
+  text-transform:uppercase; color:var(--blue-lite); margin-bottom:10px;
+}
+.page-title {
+  font-size:clamp(28px,3.5vw,42px); font-weight:900;
+  letter-spacing:-1.5px; line-height:.95;
+  text-transform:uppercase;
+}
+.page-sub {
+  font-size:13px; color:var(--gray); margin-top:10px; line-height:1.7;
+}
+.last-updated {
+  font-size:11px; color:var(--gray); letter-spacing:.5px;
+  white-space:nowrap;
+}
+
+/* ═══ STATS ═══ */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+.stat-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:24px 22px 20px;
+  position:relative; overflow:hidden;
+}
+.stat-card::before {
+  content:''; position:absolute; inset:0;
+  background:inherit; border-radius:inherit;
+}
+.stat-card.accent-blue {
+  border-color:rgba(139,26,26,.28);
+  background:linear-gradient(145deg,var(--card),rgba(139,26,26,.07));
+}
+.stat-card.accent-green {
+  border-color:rgba(34,197,94,.24);
+  background:linear-gradient(145deg,var(--card),rgba(34,197,94,.07));
+}
+.stat-card.accent-purple {
+  border-color:rgba(139,92,246,.24);
+  background:linear-gradient(145deg,var(--card),rgba(139,92,246,.07));
+}
+.stat-label {
+  font-size:10px; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--gray); margin-bottom:12px;
+}
+.stat-value {
+  font-size:36px; font-weight:900; letter-spacing:-1.5px; line-height:1;
+  color:var(--white); position:relative; z-index:1;
+}
+.stat-card.accent-blue  .stat-value { color:var(--blue-lite); }
+.stat-card.accent-green .stat-value { color:var(--green); }
+.stat-card.accent-purple .stat-value { color:#c4b5fd; }
+.stat-sub {
+  font-size:11px; color:var(--gray); margin-top:8px; line-height:1.5;
+}
+/* Skeleton loading */
+.stat-value.skel {
+  background:linear-gradient(90deg,var(--surface2) 25%,var(--muted) 50%,var(--surface2) 75%);
+  background-size:200% 100%; animation:shimmer 1.4s infinite;
+  border-radius:6px; height:36px; width:80px; color:transparent;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* ═══ CONTROLS BAR ═══ */
+.controls {
+  display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap;
+}
+.search-wrap { position:relative; flex:1; min-width:220px; }
+.search-wrap svg {
+  position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  width:15px; height:15px; color:var(--gray); pointer-events:none;
+}
+.search-input {
+  width:100%; padding:10px 14px 10px 36px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; color:var(--white); font-family:inherit; font-size:13px;
+  outline:none; transition:border-color .2s, box-shadow .2s;
+}
+.search-input:focus {
+  border-color:rgba(139,26,26,.5);
+  box-shadow:0 0 0 3px rgba(139,26,26,.08);
+}
+.search-input::placeholder { color:var(--gray); }
+.filter-pills { display:flex; gap:6px; }
+.filter-pill {
+  padding:9px 15px; background:var(--card);
+  border:1px solid var(--border); border-radius:8px;
+  color:var(--gray); font-family:inherit; font-size:11px; font-weight:700;
+  letter-spacing:.5px; cursor:pointer; white-space:nowrap; transition:all .18s;
+}
+.filter-pill:hover { color:var(--white); border-color:var(--border2); }
+.filter-pill.active {
+  background:var(--blue-dim); border-color:rgba(139,26,26,.4);
+  color:var(--white);
+}
+.filter-pill .count {
+  font-size:10px; opacity:.6; margin-left:5px;
+}
+.sort-select {
+  padding:9px 14px; background:var(--card);
+  border:1px solid var(--border); border-radius:8px;
+  color:var(--white); font-family:inherit; font-size:11px; font-weight:600;
+  outline:none; cursor:pointer; -webkit-appearance:none; appearance:none;
+  padding-right:28px;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 10px center;
+}
+.sort-select option { background:#1a1a1a; }
+
+/* ═══ RESULTS COUNT ═══ */
+.results-meta {
+  font-size:11px; color:var(--gray); margin-bottom:12px;
+  letter-spacing:.3px;
+}
+.results-meta strong { color:var(--white); }
+
+/* ═══ TABLE WRAP ═══ */
+.table-wrap {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+}
+table { width:100%; border-collapse:collapse; }
+thead th {
+  padding:12px 16px; font-size:10px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gray);
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  text-align:left; white-space:nowrap; user-select:none;
+}
+
+/* ── DATA ROWS ── */
+.data-row {
+  border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background .15s;
+}
+.data-row:last-of-type { border-bottom:none; }
+.data-row:hover { background:rgba(255,255,255,.025); }
+.data-row.is-today  { border-left:2px solid var(--blue); }
+.data-row.is-upcoming { border-left:2px solid var(--green); }
+.data-row.is-past   { opacity:.75; }
+.data-row.open      { background:rgba(139,26,26,.04); border-left:2px solid var(--blue); }
+td {
+  padding:15px 16px; font-size:13px; vertical-align:middle;
+}
+.td-date   { font-weight:700; white-space:nowrap; font-size:13px; }
+.td-dow    { font-weight:500; color:var(--gray); font-size:11px; margin-bottom:2px; }
+.td-time   { color:var(--gray); font-size:11px; white-space:nowrap; margin-top:2px; }
+.td-name   { font-weight:700; }
+.td-phone  { color:var(--gray); font-size:11px; margin-top:2px; }
+.td-service { font-weight:600; }
+.td-vehicle { color:var(--gray); font-size:11px; margin-top:2px; }
+.td-total  { font-weight:800; color:var(--green); white-space:nowrap; font-size:14px; }
+.td-dep    { color:var(--gray); font-size:11px; margin-top:2px; }
+.td-chev   {
+  text-align:right; padding-right:18px;
+  transition:transform .22s; color:var(--gray);
+}
+.data-row.open .td-chev { transform:rotate(180deg); }
+
+/* status dot in date col */
+.status-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:9px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; margin-top:4px;
+}
+.status-badge .sdot {
+  width:5px; height:5px; border-radius:50%; flex-shrink:0;
+}
+.sbg-upcoming .sdot { background:var(--green); }
+.sbg-upcoming { color:var(--green); }
+.sbg-today    .sdot { background:var(--blue-lite); }
+.sbg-today    { color:var(--blue-lite); }
+.sbg-past     { color:var(--gray); }
+.sbg-past     .sdot { background:var(--gray); }
+
+/* ── BADGE ── */
+.badge {
+  display:inline-block; padding:3px 9px; border-radius:20px;
+  font-size:10px; font-weight:700; letter-spacing:.5px;
+}
+.badge-blue   { background:var(--blue-dim);  color:var(--blue-lite); }
+.badge-green  { background:var(--green-dim); color:#86efac; }
+.badge-gray   { background:rgba(255,255,255,.06); color:var(--gray); }
+
+/* ── EXPAND ROW ── */
+.expand-row { display:none; }
+.expand-row.open { display:table-row; }
+.expand-cell {
+  padding:0 18px; background:rgba(139,26,26,.03);
+  border-bottom:1px solid var(--border);
+}
+.expand-inner {
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .28s ease, padding .28s ease;
+  padding-top:0; padding-bottom:0;
+}
+.expand-row.open .expand-inner {
+  max-height:700px;
+  padding-top:20px; padding-bottom:24px;
+}
+.expand-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
+  gap:18px 24px;
+}
+.expand-item {}
+.expand-item label {
+  display:block; font-size:9px; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--gray); margin-bottom:5px;
+}
+.expand-item span { font-size:13px; color:var(--white); line-height:1.5; }
+.expand-item a { color:var(--blue-lite); text-decoration:none; }
+.expand-item a:hover { text-decoration:underline; }
+.expand-notes {
+  margin-top:18px; padding:14px 16px;
+  background:rgba(255,255,255,.03); border:1px solid var(--border);
+  border-radius:8px; font-size:13px; color:var(--gray); line-height:1.65;
+}
+.expand-notes strong {
+  display:block; font-size:9px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--gray); margin-bottom:6px;
+}
+.expand-divider {
+  height:1px; background:var(--border); margin:18px 0;
+}
+
+/* ═══ EMPTY / ERROR ═══ */
+.empty {
+  padding:80px 20px; text-align:center;
+}
+.empty-icon {
+  width:52px; height:52px; border-radius:14px;
+  background:var(--surface2); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px;
+}
+.empty-icon svg { width:22px; height:22px; color:var(--gray); }
+.empty h3 { font-size:16px; font-weight:700; letter-spacing:-.3px; margin-bottom:8px; }
+.empty p  { font-size:13px; color:var(--gray); line-height:1.7; max-width:340px; margin:0 auto; }
+.empty p + p { margin-top:6px; }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position:fixed; bottom:28px; right:28px; z-index:10000;
+  padding:12px 18px; border-radius:10px;
+  background:var(--card); border:1px solid var(--border);
+  font-size:13px; font-weight:600;
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  display:flex; align-items:center; gap:9px;
+  transform:translateY(20px) scale(.96); opacity:0;
+  transition:all .22s cubic-bezier(.34,1.4,.64,1);
+  pointer-events:none;
+}
+.toast.show { transform:translateY(0) scale(1); opacity:1; }
+.toast-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.toast-success { border-color:rgba(34,197,94,.25); color:#86efac; }
+.toast-success .toast-dot { background:var(--green); }
+.toast-error   { border-color:rgba(239,68,68,.25);  color:#fca5a5; }
+.toast-error   .toast-dot { background:var(--red);   }
+.toast-info    { border-color:rgba(139,26,26,.25);  color:var(--blue-lite); }
+.toast-info    .toast-dot { background:var(--blue);  }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  text-align:center; padding:28px 40px;
+  font-size:11px; color:rgba(255,255,255,.18);
+  border-top:1px solid var(--border); letter-spacing:.5px;
+}
+
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width:1024px) {
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .content { padding:28px 24px 48px; }
+  .topbar { padding:0 24px; }
+}
+@media (max-width:768px) {
+  .content { padding:20px 16px 40px; }
+  .topbar  { padding:0 16px; }
+  .col-sm-hide { display:none; }
+  .stats { grid-template-columns:1fr 1fr; gap:10px; }
+  .stat-value { font-size:28px; }
+  .page-header { flex-direction:column; align-items:flex-start; }
+}
+@media (max-width:560px) {
+  .col-xs-hide { display:none; }
+  .filter-pills { flex-wrap:wrap; }
+  .topbar-wordmark span { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOCK SCREEN ═══ -->
+<div id="lock">
+  <div class="lock-glow"></div>
+  <div class="lock-box">
+    <div class="lock-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue-lite)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <div class="lock-brand">MaxDriveDetail</div>
+    <h2>Bookings Dashboard</h2>
+    <p>Admin access only. Enter your key to continue.</p>
+    <label class="lock-label" for="keyInput">Access Key</label>
+    <input type="password" class="lock-input" id="keyInput"
+           placeholder="Enter key..." autocomplete="off" spellcheck="false">
+    <button class="lock-btn" id="lockBtn" onclick="unlock()">Unlock Dashboard</button>
+    <div class="lock-err" id="lockErr"></div>
+    <div class="lock-attempts" id="lockAttempts"></div>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="topbar-wordmark" href="index.html">
+        <span class="dot"></span>
+        <span>MaxDriveDetail</span>
+      </a>
+      <div class="topbar-divider"></div>
+      <span class="topbar-page">Bookings</span>
+    </div>
+    <div class="topbar-right">
+      <a href="customers.html" class="topbar-nav-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Customers
+      </a>
+      <div class="status-pill syncing" id="statusPill">
+        <span class="dot"></span>
+        <span id="statusText">Loading</span>
+      </div>
+      <button class="topbar-btn blue" id="refreshBtn" onclick="loadData(true)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 8A6 6 0 1 1 9.5 2.5"/><path d="M10 1l3.5 1.5L12 6"/>
+        </svg>
+        Refresh
+      </button>
+<button class="topbar-btn" onclick="exportCSV()" title="Export CSV">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2v9M5 8l3 3 3-3M3 14h10"/>
+        </svg>
+        Export
+      </button>
+      <button class="topbar-btn-icon" onclick="lockDash()" title="Lock dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <div class="page-eyebrow">Admin Dashboard</div>
+        <div class="page-title">All Bookings</div>
+      </div>
+      <div class="last-updated" id="lastUpdated"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-value skel" id="statTotal"></div>
+        <div class="stat-sub" id="statTotalSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value skel" id="statRevenue"></div>
+        <div class="stat-sub" id="statRevSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-blue">
+        <div class="stat-label">Upcoming</div>
+        <div class="stat-value skel" id="statUpcoming"></div>
+        <div class="stat-sub" id="statUpcomingSub">&nbsp;</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">This Month</div>
+        <div class="stat-value skel" id="statMonth"></div>
+        <div class="stat-sub" id="statMonthSub">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <div class="search-wrap">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/>
+        </svg>
+        <input type="text" class="search-input" id="searchInput"
+               placeholder="Search name, service, vehicle, address…"
+               autocomplete="off" spellcheck="false">
+      </div>
+      <div class="filter-pills">
+        <button class="filter-pill active" onclick="setFilter('all',this)">All <span class="count" id="cnt-all"></span></button>
+        <button class="filter-pill" onclick="setFilter('upcoming',this)">Upcoming <span class="count" id="cnt-upcoming"></span></button>
+        <button class="filter-pill" onclick="setFilter('today',this)">Today <span class="count" id="cnt-today"></span></button>
+        <button class="filter-pill col-sm-hide" onclick="setFilter('past',this)">Past <span class="count" id="cnt-past"></span></button>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="renderTable()">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="revenue-desc">Highest total</option>
+        <option value="name-asc">Name A–Z</option>
+      </select>
+    </div>
+
+    <!-- RESULTS META -->
+    <div class="results-meta" id="resultsMeta"></div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+      <div id="tableContainer">
+        <div class="empty">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Loading bookings…</h3>
+          <p>Fetching your data from Google Sheets.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="footer">MaxDriveDetail · Bookings Dashboard · Local access only</div>
+</div><!-- /app -->
+
+<script>
+/* ─── CONFIG ────────────────────────────────────────────────── */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqGGGLx8-6MCl2o1uuDCcYN7XGilM8Z8LsYT7ZRNQbcJowBjqrYjo2kp9E2JPNcxBt/exec';
+const DASHBOARD_KEY   = '3sdetailing2026';
+const SESSION_KEY     = '3s_dash_v1';
+const MAX_ATTEMPTS    = 5;
+const LOCKOUT_MS      = 30000; // 30s
+
+/* ─── STATE ─────────────────────────────────────────────────── */
+let allBookings   = [];
+let activeFilter  = 'all';
+let failedAttempts = 0;
+let lockoutUntil  = 0;
+let lockCountdownTimer = null;
+
+/* ─── SECURITY: HTML ESCAPE ─────────────────────────────────── */
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+/* ─── LOCK / UNLOCK ──────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore session if still valid
+  if (sessionStorage.getItem(SESSION_KEY) === btoa(DASHBOARD_KEY)) {
+    showApp();
+  }
+  document.getElementById('keyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') unlock();
+  });
+});
+
+function unlock() {
+  const now = Date.now();
+  if (now < lockoutUntil) return; // blocked
+
+  const val = document.getElementById('keyInput').value.trim();
+  if (val === DASHBOARD_KEY) {
+    failedAttempts = 0;
+    sessionStorage.setItem(SESSION_KEY, btoa(DASHBOARD_KEY));
+    document.getElementById('keyInput').value = '';
+    showApp();
+    loadData();
+  } else {
+    failedAttempts++;
+    document.getElementById('keyInput').value = '';
+
+    // Shake animation
+    const inp = document.getElementById('keyInput');
+    inp.classList.remove('shake');
+    void inp.offsetWidth; // reflow
+    inp.classList.add('shake');
+
+    if (failedAttempts >= MAX_ATTEMPTS) {
+      lockoutUntil = Date.now() + LOCKOUT_MS;
+      document.getElementById('lockBtn').disabled = true;
+      document.getElementById('keyInput').disabled = true;
+      startLockCountdown();
+    } else {
+      const left = MAX_ATTEMPTS - failedAttempts;
+      showLockError(`Incorrect key. ${left} attempt${left===1?'':'s'} remaining.`);
+    }
+  }
+}
+
+function showLockError(msg) {
+  const el = document.getElementById('lockErr');
+  el.textContent = msg;
+  setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+}
+
+function startLockCountdown() {
+  clearInterval(lockCountdownTimer);
+  function tick() {
+    const secs = Math.ceil((lockoutUntil - Date.now()) / 1000);
+    if (secs <= 0) {
+      clearInterval(lockCountdownTimer);
+      document.getElementById('lockBtn').disabled = false;
+      document.getElementById('keyInput').disabled = false;
+      document.getElementById('lockErr').textContent = '';
+      document.getElementById('lockAttempts').textContent = '';
+      failedAttempts = 0;
+      return;
+    }
+    document.getElementById('lockErr').textContent = `Too many attempts. Locked for ${secs}s.`;
+    document.getElementById('lockAttempts').textContent = '';
+  }
+  tick();
+  lockCountdownTimer = setInterval(tick, 1000);
+}
+
+function showApp() {
+  document.getElementById('lock').style.display = 'none';
+  document.getElementById('app').style.display  = 'block';
+}
+
+function lockDash() {
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('lock').style.display = 'flex';
+  document.getElementById('app').style.display  = 'none';
+  document.getElementById('keyInput').value = '';
+  document.getElementById('lockErr').textContent = '';
+  allBookings = [];
+}
+
+/* ─── LOAD DATA ──────────────────────────────────────────────── */
+async function loadData(manual = false) {
+  setStatus('syncing','Syncing…');
+  document.getElementById('refreshBtn').disabled = true;
+
+  try {
+    const url = APPS_SCRIPT_URL + '?key=' + encodeURIComponent(DASHBOARD_KEY)
+              + '&t=' + Date.now(); // cache bust
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'Script returned error');
+
+    allBookings = (json.bookings || []).filter(b => b['Name'] || b['Service']);
+    setStatus('ok','Live');
+    updateLastRefreshed();
+    updateStats();
+    updateFilterCounts();
+    renderTable();
+    if (manual) showToast('Bookings refreshed', 'success');
+  } catch(err) {
+    setStatus('err','Error');
+    updateLastRefreshed();
+    document.getElementById('tableContainer').innerHTML = buildError(err.message);
+    if (manual) showToast('Could not refresh: ' + err.message, 'error');
+  } finally {
+    document.getElementById('refreshBtn').disabled = false;
+  }
+}
+
+function buildError(msg) {
+  return `<div class="empty">
+    <div class="empty-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <h3>Could not load bookings</h3>
+    <p>${esc(msg)}</p>
+    <p style="margin-top:10px;font-size:12px;opacity:.55;">
+      Make sure the Apps Script is deployed with the updated code and access set to "Anyone."
+    </p>
+  </div>`;
+}
+
+/* ─── STATUS ─────────────────────────────────────────────────── */
+function setStatus(state, label) {
+  const pill = document.getElementById('statusPill');
+  pill.className = 'status-pill ' + (state === 'ok' ? '' : state);
+  document.getElementById('statusText').textContent = label;
+}
+
+function updateLastRefreshed() {
+  const el = document.getElementById('lastUpdated');
+  const now = new Date();
+  el.textContent = 'Updated ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+
+/* ─── STATS ──────────────────────────────────────────────────── */
+function updateStats() {
+  const now   = new Date(); now.setHours(0,0,0,0);
+  const month = now.getMonth();
+  const year  = now.getFullYear();
+  let total = allBookings.length, revenue = 0, upcoming = 0, thisMonth = 0;
+
+  allBookings.forEach(b => {
+    const amt = parseAmt(b['Total']);
+    revenue += amt;
+    const d = parseBookingDate(b);
+    if (d && d >= now) upcoming++;
+    if (d && d.getFullYear() === year && d.getMonth() === month) thisMonth++;
+  });
+
+  setVal('statTotal',    total || '0');
+  setVal('statTotalSub', total === 1 ? '1 booking total' : (total + ' bookings total'));
+  setVal('statRevenue',  '$' + revenue.toLocaleString('en-US',{maximumFractionDigits:0}));
+  setVal('statRevSub',   total > 0 ? 'avg $' + Math.round(revenue/total) + ' per job' : 'no bookings yet');
+  setVal('statUpcoming', upcoming);
+  setVal('statUpcomingSub', upcoming === 1 ? '1 job ahead' : (upcoming + ' jobs ahead'));
+  setVal('statMonth',    thisMonth);
+  setVal('statMonthSub', now.toLocaleString('en-US',{month:'long'}) + ' ' + year);
+
+  // Remove skeleton
+  ['statTotal','statRevenue','statUpcoming','statMonth'].forEach(id => {
+    document.getElementById(id).classList.remove('skel');
+  });
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+/* ─── FILTER COUNTS ──────────────────────────────────────────── */
+function updateFilterCounts() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate()+1);
+  let cAll = allBookings.length, cUpcoming = 0, cToday = 0, cPast = 0;
+  allBookings.forEach(b => {
+    const d = parseBookingDate(b);
+    if (d && d >= today && d < tomorrow) { cToday++; cUpcoming++; }
+    else if (d && d >= tomorrow) cUpcoming++;
+    else if (d && d < today) cPast++;
+  });
+  setVal('cnt-all',      cAll      ? '(' + cAll + ')'      : '');
+  setVal('cnt-upcoming', cUpcoming ? '(' + cUpcoming + ')' : '');
+  setVal('cnt-today',    cToday    ? '(' + cToday + ')'    : '');
+  setVal('cnt-past',     cPast     ? '(' + cPast + ')'     : '');
+}
+
+/* ─── FILTER / SORT ──────────────────────────────────────────── */
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function getFiltered() {
+  const q    = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort = document.getElementById('sortSelect').value;
+  const now  = new Date(); now.setHours(0,0,0,0);
+  const tomorrow = new Date(now); tomorrow.setDate(now.getDate()+1);
+
+  let list = allBookings.filter(b => {
+    const d = parseBookingDate(b);
+    if (activeFilter === 'upcoming' && !(d && d >= now))          return false;
+    if (activeFilter === 'today'    && !(d && d >= now && d < tomorrow)) return false;
+    if (activeFilter === 'past'     && !(d && d < now))           return false;
+    if (q) {
+      const hay = [b['Name'],b['Service'],b['Vehicle'],b['Address'],b['Email'],b['Phone'],b['Add-ons']]
+        .join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (sort === 'oldest')       list = list.slice().reverse();
+  else if (sort === 'revenue-desc') list = list.slice().sort((a,z)=>parseAmt(z['Total'])-parseAmt(a['Total']));
+  else if (sort === 'name-asc')     list = list.slice().sort((a,z)=>(a['Name']||'').localeCompare(z['Name']||''));
+  return list;
+}
+
+/* ─── RENDER TABLE ───────────────────────────────────────────── */
+function renderTable() {
+  const list = getFiltered();
+  const cont = document.getElementById('tableContainer');
+  const meta = document.getElementById('resultsMeta');
+
+  if (allBookings.length === 0 && document.getElementById('statusPill').className.includes('err')) {
+    meta.textContent = '';
+    return; // error state already shown
+  }
+
+  if (list.length === 0) {
+    meta.textContent = '';
+    const isEmpty = allBookings.length === 0;
+    cont.innerHTML = `<div class="empty">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          ${isEmpty
+            ? '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'
+            : '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="8" y1="11" x2="14" y2="11"/>'}
+        </svg>
+      </div>
+      <h3>${isEmpty ? 'No bookings yet' : 'No results'}</h3>
+      <p>${isEmpty
+        ? 'Bookings will appear here once customers submit the booking form.'
+        : 'No bookings match your search or filter.'}</p>
+      ${isEmpty ? '' : '<p>Try clearing your search or changing the filter.</p>'}
+    </div>`;
+    return;
+  }
+
+  meta.innerHTML = `Showing <strong>${list.length}</strong> of <strong>${allBookings.length}</strong> booking${allBookings.length!==1?'s':''}`;
+
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+
+  let rows = '';
+  list.forEach((b, i) => {
+    const rid  = 'r' + i;
+    const exid = 'e' + i;
+
+    const d       = parseBookingDate(b);
+    const isToday = d && d >= today && d < tomorrow;
+    const isUpcoming = d && d >= tomorrow;
+    const isPast  = d && d < today;
+
+    const dateStr = b['Date']  || '—';
+    // Extract just month+day from "Friday, June 6, 2025"
+    const shortDate = dateStr.replace(/^[^,]+,\s*/, '');        // "June 6, 2025"
+    const dow       = dateStr.split(',')[0] || '';                // "Friday"
+    const timeRange = b['Time'] || '—';
+    const timeStart = timeRange.split(' - ')[0] || timeRange;
+
+    const name    = esc(b['Name']    || '—');
+    const phone   = esc(b['Phone']   || '');
+    const svc     = esc(b['Service'] || '—');
+    const veh     = esc(b['Vehicle'] || '');
+    const size    = esc(b['Size']    || '');
+    const total   = esc(b['Total']   || '—');
+    const dep     = esc(b['Deposit'] || '');
+    const cond    = esc(b['Condition']    || '');
+    const addons  = esc(b['Add-ons']      || 'None');
+    const addr    = esc(b['Address']      || '—');
+    const email   = esc(b['Email']        || '—');
+    const dur     = esc(b['Duration (min)'] || '');
+    const notes   = esc(b['Notes']        || '');
+    const ts      = esc(b['Timestamp']    || '');
+    const rawPhone = (b['Phone'] || '').replace(/\D/g,'');
+    const rawEmail = b['Email'] || '';
+
+    let rowClass = 'data-row';
+    let statusBadge = '';
+    if (isToday)    { rowClass += ' is-today';    statusBadge = '<div class="status-badge sbg-today"><span class="sdot"></span>Today</div>'; }
+    else if (isUpcoming){ rowClass += ' is-upcoming'; statusBadge = '<div class="status-badge sbg-upcoming"><span class="sdot"></span>Upcoming</div>'; }
+    else if (isPast){ rowClass += ' is-past';     statusBadge = '<div class="status-badge sbg-past"><span class="sdot"></span>Past</div>'; }
+
+    rows += `
+<tr class="${rowClass}" id="${rid}" onclick="toggleRow('${rid}','${exid}')">
+  <td>
+    <div class="td-dow">${esc(dow)}</div>
+    <div class="td-date">${esc(shortDate)}</div>
+    <div class="td-time">${esc(timeStart)}</div>
+    ${statusBadge}
+  </td>
+  <td>
+    <div class="td-name">${name}</div>
+    ${phone ? `<div class="td-phone">${phone}</div>` : ''}
+  </td>
+  <td class="col-sm-hide">
+    <div class="td-service">${svc}</div>
+    ${veh ? `<div class="td-vehicle">${veh}</div>` : ''}
+  </td>
+  <td class="col-sm-hide">${size ? `<span class="badge badge-blue">${size}</span>` : '—'}</td>
+  <td>
+    <div class="td-total">${total}</div>
+    ${dep ? `<div class="td-dep">${dep} dep.</div>` : ''}
+  </td>
+  <td class="td-chev">
+    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 1.5l5 5 5-5"/>
+    </svg>
+  </td>
+</tr>
+<tr class="expand-row" id="${exid}">
+  <td colspan="6" class="expand-cell">
+    <div class="expand-inner">
+      <div class="expand-grid">
+        <div class="expand-item"><label>Full Name</label><span>${name}</span></div>
+        <div class="expand-item"><label>Phone</label><span>${rawPhone ? `<a href="tel:${rawPhone}">${phone}</a>` : '—'}</span></div>
+        <div class="expand-item"><label>Email</label><span>${rawEmail ? `<a href="mailto:${rawEmail}">${email}</a>` : '—'}</span></div>
+        <div class="expand-item"><label>Address</label><span>${addr}</span></div>
+        <div class="expand-item"><label>Service</label><span>${svc}</span></div>
+        <div class="expand-item"><label>Vehicle</label><span>${veh || '—'}</span></div>
+        <div class="expand-item"><label>Size</label><span>${size || '—'}</span></div>
+        <div class="expand-item"><label>Condition</label><span>${cond || '—'}</span></div>
+        <div class="expand-item"><label>Add-ons</label><span>${addons}</span></div>
+        <div class="expand-item"><label>Duration</label><span>${dur ? dur + ' min' : '—'}</span></div>
+        <div class="expand-item"><label>Total</label><span>${total}</span></div>
+        <div class="expand-item"><label>Deposit</label><span>${dep || '—'}</span></div>
+        <div class="expand-item"><label>Date</label><span>${esc(dateStr)}</span></div>
+        <div class="expand-item"><label>Time</label><span>${esc(timeRange)}</span></div>
+        <div class="expand-item"><label>Booked at</label><span>${ts || '—'}</span></div>
+      </div>
+      ${notes ? `<div class="expand-notes"><strong>Notes</strong>${notes}</div>` : ''}
+    </div>
+  </td>
+</tr>`;
+  });
+
+  cont.innerHTML = `<table>
+    <thead>
+      <tr>
+        <th>Date / Time</th>
+        <th>Customer</th>
+        <th class="col-sm-hide">Service</th>
+        <th class="col-sm-hide">Size</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function toggleRow(rid, exid) {
+  const row = document.getElementById(rid);
+  const ex  = document.getElementById(exid);
+
+  // Close any other open rows first
+  document.querySelectorAll('.expand-row.open').forEach(r => {
+    if (r.id !== exid) {
+      r.classList.remove('open');
+      document.getElementById('r' + r.id.slice(1)).classList.remove('open');
+    }
+  });
+
+  const opening = !ex.classList.contains('open');
+  ex.classList.toggle('open', opening);
+  row.classList.toggle('open', opening);
+}
+
+/* ─── CSV EXPORT ─────────────────────────────────────────────── */
+function exportCSV() {
+  if (allBookings.length === 0) { showToast('No bookings to export', 'info'); return; }
+  const cols = [
+    ['Date','Date'],['Time','Time'],['Name','Name'],['Phone','Phone'],
+    ['Email','Email'],['Address','Address'],['Service','Service'],
+    ['Vehicle','Vehicle'],['Size','Size'],['Condition','Condition'],
+    ['Add-ons','Add-ons'],['Duration','Duration (min)'],['Total','Total'],
+    ['Deposit','Deposit'],['Notes','Notes'],['Booked At','Timestamp']
+  ];
+  const header = cols.map(c => '"' + c[0] + '"').join(',');
+  const rows   = allBookings.map(b =>
+    cols.map(c => '"' + (b[c[1]]||'').replace(/"/g,'""') + '"').join(',')
+  );
+  const csv    = [header, ...rows].join('\r\n');
+  const date   = new Date().toISOString().slice(0,10);
+  const a      = document.createElement('a');
+  a.href       = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download   = '3s-detailing-bookings-' + date + '.csv';
+  a.click();
+  showToast('Exported ' + allBookings.length + ' bookings', 'success');
+}
+
+/* ─── TOAST ──────────────────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg, type='info') {
+  let t = document.getElementById('toast-el');
+  if (t) { clearTimeout(toastTimer); t.remove(); }
+  t = document.createElement('div');
+  t.id = 'toast-el';
+  t.className = 'toast toast-' + type;
+  t.innerHTML = `<span class="toast-dot"></span>${esc(msg)}`;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  toastTimer = setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t && t.remove(), 300);
+  }, 2800);
+}
+
+/* ─── HELPERS ────────────────────────────────────────────────── */
+function parseBookingDate(b) {
+  try {
+    const raw = (b['Date'] || '').trim();
+    if (!raw) return null;
+    // Sheet stores "Friday, June 6, 2025" — strip day-of-week
+    const clean = raw.replace(/^[A-Za-z]+,\s*/, '');
+    const d = new Date(clean);
+    return isNaN(d) ? null : d;
+  } catch(e) { return null; }
+}
+
+function parseAmt(s) {
+  return parseFloat((s || '').replace(/[^0-9.]/g,'')) || 0;
+}
+
+/* ─── LIVE SEARCH ────────────────────────────────────────────── */
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(renderTable, 140);
+});
+
+/* ─── AUTO REFRESH every 2 min while visible ─────────────────── */
+setInterval(() => {
+  if (!document.hidden
+   && document.getElementById('app').style.display !== 'none'
+   && sessionStorage.getItem(SESSION_KEY) === btoa(DASHBOARD_KEY)) {
+    loadData(false);
+  }
+}, 120000);
+
+
+</script>
+</body>
+</html>

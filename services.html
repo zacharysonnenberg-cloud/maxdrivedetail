@@ -1,0 +1,546 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services & Pricing — MaxDriveDetail · Vienna, VA</title>
+  <meta name="description" content="Full pricing for mobile auto detailing in Vienna, VA. Interior, exterior, full packages, and add-ons. Transparent pricing — no surprises.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#1A1A1A; --bg2:#222222; --surface:#2A2A2A; --surface2:#333333; --border:#333333; --blue:#8B1A1A; --blue-mid:#C0392B; --blue-lite:#C0392B; --white:#f0f0f0; --gray:#888; --muted:#3d3d3d; --radius-sm:6px; --radius:12px; --radius-lg:18px; --max-w:1200px; --nav-h:64px; }
+    [data-theme="light"] { --bg:#F5F5F5; --bg2:#EAECEF; --surface:#FFFFFF; --surface2:#F7F8FA; --border:#E0E2E6; --white:#1A1A1A; --gray:#5A6070; --muted:#999999; }
+    [data-theme="light"] body { background:var(--bg); color:var(--white); }
+    [data-theme="light"] #nav { background:rgba(245,245,245,.96); }
+    [data-theme="light"] .nav-links a { color:rgba(26,26,26,.55); }
+    [data-theme="light"] .nav-links a:hover, [data-theme="light"] .nav-links a.active { color:#1A1A1A; }
+    [data-theme="light"] .page-hero { background:var(--bg2); }
+    [data-theme="light"] .uc-card { background:#FFFFFF; }
+    [data-theme="light"] .policy { background:#FFFFFF; }
+    [data-theme="light"] footer { background:#1A1A1A; color:#F5F5F5; }
+    [data-theme="light"] .footer-bottom a { color:#888; }
+    @keyframes nav-cta-glow { 0%,100%{box-shadow:0 0 0 0 rgba(139,26,26,0);}50%{box-shadow:0 0 18px 4px rgba(139,26,26,.45);} }
+    @keyframes shimmer { from{transform:translateX(-110%);}to{transform:translateX(110%);} }
+    .btn-primary { animation: nav-cta-glow 3s ease-in-out infinite; }
+    .btn-primary:hover { animation: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    .theme-toggle { display:flex; align-items:center; justify-content:center; width:34px; height:34px; background:none; border:1px solid rgba(139,26,26,.3); border-radius:6px; cursor:pointer; color:#888; font-size:15px; transition:border-color .2s,color .2s; flex-shrink:0; }
+    .theme-toggle:hover { border-color:var(--blue); color:var(--blue); }
+    .theme-toggle .icon-sun { display:none; }
+    .theme-toggle .icon-moon { display:block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.028; pointer-events:none; z-index:9999; }
+    .brand-text { background: linear-gradient(120deg,var(--blue),var(--blue-lite)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--blue-lite); display:block; }
+    .btn { display:inline-flex; align-items:center; gap:9px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-decoration:none; padding:14px 28px; border-radius:7px; cursor:pointer; border:none; transition:transform .18s, box-shadow .18s, background .18s, border-color .18s; }
+    .btn-primary { background:linear-gradient(135deg,var(--blue) 0%,#6B1010 100%); color:#fff; box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 2px 8px rgba(139,26,26,.25); }
+    .btn-primary:hover { background:linear-gradient(135deg,var(--blue-lite) 0%,var(--blue) 100%); transform:translateY(-1px); box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 8px 28px rgba(139,26,26,.4); }
+    .btn-ghost { background:transparent; color:var(--white); border:1px solid rgba(255,255,255,.32); }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.6); background:rgba(255,255,255,.05); color:#fff; }
+    .btn .arr { transition:transform .2s; }
+    .btn:hover .arr { transform:translateX(3px); }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-d1 { transition-delay:.1s; } .reveal-d2 { transition-delay:.2s; } .reveal-d3 { transition-delay:.3s; }
+
+    /* NAV */
+    #nav { position:fixed; top:0; left:0; right:0; z-index:200; height:var(--nav-h); display:flex; align-items:center; padding:0 40px; background:rgba(26,26,26,.94); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .nav-inner { max-width:var(--max-w); margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; position:relative; }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo img { height:34px; width:auto; }
+    .nav-logo-text { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:#f0f0f0; }
+    .nav-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
+    .nav-links { position:absolute; left:50%; transform:translateX(-50%); display:flex; gap:40px; list-style:none; }
+    .nav-links a { font-family:'Barlow Condensed',sans-serif; color:rgba(255,255,255,.45); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; transition:color .2s; }
+    .nav-links a:hover, .nav-links a.active { color:#fff; }
+    .nav-right { display:flex; align-items:center; gap:12px; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; transition:all .25s; }
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);} .hamburger.open span:nth-child(2){opacity:0;} .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mobile-menu { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:rgba(26,26,26,.97); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); padding:16px 40px 32px; z-index:199; flex-direction:column; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-family:'Barlow Condensed',sans-serif; color:var(--gray); text-decoration:none; font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:2px; padding:16px 0; border-bottom:1px solid var(--border); transition:color .2s; }
+    .mobile-menu a:hover { color:#fff; }
+    .mobile-menu .m-cta { margin-top:20px; } .mobile-menu .m-cta a { border-bottom:none; display:block; text-align:center; }
+
+    /* HERO */
+    .page-hero { padding-top: var(--nav-h); background: var(--bg2); border-bottom: 1px solid var(--border); }
+    .page-hero-inner { max-width:var(--max-w); margin:0 auto; padding:80px 40px; display:grid; grid-template-columns:1fr 1fr; align-items:end; gap:40px; }
+    .ph-eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--blue-lite); margin-bottom:16px; }
+    .ph-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(44px,6vw,80px); font-weight:900; letter-spacing:.01em; line-height:.9; text-transform:uppercase; }
+    .ph-right { padding-bottom:8px; }
+    .ph-desc { font-size:14px; color:var(--gray); line-height:1.9; margin-bottom:28px; }
+
+    /* SECTION SHARED */
+    .section { padding:100px 0; }
+    .section.alt { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .sec-header { max-width:var(--max-w); margin:0 auto; padding:0 40px 64px; display:grid; grid-template-columns:1fr 1fr; align-items:end; gap:40px; }
+    .sec-header .left .label { margin-bottom:16px; }
+    .sec-header .left h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(36px,5vw,64px); font-weight:900; letter-spacing:.01em; line-height:.92; text-transform:uppercase; }
+    .sec-header .right { font-size:13px; color:var(--gray); line-height:1.9; padding-bottom:6px; }
+
+    /* SERVICE TABLE */
+    .service-table { max-width:var(--max-w); margin:0 auto; padding:0 40px; border-top:1px solid var(--border); }
+    .srv-row { display:grid; grid-template-columns:104px 1fr 120px 130px; align-items:start; gap:24px; padding:32px 0; border-bottom:1px solid var(--border); transition:background .2s; }
+    .srv-row:hover { background:rgba(255,255,255,.018); }
+    .srv-row.feat { background:rgba(139,26,26,.04); margin:0 -40px; padding:32px 40px; border-left:2px solid var(--blue); }
+    .srv-row.feat:hover { background:rgba(139,26,26,.07); }
+    .srv-tier { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:4px; white-space:nowrap; }
+    .srv-row.feat .srv-tier { color:var(--blue-mid); }
+    .srv-name { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .srv-badge { font-size:8px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; background:var(--blue); color:#fff; padding:3px 8px; border-radius:3px; }
+    .srv-includes { font-size:12px; color:var(--gray); line-height:1.7; margin-bottom:12px; }
+    .srv-what { display:flex; flex-direction:column; gap:4px; }
+    .srv-what-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--gray); }
+    .srv-what-item::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--blue); flex-shrink:0; }
+    .srv-time { font-size:11px; font-weight:600; color:var(--muted); text-align:right; padding-top:4px; }
+    .srv-price { text-align:right; }
+    .srv-price .p { font-size:24px; font-weight:900; letter-spacing:-1px; line-height:1; }
+    .srv-row.feat .srv-price .p { color:var(--blue-lite); }
+    .srv-price .psub { font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+
+    .srv-note { max-width:var(--max-w); margin:20px auto 0; padding:0 40px; font-size:12px; color:var(--muted); line-height:1.7; display:flex; align-items:flex-start; gap:10px; }
+    .srv-note svg { flex-shrink:0; margin-top:1px; color:var(--blue-mid); opacity:.7; }
+
+    /* ADDONS */
+    .addons-table { max-width:var(--max-w); margin:0 auto; padding:0 40px; border-top:1px solid var(--border); }
+    .addon-row { display:flex; align-items:center; justify-content:space-between; padding:22px 0; border-bottom:1px solid var(--border); gap:16px; }
+    .addon-row:last-child { border-bottom:none; }
+    .addon-info {}
+    .addon-name { font-size:16px; font-weight:700; letter-spacing:-.3px; margin-bottom:3px; }
+    .addon-desc { font-size:12px; color:var(--gray); }
+    .addon-price { font-size:22px; font-weight:900; letter-spacing:-1px; color:var(--blue-lite); flex-shrink:0; }
+
+    /* UPCHARGES */
+    .upcharge-grid { max-width:var(--max-w); margin:0 auto; padding:0 40px; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .uc-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px; }
+    .uc-title { font-size:10px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+    .uc-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); font-size:13px; }
+    .uc-row:last-child { border-bottom:none; }
+    .uc-key { color:var(--gray); }
+    .uc-val { font-weight:700; }
+
+    /* POLICIES */
+    .policies-grid { max-width:var(--max-w); margin:0 auto; padding:0 40px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .policy { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:22px; }
+    .policy-label { font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--blue-lite); margin-bottom:10px; }
+    .policy p { font-size:12px; color:var(--gray); line-height:1.75; }
+
+    /* CTA STRIP */
+    .cta-strip { background:var(--blue); padding:80px 40px; text-align:center; position:relative; overflow:hidden; }
+    .cta-strip::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.1) 0%,transparent 60%); pointer-events:none; }
+    .cta-inner { position:relative; z-index:1; }
+    .cta-strip .label { color:rgba(255,255,255,.5); margin-bottom:16px; }
+    .cta-strip h2 { font-size:clamp(32px,5vw,64px); font-weight:900; letter-spacing:-2.5px; text-transform:uppercase; color:#fff; margin-bottom:12px; }
+    .cta-strip p { font-size:14px; color:rgba(255,255,255,.65); margin-bottom:36px; }
+    .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+    /* FOOTER */
+    footer { background:var(--bg); border-top:1px solid var(--border); }
+    .footer-bottom { max-width:var(--max-w); margin:0 auto; padding:22px 40px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--muted); }
+    .footer-bottom a { color:var(--muted); text-decoration:none; transition:color .2s; }
+    .footer-bottom a:hover { color:var(--gray); }
+
+    @media (max-width:960px) {
+      #nav { padding:0 24px; } .nav-links, .nav-right .btn { display:none; } .hamburger { display:flex; }
+      .page-hero-inner { grid-template-columns:1fr; padding:52px 24px; }
+      .sec-header { grid-template-columns:1fr; padding:0 24px 48px; }
+      .service-table, .addons-table, .srv-note { padding-left:24px; padding-right:24px; }
+      .srv-row { grid-template-columns:90px 1fr auto; gap:16px; }
+      .srv-time { display:none; }
+      .srv-row.feat { margin:0; padding:28px 0; border-left:none; border-top:1px solid var(--blue); }
+      .upcharge-grid { grid-template-columns:1fr; padding:0 24px; }
+      .policies-grid { grid-template-columns:1fr 1fr; padding:0 24px; }
+      .cta-strip { padding:64px 24px; }
+      .footer-bottom { padding:20px 24px; flex-direction:column; gap:8px; text-align:center; }
+    }
+    @media (max-width:600px) {
+      :root { --nav-h:60px; }
+      .srv-row { grid-template-columns:1fr auto; } .srv-tier { display:none; }
+      .policies-grid { grid-template-columns:1fr; }
+      .cta-btns { flex-direction:column; align-items:center; }
+      .cta-btns .btn { width:100%; justify-content:center; max-width:300px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="Logo.png" alt="MaxDriveDetail" class="nav-logo-img">
+      <span class="nav-logo-text"><span class="brand-text">Max</span>DriveDetail</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html" class="active">Services</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="book.html" class="btn btn-primary" style="padding:9px 20px;font-size:11px;">Book Now <span class="arr">→</span></a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mmenu">
+  <a href="index.html" onclick="closeMM()">Home</a>
+  <a href="services.html" onclick="closeMM()">Services</a>
+  <a href="gallery.html" onclick="closeMM()">Gallery</a>
+  <a href="contact.html" onclick="closeMM()">Contact</a>
+  <div class="m-cta"><a href="book.html" class="btn btn-primary">Book Now →</a></div>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="reveal">
+      <div class="ph-eyebrow">Services & Pricing</div>
+      <h1 class="ph-title">Every Service.<br><span class="brand-text">Every Price.</span></h1>
+    </div>
+    <div class="ph-right reveal reveal-d1">
+      <p class="ph-desc">Transparent pricing listed upfront — no quotes needed for standard services. All prices are starting rates adjusted for vehicle size and condition at booking.</p>
+      <a href="book.html" class="btn btn-primary">Book Now <span class="arr">→</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- INTERIOR -->
+<section class="section" id="interior">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Interior Detailing</span>
+      <h2>Inside<br>Out Clean.</h2>
+    </div>
+    <div class="right">Steam cleaning, leather conditioning, stain extraction, and full odor treatment — tailored to what your car actually needs.</div>
+  </div>
+  <div class="service-table">
+    <div class="srv-row reveal">
+      <div class="srv-tier">Interior L1</div>
+      <div>
+        <div class="srv-name">MaxRefresh</div>
+        <div class="srv-what">
+          <div class="srv-what-item">Vacuum seats, floors, and trunk</div>
+          <div class="srv-what-item">Wipe dash, console, door panels, interior windows</div>
+          <div class="srv-what-item">Spot treat light surface stains</div>
+          <div class="srv-what-item">Compressed air through vents</div>
+          <div class="srv-what-item">Light deodorizer</div>
+        </div>
+      </div>
+      <div class="srv-time">~60 min</div>
+      <div class="srv-price"><div class="p">$115</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row feat reveal reveal-d1">
+      <div class="srv-tier">Interior L2</div>
+      <div>
+        <div class="srv-name">MaxClean <span class="srv-badge">Most Popular</span></div>
+        <div class="srv-what">
+          <div class="srv-what-item">Everything in MaxRefresh (L1)</div>
+          <div class="srv-what-item">Steam clean seats, carpets, and floor mats</div>
+          <div class="srv-what-item">Full stain treatment and extraction</div>
+          <div class="srv-what-item">Condition all vinyl and leather surfaces</div>
+          <div class="srv-what-item">Detail vents, crevices, and trim gaps</div>
+          <div class="srv-what-item">Full odor treatment</div>
+        </div>
+      </div>
+      <div class="srv-time">~2 hrs</div>
+      <div class="srv-price"><div class="p">$175</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row reveal reveal-d2">
+      <div class="srv-tier">Interior L3</div>
+      <div>
+        <div class="srv-name">MaxRestore</div>
+        <div class="srv-what">
+          <div class="srv-what-item">Everything in MaxClean (L2)</div>
+          <div class="srv-what-item">Headliner wipe-down</div>
+          <div class="srv-what-item">Door jamb cleaning</div>
+          <div class="srv-what-item">Full interior decontamination</div>
+          <div class="srv-what-item">Ozone treatment included</div>
+          <div class="srv-what-item">Scent restoration included</div>
+        </div>
+      </div>
+      <div class="srv-time">~3 hrs</div>
+      <div class="srv-price"><div class="p">$245</div><div class="psub">starting</div></div>
+    </div>
+  </div>
+  <div class="srv-note reveal">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>All interior services are performed by hand — no automated machines. Steam cleaners, extraction equipment, and professional-grade chemicals are used on every job.</span>
+  </div>
+</section>
+
+<!-- EXTERIOR -->
+<section class="section alt" id="exterior">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Exterior Detailing</span>
+      <h2>Paint That<br>Turns Heads.</h2>
+    </div>
+    <div class="right">From a thorough hand wash to full multi-stage paint correction — every exterior service uses a two-bucket method and professional-grade chemicals.</div>
+  </div>
+  <div class="service-table">
+    <div class="srv-row reveal">
+      <div class="srv-tier">Exterior L1</div>
+      <div>
+        <div class="srv-name">MaxWash</div>
+        <div class="srv-what">
+          <div class="srv-what-item">Pre-rinse and foam pre-soak</div>
+          <div class="srv-what-item">Two-bucket hand wash (safe wash method)</div>
+          <div class="srv-what-item">Hand dry with microfiber</div>
+          <div class="srv-what-item">Tire and wheel clean + dressing</div>
+          <div class="srv-what-item">Exterior windows cleaned</div>
+          <div class="srv-what-item">Spray sealant applied for protection</div>
+        </div>
+      </div>
+      <div class="srv-time">~90 min</div>
+      <div class="srv-price"><div class="p">$139</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row feat reveal reveal-d1">
+      <div class="srv-tier">Exterior L2</div>
+      <div>
+        <div class="srv-name">MaxEnhance <span class="srv-badge">Best Value</span></div>
+        <div class="srv-what">
+          <div class="srv-what-item">Everything in MaxWash (L1)</div>
+          <div class="srv-what-item">Iron decontamination spray (removes brake dust)</div>
+          <div class="srv-what-item">Clay bar treatment (removes bonded contamination)</div>
+          <div class="srv-what-item">One-step machine polish / paint enhancement</div>
+          <div class="srv-what-item">Removes light swirls and adds gloss</div>
+        </div>
+      </div>
+      <div class="srv-time">~2.5 hrs</div>
+      <div class="srv-price"><div class="p">$219</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row reveal reveal-d2">
+      <div class="srv-tier">Exterior L3</div>
+      <div>
+        <div class="srv-name">MaxCorrect</div>
+        <div class="srv-what">
+          <div class="srv-what-item">Everything in MaxEnhance (L2)</div>
+          <div class="srv-what-item">Multi-step machine correction process</div>
+          <div class="srv-what-item">Compound cut pass + finishing polish</div>
+          <div class="srv-what-item">50–95% swirl mark reduction on light defects</div>
+          <div class="srv-what-item">Paint inspection under LED lighting</div>
+        </div>
+      </div>
+      <div class="srv-time">~5 hrs</div>
+      <div class="srv-price"><div class="p">$375</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row reveal reveal-d3">
+      <div class="srv-tier">Exterior L4</div>
+      <div>
+        <div class="srv-name">MaxCoat</div>
+        <div class="srv-what">
+          <div class="srv-what-item">Priced by paint condition and panel count</div>
+          <div class="srv-what-item">Coating tier matched to your protection goals</div>
+          <div class="srv-what-item">Paint correction typically required first</div>
+          <div class="srv-what-item">Long-lasting hydrophobic protection</div>
+          <div class="srv-what-item">Text Zach to discuss your vehicle</div>
+        </div>
+      </div>
+      <div class="srv-time">7+ hrs</div>
+      <div class="srv-price"><div class="p" style="font-size:16px;letter-spacing:-.5px;">By Quote</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="section" id="packages">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Full Packages</span>
+      <h2>Inside &amp;<br>Outside.</h2>
+    </div>
+    <div class="right">Combining interior and exterior in one visit saves time and gets better pricing than booking separately.</div>
+  </div>
+  <div class="service-table">
+    <div class="srv-row feat reveal">
+      <div class="srv-tier">Package P1</div>
+      <div>
+        <div class="srv-name">MaxComplete <span class="srv-badge">Best Value</span></div>
+        <div class="srv-what">
+          <div class="srv-what-item">MaxRefresh (L1) — full vacuum, wipe-down, windows, deodorize</div>
+          <div class="srv-what-item">MaxWash (L1) — hand wash, wheels, dry, sealant</div>
+          <div class="srv-what-item">Inside and out in a single visit</div>
+          <div class="srv-what-item">Best option for regular maintenance detailing</div>
+        </div>
+      </div>
+      <div class="srv-time">~3.5 hrs</div>
+      <div class="srv-price"><div class="p">$265</div><div class="psub">starting</div></div>
+    </div>
+    <div class="srv-row reveal reveal-d1">
+      <div class="srv-tier">Package P2</div>
+      <div>
+        <div class="srv-name">MaxSignature</div>
+        <div class="srv-what">
+          <div class="srv-what-item">MaxClean (L2) — steam, stain treatment, leather conditioning, odor</div>
+          <div class="srv-what-item">MaxEnhance (L2) — full decon, clay bar, one-step polish</div>
+          <div class="srv-what-item">Ozone odor treatment included</div>
+          <div class="srv-what-item">Show-quality result, inside and out</div>
+        </div>
+      </div>
+      <div class="srv-time">~8 hrs</div>
+      <div class="srv-price"><div class="p">$615</div><div class="psub">starting</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="section alt" id="addons">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Add-Ons</span>
+      <h2>Enhance<br>Any Service.</h2>
+    </div>
+    <div class="right">Add any of these to your booking. Mention them at checkout or text Zach when you book.</div>
+  </div>
+  <div class="addons-table">
+    <div class="addon-row reveal">
+      <div class="addon-info">
+        <div class="addon-name">Scent Restoration (Ozone)</div>
+        <div class="addon-desc">Eliminates deep odors — smoke, pet, mildew, food — at the molecular level using ozone treatment.</div>
+      </div>
+      <div class="addon-price">$35</div>
+    </div>
+    <div class="addon-row reveal reveal-d1">
+      <div class="addon-info">
+        <div class="addon-name">Pet Hair Removal</div>
+        <div class="addon-desc">Specialized tools and technique to remove embedded pet hair from carpet, upholstery, and trunk.</div>
+      </div>
+      <div class="addon-price">$45</div>
+    </div>
+    <div class="addon-row reveal reveal-d2">
+      <div class="addon-info">
+        <div class="addon-name">Headlight Restoration</div>
+        <div class="addon-desc">Wet sanding and polishing to remove UV oxidation — restores clarity and improves nighttime visibility.</div>
+      </div>
+      <div class="addon-price">$50</div>
+    </div>
+    <div class="addon-row reveal reveal-d3">
+      <div class="addon-info">
+        <div class="addon-name">Engine Bay Detail</div>
+        <div class="addon-desc">Low-pressure cleaning and dressing of the engine bay — removes grime, leaves a clean, protected finish.</div>
+      </div>
+      <div class="addon-price">$40</div>
+    </div>
+  </div>
+</section>
+
+<!-- UPCHARGES -->
+<section class="section" id="pricing">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Adjustments</span>
+      <h2>What Affects<br>The Price.</h2>
+    </div>
+    <div class="right">All listed prices are starting rates for standard-condition compact and sedan vehicles. Two factors can adjust the final price.</div>
+  </div>
+  <div class="upcharge-grid">
+    <div class="uc-card reveal">
+      <div class="uc-title">Vehicle Size</div>
+      <div class="uc-row"><span class="uc-key">Compact / Sedan</span><span class="uc-val">Included</span></div>
+      <div class="uc-row"><span class="uc-key">SUV / Crossover</span><span class="uc-val">+$15–20</span></div>
+      <div class="uc-row"><span class="uc-key">Large truck / van / 3-row SUV</span><span class="uc-val">+$25–35</span></div>
+    </div>
+    <div class="uc-card reveal reveal-d1">
+      <div class="uc-title">Interior Condition</div>
+      <div class="uc-row"><span class="uc-key">Normal wear and use</span><span class="uc-val">Included</span></div>
+      <div class="uc-row"><span class="uc-key">Moderate soil / visible stains</span><span class="uc-val">+$30</span></div>
+      <div class="uc-row"><span class="uc-key">Heavy neglect / biohazard</span><span class="uc-val">+$50–75+</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- POLICIES -->
+<section class="section alt" id="policies">
+  <div class="sec-header reveal">
+    <div class="left">
+      <span class="label">Policies</span>
+      <h2>Clear Rules.<br>No Surprises.</h2>
+    </div>
+    <div class="right">These policies exist to protect your time and ours. If you have a question not covered here, just text Zach.</div>
+  </div>
+  <div class="policies-grid">
+    <div class="policy reveal">
+      <div class="policy-label">Booking Deposit</div>
+      <p>15% of the total estimate is due at booking to hold your slot. Full refund with 48+ hours notice. 50% kept for 24–48 hr cancellations. Deposit kept for under 24 hr cancellations.</p>
+    </div>
+    <div class="policy reveal reveal-d1">
+      <div class="policy-label">Travel Fee</div>
+      <p>Free within 6 miles of Vienna, VA. 6–15 mi: +$15. 15–25 mi: +$25. 25+ miles: by quote. Not sure if you're in range? Text Zach.</p>
+    </div>
+    <div class="policy reveal reveal-d2">
+      <div class="policy-label">Satisfaction Guarantee</div>
+      <p>Not happy with the result? Text Zach within 48 hours and he'll return to fix it at no charge. No refunds on completed labor, but the job isn't done until you're satisfied.</p>
+    </div>
+    <div class="policy reveal reveal-d3">
+      <div class="policy-label">Payment</div>
+      <p>Zelle, Venmo, or cash — due on completion. Deposit uses the same methods. Minimum job: $100. No credit cards at this time.</p>
+    </div>
+  </div>
+  <div style="max-width:var(--max-w);margin:28px auto 0;padding:0 40px;">
+    <div class="policy reveal" style="background:rgba(139,26,26,.05);border-color:rgba(139,26,26,.2);">
+      <div class="policy-label">Referral Program</div>
+      <p>Refer a friend and you both win: you get $20 off your next booking, and the new client gets $20 off their first. Mention the referral at booking — no codes needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <span class="label">Ready to Book?</span>
+    <h2>Pick Your Service.<br>We'll Handle the Rest.</h2>
+    <p>Online booking takes 2 minutes. We come to you.</p>
+    <div class="cta-btns">
+      <a href="book.html" class="btn" style="background:#fff;color:#1A1A1A;">Book Now <span class="arr">→</span></a>
+      <a href="contact.html" class="btn btn-ghost" style="border-color:rgba(255,255,255,.3);color:#fff;">Ask a Question</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 MaxDriveDetail LLC · Vienna, VA</span>
+    <div style="display:flex;gap:24px;"><a href="index.html">Home</a><a href="book.html">Book Now</a><a href="contact.html">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('ham'), mmenu = document.getElementById('mmenu');
+  ham.addEventListener('click', () => { const o = mmenu.classList.toggle('open'); ham.classList.toggle('open',o); });
+  function closeMM() { mmenu.classList.remove('open'); ham.classList.remove('open'); }
+  document.addEventListener('click', e => { if (!mmenu.contains(e.target)&&!ham.contains(e.target)) closeMM(); });
+  const ro = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);} }), { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  /* Dark / Light Mode */
+  (function(){
+    const root = document.documentElement;
+    const saved = localStorage.getItem('mdd-theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', saved || sys);
+    const btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function(){
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mdd-theme', next);
+    });
+  })();
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>

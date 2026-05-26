@@ -1,0 +1,946 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book — MaxDriveDetail · Vienna, VA</title>
+  <meta name="description" content="Book your mobile auto detail online. Pick your service, choose a time, and we come to you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ═══ TOKENS ═══ */
+    :root {
+      --bg: #1A1A1A; --bg2: #222222; --surface: #2A2A2A; --surface2: #333333;
+      --border: #333333; --gold: #8B1A1A; --gold-l: #C0392B; --gold-d: #6B1010;
+      /* legacy aliases so existing var(--blue) refs still resolve */
+      --blue: #8B1A1A; --blue-mid: #C0392B; --blue-lite: #C0392B;
+      --white: #f0f0f0; --gray: #888; --muted: #3d3d3d;
+      --radius-sm: 6px; --radius: 12px; --radius-lg: 18px;
+      --max-w: 1200px; --nav-h: 64px;
+    }
+    [data-theme="light"] { --bg:#F5F5F5; --bg2:#EAECEF; --surface:#FFFFFF; --surface2:#F7F8FA; --border:#E0E2E6; --white:#1A1A1A; --gray:#5A6070; --muted:#999999; }
+    [data-theme="light"] body { background:var(--bg); color:var(--white); }
+    [data-theme="light"] #nav { background:rgba(245,245,245,.96); }
+    [data-theme="light"] .nav-links a { color:rgba(26,26,26,.55); }
+    [data-theme="light"] .nav-links a:hover, [data-theme="light"] .nav-links a.active { color:#1A1A1A; }
+    [data-theme="light"] .page-header { background:var(--bg2); }
+    [data-theme="light"] .booking-card { background:#FFFFFF; }
+    [data-theme="light"] .opt-card { background:#FFFFFF; }
+    [data-theme="light"] footer { background:#1A1A1A; color:#F5F5F5; }
+    [data-theme="light"] .footer-bottom a { color:#888; }
+    @keyframes nav-cta-glow { 0%,100%{box-shadow:0 0 0 0 rgba(139,26,26,0);}50%{box-shadow:0 0 18px 4px rgba(139,26,26,.45);} }
+    .btn-primary { animation: nav-cta-glow 3s ease-in-out infinite; }
+    .btn-primary:hover { animation: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
+    .theme-toggle { display:flex; align-items:center; justify-content:center; width:34px; height:34px; background:none; border:1px solid rgba(139,26,26,.3); border-radius:6px; cursor:pointer; color:#888; font-size:15px; transition:border-color .2s,color .2s; flex-shrink:0; }
+    .theme-toggle:hover { border-color:var(--blue); color:var(--blue); }
+    .theme-toggle .icon-sun { display:none; }
+    .theme-toggle .icon-moon { display:block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .028; pointer-events: none; z-index: 9999; }
+    .brand-text { background: linear-gradient(120deg, var(--gold), var(--gold-l)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; padding: 14px 28px; border-radius: 7px; cursor: pointer; border: none; transition: transform .18s, box-shadow .18s, background .18s, border-color .18s; }
+    .btn-primary { background: linear-gradient(135deg,var(--gold) 0%,var(--gold-d) 100%); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 2px 8px rgba(139,26,26,.25); }
+    .btn-primary:hover { background: linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 100%); transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 28px rgba(139,26,26,.4); }
+    .btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.32); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.05); color: #fff; }
+    .btn-outline { background: transparent; color: var(--gold-l); border: 1px solid rgba(139,26,26,.45); }
+    .btn-outline:hover { background: rgba(139,26,26,.08); border-color: var(--gold); }
+    .btn .arr { transition: transform .2s; }
+    .btn:hover .arr { transform: translateX(3px); }
+
+    /* ═══ NAV ═══ */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: var(--nav-h); display: flex; align-items: center; padding: 0 40px; background: rgba(26,26,26,.94); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: var(--max-w); margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--white); }
+    .nav-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
+    .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; color: rgba(255,255,255,.45); text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all .25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(26,26,26,.97); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); padding: 16px 40px 32px; z-index: 199; flex-direction: column; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Barlow Condensed', sans-serif; color: var(--gray); text-decoration: none; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 16px 0; border-bottom: 1px solid var(--border); transition: color .2s; }
+    .mobile-menu a:hover { color: #fff; }
+    .mobile-menu .m-cta { margin-top: 20px; border-bottom: none !important; padding: 0 !important; }
+    .mobile-menu .m-cta a { border-bottom: none; display: block; text-align: center; }
+
+    /* ═══ PAGE HEADER ═══ */
+    .page-header { padding-top: var(--nav-h); background: var(--bg2); border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .page-header-inner { max-width: var(--max-w); margin: 0 auto; padding: 52px 40px 0; display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 40px; }
+    .ph-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-l); margin-bottom: 14px; }
+    .ph-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(42px, 5vw, 72px); font-weight: 900; letter-spacing: .01em; line-height: .92; text-transform: uppercase; margin-bottom: 0; }
+    .ph-sub { font-size: 13px; color: var(--gray); line-height: 1.85; padding-bottom: 52px; }
+
+    /* ═══ STEP PROGRESS ═══ */
+    .step-progress { position: sticky; top: var(--nav-h); z-index: 100; background: rgba(26,26,26,.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 40px; }
+    .step-progress-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; height: 56px; gap: 0; }
+    .step-pill { font-family: 'Barlow Condensed', sans-serif; display: flex; align-items: center; gap: 8px; padding: 0 16px 0 0; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; transition: color .25s; }
+    .step-pill.active { color: var(--white); }
+    .step-pill.done   { color: var(--blue-lite); }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; border: 1.5px solid var(--muted); color: var(--muted); transition: all .25s; flex-shrink: 0; }
+    .step-pill.active .step-num { border-color: var(--blue); color: var(--blue); }
+    .step-pill.done   .step-num { border-color: var(--blue-lite); color: var(--bg); background: var(--blue-lite); }
+    .step-sep { width: 24px; height: 1px; background: var(--border); flex-shrink: 0; margin: 0 4px; }
+
+    /* ═══ WIZARD BODY ═══ */
+    .wizard-body { max-width: var(--max-w); margin: 0 auto; padding: 48px 40px 80px; }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+    .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; margin-bottom: 6px; }
+    .step-desc  { font-size: 13px; color: var(--gray); margin-bottom: 32px; }
+
+    /* ═══ SERVICE CARDS ═══ */
+    .service-category { margin-bottom: 40px; }
+    .cat-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .svc-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; cursor: pointer; transition: border-color .18s, background .18s, transform .18s; position: relative; }
+    .svc-card:hover { border-color: rgba(139,26,26,.4); transform: translateY(-2px); }
+    .svc-card.selected { border-color: var(--blue); background: rgba(139,26,26,.07); }
+    .svc-card .svc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+    .svc-card .svc-price { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: var(--gold-l); }
+    .svc-card .svc-time { font-size: 11px; color: var(--gray); margin-bottom: 10px; }
+    .svc-card .svc-desc { font-size: 12px; color: var(--gray); line-height: 1.65; }
+    .svc-card .svc-check { position: absolute; top: 14px; right: 14px; width: 20px; height: 20px; border-radius: 50%; background: var(--blue); display: none; align-items: center; justify-content: center; }
+    .svc-card.selected .svc-check { display: flex; }
+    .svc-card .svc-check::after { content: '✓'; font-size: 10px; font-weight: 800; color: #fff; }
+
+    /* ═══ ADD-ONS ═══ */
+    .addons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+    .addon-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: border-color .18s; }
+    .addon-card:hover { border-color: rgba(139,26,26,.35); }
+    .addon-card.selected { border-color: var(--blue); background: rgba(139,26,26,.06); }
+    .addon-cb { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--muted); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .addon-card.selected .addon-cb { background: var(--blue); border-color: var(--blue); }
+    .addon-card.selected .addon-cb::after { content: '✓'; font-size: 10px; font-weight: 800; color: #fff; }
+    .addon-info strong { display: block; font-size: 13px; font-weight: 700; }
+    .addon-info span { font-size: 12px; color: var(--gray); }
+
+    /* ═══ FORM ELEMENTS ═══ */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+    .form-input, .form-select, .form-textarea {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 13px 16px;
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 14px;
+      outline: none; transition: border-color .2s;
+      width: 100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--blue); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+    .form-select { -webkit-appearance: none; cursor: pointer; }
+    .form-select option { background: #1a1a1a; }
+    .form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+
+    /* ═══ SIZE / CONDITION PICKER ═══ */
+    .pick-grid { display: grid; gap: 10px; }
+    .pick-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .pick-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .pick-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; cursor: pointer; transition: all .18s; }
+    .pick-item:hover { border-color: rgba(139,26,26,.35); }
+    .pick-item.selected { border-color: var(--blue); background: rgba(139,26,26,.07); }
+    .pick-item strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .pick-item span { font-size: 11px; color: var(--gray); }
+    .pick-item .pick-adj { font-size: 11px; color: var(--blue-lite); margin-top: 4px; font-weight: 600; }
+
+    /* ═══ DATE / TIME ═══ */
+    .calendar-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .cal-month { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+    .cal-nav { background: none; border: 1px solid var(--border); border-radius: 6px; color: var(--gray); width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: border-color .2s, color .2s; }
+    .cal-nav:hover { border-color: var(--blue); color: var(--white); }
+    .cal-days-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--gray); text-transform: uppercase; margin-bottom: 8px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; border-radius: 7px; cursor: pointer; border: 1.5px solid transparent; transition: all .15s; }
+    .cal-day:hover:not(.cal-empty):not(.cal-past) { background: rgba(139,26,26,.15); border-color: rgba(139,26,26,.3); }
+    .cal-day.selected { background: var(--blue); color: #fff; font-weight: 700; }
+    .cal-day.today { border-color: var(--blue); color: var(--blue-lite); font-weight: 700; }
+    .cal-day.cal-empty, .cal-day.cal-past { color: rgba(255,255,255,.15); cursor: default; pointer-events: none; }
+
+    .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 24px; }
+    .time-slot { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; transition: all .15s; }
+    .time-slot:hover { border-color: rgba(139,26,26,.4); }
+    .time-slot.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .time-slot.booked { opacity: 0.28; cursor: not-allowed; text-decoration: line-through; pointer-events: none; }
+    .time-slot.checking { opacity: 0.5; pointer-events: none; }
+
+    /* ═══ REVIEW PANEL ═══ */
+    .review-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+    .review-card-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+    .review-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--border); }
+    .review-row:last-child { border-bottom: none; }
+    .review-row .rk { font-size: 12px; color: var(--gray); }
+    .review-row .rv { font-size: 13px; font-weight: 600; text-align: right; max-width: 60%; }
+    .price-total { display: flex; justify-content: space-between; align-items: center; padding: 18px 0 0; }
+    .price-total .pt-label { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+    .price-total .pt-value { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--gold-l); }
+    .deposit-note { font-size: 12px; color: var(--gray); text-align: right; margin-top: 4px; }
+
+    /* ═══ STEP NAV ═══ */
+    .step-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .step-nav span { font-size: 12px; color: var(--red, #ef4444); font-weight: 600; }
+
+    /* ═══ SUCCESS ═══ */
+    .success-panel { display: none; text-align: center; padding: 60px 20px; }
+    .success-panel.show { display: block; }
+    .success-icon { width: 72px; height: 72px; border-radius: 20px; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 28px; }
+    .success-panel h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: .02em; text-transform: uppercase; margin-bottom: 12px; }
+    .success-panel p { font-size: 15px; color: var(--gray); line-height: 1.75; max-width: 480px; margin: 0 auto 32px; }
+    .success-details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 420px; margin: 0 auto 32px; text-align: left; }
+
+    /* ═══ SECTION LABEL ═══ */
+    .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; margin-top: 28px; }
+    .section-label:first-child { margin-top: 0; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 900px) {
+      .page-header-inner { grid-template-columns: 1fr; gap: 0; padding: 36px 24px 0; }
+      .ph-sub { padding-bottom: 32px; }
+      .wizard-body { padding: 32px 20px 60px; }
+      .step-progress { padding: 0 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+      .time-grid { grid-template-columns: repeat(3, 1fr); }
+      .pick-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-right .btn { display: none; }
+    }
+    @media (max-width: 600px) {
+      .step-pill span:not(.step-num) { display: none; }
+      .service-grid { grid-template-columns: 1fr; }
+      .pick-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+      .time-grid { grid-template-columns: repeat(2, 1fr); }
+      #nav { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="Logo.png" alt="MaxDriveDetail" class="nav-logo-img"><span class="nav-logo-text"><span class="brand-text">Max</span>DriveDetail</span></a>
+    <ul class="nav-links">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="index.html#reviews">Reviews</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="book.html" class="btn btn-primary" style="padding:9px 20px;font-size:11px;">Book Now <span class="arr">→</span></a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="services.html" onclick="closeMM()">Services</a>
+  <a href="gallery.html" onclick="closeMM()">Gallery</a>
+  <a href="index.html#reviews" onclick="closeMM()">Reviews</a>
+  <a href="contact.html" onclick="closeMM()">Contact</a>
+  <div class="m-cta"><a href="book.html" class="btn btn-primary">Book Now →</a></div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="ph-label">Online Booking</div>
+      <h1 class="ph-title">Book Your<br>Detail</h1>
+    </div>
+    <p class="ph-sub">Pick your service, choose a date and time, and we come to you. No drop-off, no hassle. Confirmation sent instantly.</p>
+  </div>
+</div>
+
+<!-- STEP PROGRESS -->
+<div class="step-progress">
+  <div class="step-progress-inner">
+    <div class="step-pill active" id="sp1"><span class="step-num">1</span><span>Service</span></div>
+    <div class="step-sep"></div>
+    <div class="step-pill" id="sp2"><span class="step-num">2</span><span>Vehicle</span></div>
+    <div class="step-sep"></div>
+    <div class="step-pill" id="sp3"><span class="step-num">3</span><span>Date &amp; Time</span></div>
+    <div class="step-sep"></div>
+    <div class="step-pill" id="sp4"><span class="step-num">4</span><span>Your Info</span></div>
+    <div class="step-sep"></div>
+    <div class="step-pill" id="sp5"><span class="step-num">5</span><span>Review</span></div>
+  </div>
+</div>
+
+<!-- WIZARD -->
+<div class="wizard-body">
+
+  <!-- STEP 1: SERVICE -->
+  <div class="step-panel active" id="panel1">
+    <h2 class="step-title">Choose a Service</h2>
+    <p class="step-desc">All prices are starting rates — adjusted for vehicle size and condition in the next step.</p>
+
+    <div class="service-category">
+      <div class="cat-label">Interior</div>
+      <div class="service-grid">
+        <div class="svc-card" onclick="selectService(this,'MaxRefresh','$115','115',60)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxRefresh</div>
+          <div class="svc-price">$115</div>
+          <div class="svc-time">~60 min</div>
+          <div class="svc-desc">Vacuum seats/floors/trunk, wipe dash/console/door panels/windows, spot treat light stains, compressed air in vents, light deodorizer.</div>
+        </div>
+        <div class="svc-card" onclick="selectService(this,'MaxClean','$175','175',120)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxClean</div>
+          <div class="svc-price">$175</div>
+          <div class="svc-time">~2 hrs</div>
+          <div class="svc-desc">Everything in Refresh + steam clean seats/carpets, full stain treatment, condition vinyl/leather, detail vents/crevices, full odor treatment.</div>
+        </div>
+        <div class="svc-card" onclick="selectService(this,'MaxRestore','$245','245',180)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxRestore</div>
+          <div class="svc-price">$245</div>
+          <div class="svc-time">~3 hrs</div>
+          <div class="svc-desc">Everything in Deep Clean + headliner wipe, door jambs, full decontamination, ozone treatment, scent restoration.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-category">
+      <div class="cat-label">Exterior</div>
+      <div class="service-grid">
+        <div class="svc-card" onclick="selectService(this,'MaxWash','$139','139',90)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxWash</div>
+          <div class="svc-price">$139</div>
+          <div class="svc-time">~90 min</div>
+          <div class="svc-desc">Pre-rinse, two-bucket hand wash, dry, tire/wheel clean and dressing, exterior windows, spray sealant.</div>
+        </div>
+        <div class="svc-card" onclick="selectService(this,'MaxEnhance','$219','219',150)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxEnhance</div>
+          <div class="svc-price">$219</div>
+          <div class="svc-time">~2.5 hrs</div>
+          <div class="svc-desc">MaxWash + iron decontamination, clay bar, one-step polish/paint enhancement — removes light swirls, adds gloss.</div>
+        </div>
+        <div class="svc-card" onclick="selectService(this,'MaxCorrect','$375','375',300)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxCorrect</div>
+          <div class="svc-price">$375</div>
+          <div class="svc-time">~5 hrs</div>
+          <div class="svc-desc">MaxEnhance + full multi-step correction: compound pass + finishing polish — 50–95% swirl removal.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-category">
+      <div class="cat-label">Full Detail Packages</div>
+      <div class="service-grid">
+        <div class="svc-card" onclick="selectService(this,'MaxComplete','$265','265',210)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxComplete</div>
+          <div class="svc-price">$265</div>
+          <div class="svc-time">~3.5 hrs</div>
+          <div class="svc-desc">Interior Refresh + Exterior Wash &amp; Protect. Best everyday value — fresh inside and out.</div>
+        </div>
+        <div class="svc-card" onclick="selectService(this,'MaxSignature','$615','615',480)">
+          <div class="svc-check"></div>
+          <div class="svc-name">MaxSignature</div>
+          <div class="svc-price">$615</div>
+          <div class="svc-time">~8 hrs</div>
+          <div class="svc-desc">MaxClean + Exterior Decon &amp; Correction. Show-quality restoration, ozone included.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Add-Ons (optional)</div>
+    <div class="addons-grid" id="addonsGrid">
+      <div class="addon-card" onclick="toggleAddon(this,'ozone','Scent Restoration (Ozone)','35')">
+        <div class="addon-cb"></div>
+        <div class="addon-info"><strong>Scent Restoration</strong><span>+$35 · Ozone treatment</span></div>
+      </div>
+      <div class="addon-card" onclick="toggleAddon(this,'pet','Pet Hair Removal','45')">
+        <div class="addon-cb"></div>
+        <div class="addon-info"><strong>Pet Hair Removal</strong><span>+$45</span></div>
+      </div>
+      <div class="addon-card" onclick="toggleAddon(this,'headlights','Headlight Restoration','50')">
+        <div class="addon-cb"></div>
+        <div class="addon-info"><strong>Headlight Restoration</strong><span>+$50</span></div>
+      </div>
+      <div class="addon-card" onclick="toggleAddon(this,'engine','Engine Bay Detail','40')">
+        <div class="addon-cb"></div>
+        <div class="addon-info"><strong>Engine Bay Detail</strong><span>+$40</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <span id="err1"></span>
+      <button class="btn btn-primary" onclick="nextStep(1)">Next: Vehicle <span class="arr">→</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 2: VEHICLE -->
+  <div class="step-panel" id="panel2">
+    <h2 class="step-title">Your Vehicle</h2>
+    <p class="step-desc">We adjust pricing for size and condition — no surprises.</p>
+
+    <div class="form-grid cols-3" style="margin-bottom:24px;">
+      <div class="form-group">
+        <label class="form-label">Year</label>
+        <input class="form-input" id="vYear" type="number" min="1990" max="2030" placeholder="2022">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Make</label>
+        <input class="form-input" id="vMake" type="text" placeholder="Toyota">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Model</label>
+        <input class="form-input" id="vModel" type="text" placeholder="Camry">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Color</label>
+        <input class="form-input" id="vColor" type="text" placeholder="Silver">
+      </div>
+    </div>
+
+    <div class="section-label">Vehicle Size</div>
+    <div class="pick-grid cols-3" style="margin-bottom:24px;">
+      <div class="pick-item" onclick="selectSize(this,'sedan',0)">
+        <strong>Sedan / Coupe</strong>
+        <span>Car, sports car</span>
+        <div class="pick-adj">Base price</div>
+      </div>
+      <div class="pick-item" onclick="selectSize(this,'suv',18)">
+        <strong>SUV / Crossover</strong>
+        <span>Mid-size, crossover</span>
+        <div class="pick-adj">+$15–20</div>
+      </div>
+      <div class="pick-item" onclick="selectSize(this,'truck',30)">
+        <strong>Truck / Full-Size</strong>
+        <span>Large truck, van, 3-row SUV</span>
+        <div class="pick-adj">+$25–35</div>
+      </div>
+    </div>
+
+    <div class="section-label">Condition</div>
+    <div class="pick-grid cols-3">
+      <div class="pick-item" onclick="selectCond(this,'normal',0)">
+        <strong>Normal</strong>
+        <span>Regular everyday use</span>
+        <div class="pick-adj">Included</div>
+      </div>
+      <div class="pick-item" onclick="selectCond(this,'moderate',30)">
+        <strong>Moderate</strong>
+        <span>Visible soil, some stains</span>
+        <div class="pick-adj">+$30</div>
+      </div>
+      <div class="pick-item" onclick="selectCond(this,'heavy',65)">
+        <strong>Heavy</strong>
+        <span>Significant neglect, strong odor</span>
+        <div class="pick-adj">+$50–75</div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span id="err2" style="color:#ef4444;font-size:12px;font-weight:600;"></span>
+        <button class="btn btn-primary" onclick="nextStep(2)">Next: Date &amp; Time <span class="arr">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: DATE & TIME -->
+  <div class="step-panel" id="panel3">
+    <h2 class="step-title">Pick a Date &amp; Time</h2>
+    <p class="step-desc">We work 7 days a week, 8 AM – 5 PM. Select any available date.</p>
+
+    <div class="calendar-wrap">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="calMonth"></div>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-days-header">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="section-label" style="margin-top:24px;">Start Time</div>
+      <div class="time-grid" id="timeGrid">
+        <div class="time-slot" data-hour="8"  onclick="selectTime(this,8)">8:00 AM</div>
+        <div class="time-slot" data-hour="9"  onclick="selectTime(this,9)">9:00 AM</div>
+        <div class="time-slot" data-hour="10" onclick="selectTime(this,10)">10:00 AM</div>
+        <div class="time-slot" data-hour="11" onclick="selectTime(this,11)">11:00 AM</div>
+        <div class="time-slot" data-hour="12" onclick="selectTime(this,12)">12:00 PM</div>
+        <div class="time-slot" data-hour="13" onclick="selectTime(this,13)">1:00 PM</div>
+        <div class="time-slot" data-hour="14" onclick="selectTime(this,14)">2:00 PM</div>
+        <div class="time-slot" data-hour="15" onclick="selectTime(this,15)">3:00 PM</div>
+      </div>
+      <p id="availStatus" style="font-size:11px;color:var(--gray);margin-top:10px;min-height:16px;"></p>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-ghost" onclick="prevStep(3)">← Back</button>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span id="err3" style="color:#ef4444;font-size:12px;font-weight:600;"></span>
+        <button class="btn btn-primary" onclick="nextStep(3)">Next: Your Info <span class="arr">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: CUSTOMER INFO -->
+  <div class="step-panel" id="panel4">
+    <h2 class="step-title">Your Information</h2>
+    <p class="step-desc">We'll send confirmation and use your address to find you on the day.</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="cName" type="text" placeholder="John Smith" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input class="form-input" id="cPhone" type="tel" placeholder="(571) 555-0100" autocomplete="tel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="cEmail" type="email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service Address</label>
+        <input class="form-input" id="cAddr" type="text" placeholder="123 Main St, Vienna VA 22180" autocomplete="street-address">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Notes (optional)</label>
+        <textarea class="form-textarea" id="cNotes" placeholder="Gate code, parking instructions, anything we should know…"></textarea>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-ghost" onclick="prevStep(4)">← Back</button>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span id="err4" style="color:#ef4444;font-size:12px;font-weight:600;"></span>
+        <button class="btn btn-primary" onclick="nextStep(4)">Review Booking <span class="arr">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: REVIEW -->
+  <div class="step-panel" id="panel5">
+    <h2 class="step-title">Review &amp; Confirm</h2>
+    <p class="step-desc">Double-check everything below before confirming.</p>
+
+    <div class="review-card">
+      <div class="review-card-label">Service</div>
+      <div class="review-row"><span class="rk">Service</span><span class="rv" id="rv-service">—</span></div>
+      <div class="review-row"><span class="rk">Vehicle</span><span class="rv" id="rv-vehicle">—</span></div>
+      <div class="review-row"><span class="rk">Size</span><span class="rv" id="rv-size">—</span></div>
+      <div class="review-row"><span class="rk">Condition</span><span class="rv" id="rv-cond">—</span></div>
+      <div class="review-row" id="rv-addons-row"><span class="rk">Add-ons</span><span class="rv" id="rv-addons">None</span></div>
+    </div>
+    <div class="review-card">
+      <div class="review-card-label">Appointment</div>
+      <div class="review-row"><span class="rk">Date</span><span class="rv" id="rv-date">—</span></div>
+      <div class="review-row"><span class="rk">Time</span><span class="rv" id="rv-time">—</span></div>
+      <div class="review-row"><span class="rk">Duration</span><span class="rv" id="rv-dur">—</span></div>
+    </div>
+    <div class="review-card">
+      <div class="review-card-label">Contact</div>
+      <div class="review-row"><span class="rk">Name</span><span class="rv" id="rv-name">—</span></div>
+      <div class="review-row"><span class="rk">Phone</span><span class="rv" id="rv-phone">—</span></div>
+      <div class="review-row"><span class="rk">Email</span><span class="rv" id="rv-email">—</span></div>
+      <div class="review-row"><span class="rk">Address</span><span class="rv" id="rv-addr">—</span></div>
+    </div>
+    <div class="review-card">
+      <div class="review-card-label">Pricing</div>
+      <div class="review-row"><span class="rk">Base price</span><span class="rv" id="rv-base">—</span></div>
+      <div class="review-row"><span class="rk">Size adjustment</span><span class="rv" id="rv-sizeadj">—</span></div>
+      <div class="review-row"><span class="rk">Condition upcharge</span><span class="rv" id="rv-condadj">—</span></div>
+      <div class="review-row"><span class="rk">Add-ons</span><span class="rv" id="rv-addonprice">—</span></div>
+      <div class="price-total">
+        <div class="pt-label">Total</div>
+        <div class="pt-value" id="rv-total">—</div>
+      </div>
+      <div class="deposit-note" id="rv-deposit">15% deposit required to confirm</div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-ghost" onclick="prevStep(5)">← Back</button>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span id="err5" style="color:#ef4444;font-size:12px;font-weight:600;"></span>
+        <button class="btn btn-primary" id="submitBtn" onclick="submitBooking()">Confirm Booking <span class="arr">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="successPanel">
+    <div class="success-icon">✓</div>
+    <h2>You're Booked.</h2>
+    <p>Confirmation sent to your email. Zach will follow up to collect the deposit and confirm your slot.</p>
+    <div class="success-details" id="successDetails"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-primary">Back to Home <span class="arr">→</span></a>
+      <a href="tel:5712787350" class="btn btn-ghost">Call / Text Zach</a>
+    </div>
+  </div>
+
+</div><!-- /wizard-body -->
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqGGGLx8-6MCl2o1uuDCcYN7XGilM8Z8LsYT7ZRNQbcJowBjqrYjo2kp9E2JPNcxBt/exec';
+
+  /* ── Mobile nav ─────────────────────────────────────────── */
+  const ham = document.getElementById('ham');
+  const mm  = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); mm.classList.toggle('open'); });
+  function closeMM() { ham.classList.remove('open'); mm.classList.remove('open'); }
+
+  /* ── Booking state ──────────────────────────────────────── */
+  const B = {
+    serviceName: '', serviceBase: 0, serviceDur: 120,
+    addons: {}, // key → {name, price}
+    vYear: '', vMake: '', vModel: '', vColor: '',
+    sizeKey: '', sizeAdj: 0, sizeLabel: '',
+    condKey: '', condAdj: 0, condLabel: '',
+    date: null, time: null,
+    name: '', phone: '', email: '', addr: '', notes: ''
+  };
+
+  /* ── Service selection ──────────────────────────────────── */
+  function selectService(el, name, priceStr, base, dur) {
+    document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    B.serviceName = name;
+    B.serviceBase = parseInt(base);
+    B.serviceDur  = dur;
+  }
+
+  function toggleAddon(el, key, name, price) {
+    el.classList.toggle('selected');
+    if (el.classList.contains('selected')) {
+      B.addons[key] = { name, price: parseInt(price) };
+    } else {
+      delete B.addons[key];
+    }
+  }
+
+  /* ── Vehicle ────────────────────────────────────────────── */
+  function selectSize(el, key, adj) {
+    document.querySelectorAll('.pick-grid.cols-3 .pick-item').forEach(p => {
+      if (p.parentElement.id !== 'condGrid') p.classList.remove('selected');
+    });
+    // only deselect within same grid
+    el.parentElement.querySelectorAll('.pick-item').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    B.sizeKey = key; B.sizeAdj = adj;
+    B.sizeLabel = el.querySelector('strong').textContent;
+  }
+
+  function selectCond(el, key, adj) {
+    el.parentElement.querySelectorAll('.pick-item').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    B.condKey = key; B.condAdj = adj;
+    B.condLabel = el.querySelector('strong').textContent;
+  }
+
+  /* ── Calendar ───────────────────────────────────────────── */
+  let calYear, calMonth;
+  (function initCal() {
+    const now = new Date();
+    calYear = now.getFullYear(); calMonth = now.getMonth();
+    renderCal();
+  })();
+
+  function changeMonth(d) {
+    calMonth += d;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11){ calMonth = 0;  calYear++; }
+    renderCal();
+  }
+
+  function renderCal() {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('calMonth').textContent = months[calMonth] + ' ' + calYear;
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    const today = new Date(); today.setHours(0,0,0,0);
+    const first = new Date(calYear, calMonth, 1).getDay();
+    const days  = new Date(calYear, calMonth+1, 0).getDate();
+    for (let i = 0; i < first; i++) {
+      const e = document.createElement('div'); e.className = 'cal-day cal-empty'; grid.appendChild(e);
+    }
+    for (let d = 1; d <= days; d++) {
+      const e = document.createElement('div');
+      const dt = new Date(calYear, calMonth, d);
+      const todayStr = today.toDateString();
+      e.className = 'cal-day';
+      if (dt < today) e.classList.add('cal-past');
+      if (dt.toDateString() === todayStr) e.classList.add('today');
+      if (B.date && dt.toDateString() === B.date.toDateString()) e.classList.add('selected');
+      e.textContent = d;
+      e.addEventListener('click', () => {
+        if (dt < today) return;
+        B.date = dt;
+        B.time = null;
+        document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+        renderCal();
+        const pad2 = n => String(n).padStart(2,'0');
+        loadAvailability(dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate()));
+      });
+      grid.appendChild(e);
+    }
+  }
+
+  function selectTime(el, h) {
+    if (el.classList.contains('booked')) return;
+    document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    B.time = h;
+  }
+
+  let busySlots = [];
+
+  async function loadAvailability(dateStr) {
+    const status = document.getElementById('availStatus');
+    if (!APPS_SCRIPT_URL) {
+      if (status) status.textContent = 'No script URL set — availability check skipped.';
+      return;
+    }
+    const slots = document.querySelectorAll('.time-slot');
+    slots.forEach(s => { s.classList.remove('booked'); s.classList.add('checking'); });
+    if (status) status.textContent = 'Checking availability…';
+    const url = APPS_SCRIPT_URL + '?action=availability&date=' + dateStr;
+    console.log('[availability] fetching:', url);
+    try {
+      const res  = await fetch(url);
+      const text = await res.text();
+      console.log('[availability] raw response:', text);
+      const data = JSON.parse(text);
+      console.log('[availability] parsed:', data);
+      busySlots = data.ok ? data.busy : [];
+      if (status) status.textContent = data.ok
+        ? (busySlots.length ? busySlots.length + ' booking(s) on this day — some slots may be unavailable.' : 'All slots available.')
+        : 'Could not load live availability (script not redeployed?).';
+    } catch(e) {
+      console.error('[availability] fetch failed:', e);
+      busySlots = [];
+      if (status) status.textContent = 'Could not check availability: ' + e.message;
+    }
+    slots.forEach(s => s.classList.remove('checking'));
+    markBlockedSlots();
+  }
+
+  function markBlockedSlots() {
+    const dur = (B.serviceDur || 60) / 60; // duration in decimal hours
+    document.querySelectorAll('.time-slot').forEach(slot => {
+      const h       = parseInt(slot.dataset.hour);
+      const slotEnd = h + dur;
+      const blocked = busySlots.some(b => {
+        const bStart = b.startH + b.startM / 60;
+        const bEnd   = b.endH   + b.endM   / 60;
+        return h < bEnd && slotEnd > bStart;
+      });
+      slot.classList.toggle('booked', blocked);
+      if (blocked && B.time === h) { B.time = null; slot.classList.remove('selected'); }
+    });
+  }
+
+  /* ── Step navigation ────────────────────────────────────── */
+  let currentStep = 1;
+
+  function nextStep(from) {
+    const err = document.getElementById('err' + from);
+    err.textContent = '';
+
+    if (from === 1) {
+      if (!B.serviceName) { err.textContent = 'Please select a service.'; return; }
+    }
+    if (from === 2) {
+      B.vYear  = document.getElementById('vYear').value.trim();
+      B.vMake  = document.getElementById('vMake').value.trim();
+      B.vModel = document.getElementById('vModel').value.trim();
+      B.vColor = document.getElementById('vColor').value.trim();
+      if (!B.vYear || !B.vMake || !B.vModel || !B.vColor) { err.textContent = 'Please fill in all vehicle fields.'; return; }
+      if (!B.sizeKey) { err.textContent = 'Please select a vehicle size.'; return; }
+      if (!B.condKey) { err.textContent = 'Please select a condition.'; return; }
+    }
+    if (from === 3) {
+      if (!B.date) { err.textContent = 'Please select a date.'; return; }
+      if (B.time === null) { err.textContent = 'Please select a start time.'; return; }
+    }
+    if (from === 4) {
+      B.name  = document.getElementById('cName').value.trim();
+      B.phone = document.getElementById('cPhone').value.trim();
+      B.email = document.getElementById('cEmail').value.trim();
+      B.addr  = document.getElementById('cAddr').value.trim();
+      B.notes = document.getElementById('cNotes').value.trim();
+      if (!B.name || !B.phone || !B.email || !B.addr) { err.textContent = 'Please fill in all required fields.'; return; }
+      if (!/\S+@\S+\.\S+/.test(B.email)) { err.textContent = 'Please enter a valid email.'; return; }
+      buildReview();
+    }
+
+    goToStep(from + 1);
+  }
+
+  function prevStep(from) { goToStep(from - 1); }
+
+  function goToStep(n) {
+    document.getElementById('panel' + currentStep).classList.remove('active');
+    document.getElementById('sp' + currentStep).classList.remove('active');
+    document.getElementById('sp' + currentStep).classList.add('done');
+    currentStep = n;
+    document.getElementById('panel' + n).classList.add('active');
+    document.getElementById('sp' + n).classList.remove('done');
+    document.getElementById('sp' + n).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── Review build ───────────────────────────────────────── */
+  function buildReview() {
+    const addonNames = Object.values(B.addons).map(a => a.name);
+    const addonTotal = Object.values(B.addons).reduce((s, a) => s + a.price, 0);
+    const total   = B.serviceBase + B.sizeAdj + B.condAdj + addonTotal;
+    const deposit = Math.round(total * 0.15);
+
+    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; const h12 = h % 12 || 12; return h12 + ':00 ' + ampm; };
+    const fmtDate = d => { const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; const months = ['January','February','March','April','May','June','July','August','September','October','November','December']; return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); };
+    const fmtDur  = m => m >= 60 ? Math.floor(m/60) + 'h' + (m%60 ? ' ' + m%60 + 'min' : '') : m + ' min';
+
+    document.getElementById('rv-service').textContent   = B.serviceName;
+    document.getElementById('rv-vehicle').textContent   = B.vYear + ' ' + B.vMake + ' ' + B.vModel + ' (' + B.vColor + ')';
+    document.getElementById('rv-size').textContent      = B.sizeLabel;
+    document.getElementById('rv-cond').textContent      = B.condLabel;
+    document.getElementById('rv-addons').textContent    = addonNames.length ? addonNames.join(', ') : 'None';
+    document.getElementById('rv-date').textContent      = fmtDate(B.date);
+    document.getElementById('rv-time').textContent      = fmt12(B.time);
+    document.getElementById('rv-dur').textContent       = fmtDur(B.serviceDur);
+    document.getElementById('rv-name').textContent      = B.name;
+    document.getElementById('rv-phone').textContent     = B.phone;
+    document.getElementById('rv-email').textContent     = B.email;
+    document.getElementById('rv-addr').textContent      = B.addr;
+    document.getElementById('rv-base').textContent      = '$' + B.serviceBase;
+    document.getElementById('rv-sizeadj').textContent   = B.sizeAdj ? '+$' + B.sizeAdj : 'Included';
+    document.getElementById('rv-condadj').textContent   = B.condAdj ? '+$' + B.condAdj : 'Included';
+    document.getElementById('rv-addonprice').textContent= addonTotal ? '+$' + addonTotal : 'None';
+    document.getElementById('rv-total').textContent     = '$' + total;
+    document.getElementById('rv-deposit').textContent   = '15% deposit due to confirm: $' + deposit;
+
+    B._total   = total;
+    B._deposit = deposit;
+  }
+
+  /* ── Submit ─────────────────────────────────────────────── */
+  async function submitBooking() {
+    const btn = document.getElementById('submitBtn');
+    const err = document.getElementById('err5');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    const pad = n => String(n).padStart(2, '0');
+    const addonNames = Object.values(B.addons).map(a => a.name);
+
+    const payload = {
+      type:     'booking',
+      service:  B.serviceName,
+      vehicle:  B.vYear + ' ' + B.vMake + ' ' + B.vModel + ' (' + B.vColor + ')',
+      size:     B.sizeLabel,
+      cond:     B.condLabel,
+      addons:   addonNames,
+      date:     B.date.getFullYear() + '-' + pad(B.date.getMonth()+1) + '-' + pad(B.date.getDate()),
+      time:     pad(B.time) + ':00',
+      duration: B.serviceDur,
+      name:     B.name,
+      phone:    B.phone,
+      email:    B.email,
+      address:  B.addr,
+      notes:    B.notes,
+      total:    B._total,
+      deposit:  B._deposit,
+      source:   'website'
+    };
+
+    if (APPS_SCRIPT_URL) {
+      try {
+        const ctrl = new AbortController();
+        const tid  = setTimeout(() => ctrl.abort(), 12000);
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        let result = { ok: true };
+        try { result = await res.json(); } catch(_) {}
+        if (!result.ok) {
+          err.textContent = result.error || 'Something went wrong — please try again.';
+          btn.disabled = false;
+          btn.textContent = 'Confirm Booking →';
+          return;
+        }
+      } catch(e) {
+        if (e.name === 'AbortError') {
+          err.textContent = 'Request timed out. Check your connection and try again.';
+          btn.disabled = false;
+          btn.textContent = 'Confirm Booking →';
+          return;
+        }
+        // Unknown network error — fall through to success (booking likely sent)
+      }
+    }
+
+    // Show success
+    document.getElementById('panel5').classList.remove('active');
+    const s = document.getElementById('successPanel');
+    s.classList.add('show');
+
+    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; return (h % 12 || 12) + ':00 ' + ampm; };
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('successDetails').innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:10px;">' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray)">Service</span><strong>' + B.serviceName + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray)">Date</span><strong>' + months[B.date.getMonth()] + ' ' + B.date.getDate() + ', ' + B.date.getFullYear() + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray)">Time</span><strong>' + fmt12(B.time) + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray)">Total</span><strong style="color:var(--blue-lite)">$' + B._total + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--gray)">Deposit</span><strong>$' + B._deposit + '</strong></div>' +
+      '</div>';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* Dark / Light Mode */
+  (function(){
+    const root = document.documentElement;
+    const saved = localStorage.getItem('mdd-theme');
+    const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', saved || sys);
+    const btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function(){
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mdd-theme', next);
+    });
+  })();
+
+  /* Service Worker */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>
