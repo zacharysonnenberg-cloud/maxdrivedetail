@@ -2,7 +2,7 @@
    MaxDriveDetail — Service Worker
    Caches the page shell for offline viewing
 ═══════════════════════════════════════════ */
-const CACHE = 'maxdrive-v2';
+const CACHE = 'maxdrive-v3';
 const SHELL = [
   '/',
   '/index.html',
