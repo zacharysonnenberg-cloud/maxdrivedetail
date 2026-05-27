@@ -287,7 +287,7 @@
        KEYFRAMES
     ═══════════════════════════════════════════ */
     @keyframes shimmer      { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
-    @keyframes rMarquee     { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
     @keyframes tabFadeIn    { to { opacity:1; transform: translateY(0); } }
     @keyframes hlIn         { from { opacity:0; transform: translateY(60px); } to { opacity:1; transform:none; } }
     @keyframes gold-pulse   { 0%,100% { opacity:.55; } 50% { opacity:1; } }
@@ -993,83 +993,6 @@
     }
 
     /* ═══════════════════════════════════════════
-       REVIEWS
-    ═══════════════════════════════════════════ */
-    #reviews { padding: 100px 0; overflow: hidden; }
-    .reviews-header {
-      display: grid; grid-template-columns: 1fr auto;
-      max-width: var(--max-w); margin: 0 auto; padding: 0 64px 56px; gap: 40px; align-items: end;
-    }
-    .reviews-eyebrow {
-      display: block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; font-weight: 700; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
-    }
-    .reviews-header h2 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(44px, 5.5vw, 72px);
-      font-weight: 700; text-transform: uppercase;
-      color: var(--white); line-height: .9;
-    }
-    .reviews-right {
-      display: flex; flex-direction: column; align-items: flex-end;
-      gap: 20px; flex-shrink: 0;
-    }
-    .rating-block { display: flex; align-items: center; gap: 14px; }
-    .rating-score {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px; letter-spacing: .04em; line-height: 1;
-      background: linear-gradient(135deg, #C0392B, #8B1A1A);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .rating-detail { display: flex; flex-direction: column; gap: 2px; }
-    .rating-stars { font-size: 16px; letter-spacing: 2px; color: var(--gold); }
-    .rating-count {
-      font-family: 'Barlow', sans-serif;
-      font-size: 12px; color: var(--chrome); font-weight: 300;
-    }
-
-    /* MARQUEE */
-    .reviews-marquee-wrap { position: relative; }
-    .reviews-row { overflow: hidden; padding: 8px 0; }
-    .reviews-track {
-      display: flex; gap: 12px; width: max-content;
-      animation: rMarquee 42s linear infinite;
-    }
-    .reviews-track.rev { animation-direction: reverse; }
-    .reviews-row:hover .reviews-track { animation-play-state: paused; }
-    .review-card {
-      width: 300px; flex-shrink: 0; padding: 24px;
-      background: rgba(28,31,36,.82); backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-top: 2px solid rgba(139,26,26,.38);
-      border-radius: var(--radius);
-    }
-    .rc-stars { font-size: 12px; letter-spacing: 2px; color: var(--gold); margin-bottom: 12px; }
-    .rc-text {
-      font-family: 'Barlow', sans-serif;
-      font-size: 13px; color: var(--silver); line-height: 1.6;
-      font-style: italic; font-weight: 300; margin-bottom: 14px;
-    }
-    .rc-author {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--white);
-    }
-    .rc-author span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--chrome); }
-    .reviews-footer {
-      max-width: var(--max-w); margin: 32px auto 0; padding: 0 64px; text-align: right;
-    }
-    .reviews-footer a {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; font-weight: 700; letter-spacing: .18em;
-      text-transform: uppercase; color: var(--gold);
-      text-decoration: none; transition: color .2s;
-    }
-    .reviews-footer a:hover { color: var(--gold-l); }
-
-    /* ═══════════════════════════════════════════
        ABOUT
     ═══════════════════════════════════════════ */
     #about { padding: 100px 0; }
@@ -1279,7 +1202,7 @@
       .hero-content { padding: 0 32px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
       .results-header, .gallery-header, .services-top, .why-header,
-      .process-header, .reviews-header { grid-template-columns: 1fr; gap: 20px; padding-left: 32px; padding-right: 32px; }
+      .process-header { grid-template-columns: 1fr; gap: 20px; padding-left: 32px; padding-right: 32px; }
       .ba-pair { padding: 0 32px; }
       .gallery-strip { padding: 0 32px; }
       .gallery-progress-wrap { padding: 20px 32px 0; }
@@ -1293,9 +1216,6 @@
       .why-row { grid-template-columns: 56px 160px 1fr; gap: 20px; }
       .steps-grid { padding: 0 32px; }
       .policies-strip { grid-template-columns: 1fr 1fr; padding: 0 32px; gap: 10px; }
-      .reviews-header { grid-template-columns: 1fr; }
-      .reviews-right { align-items: flex-start; }
-      .reviews-footer { padding: 0 32px; }
       .about-inner { grid-template-columns: 1fr; gap: 48px; padding: 0 32px; }
       .about-video-wrap { aspect-ratio: 16/9; }
       .faq-inner { grid-template-columns: 1fr; gap: 48px; padding: 0 32px; }
@@ -1315,9 +1235,9 @@
       .hero-stats { flex-wrap: wrap; }
       .h-stat { flex: 1 1 50%; }
       .results-header, .gallery-header, .services-top, .why-header,
-      .process-header, .reviews-header { padding-left: 24px; padding-right: 24px; }
+      .process-header { padding-left: 24px; padding-right: 24px; }
       .ba-pair, .gallery-strip, .service-table, .service-note, .addons-table,
-      .tab-row, .why-list, .steps-grid, .reviews-footer,
+      .tab-row, .why-list, .steps-grid,
       .about-inner, .faq-inner { padding-left: 24px; padding-right: 24px; }
       .policies-strip { padding: 0 24px; }
       .why-row { grid-template-columns: 48px 1fr; }
@@ -2481,11 +2401,21 @@
     <div class="reveal" style="margin-bottom:56px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;">
       <div>
         <span style="font-family:'Barlow Condensed';font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:12px;">Customer Reviews</span>
-        <h2 style="font-family:'Barlow Condensed';font-size:clamp(40px,5vw,72px);font-weight:700;text-transform:uppercase;line-height:.9;color:var(--white);">WHAT THEY<br>ACTUALLY SAID.</h2>
+        <h2 style="font-family:'Barlow Condensed';font-size:clamp(40px,5vw,72px);font-weight:700;text-transform:uppercase;line-height:.9;color:var(--white);margin-bottom:20px;">WHAT THEY<br>ACTUALLY SAID.</h2>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:.04em;line-height:1;background:linear-gradient(135deg,#C0392B,#8B1A1A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">5.0</span>
+          <div>
+            <div style="font-size:14px;letter-spacing:2px;color:var(--gold);">★★★★★</div>
+            <div style="font-family:'Barlow',sans-serif;font-size:12px;color:var(--chrome);font-weight:300;margin-top:2px;">5 verified Google reviews</div>
+          </div>
+        </div>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <button class="tc-arrow tc-prev" id="tcPrev" aria-label="Previous testimonial">‹</button>
-        <button class="tc-arrow tc-next" id="tcNext" aria-label="Next testimonial">›</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="tc-arrow tc-prev" id="tcPrev" aria-label="Previous testimonial">‹</button>
+          <button class="tc-arrow tc-next" id="tcNext" aria-label="Next testimonial">›</button>
+        </div>
+        <a href="https://share.google/R7SeGQyOxR5cV5J1h" target="_blank" rel="noopener" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#C0392B'" onmouseout="this.style.color='var(--gold)'">See all on Google →</a>
       </div>
     </div>
 
@@ -2497,7 +2427,7 @@
           <blockquote class="tc-quote">"Such a good experience with these guys — my car feels brand new like I just drove it off the lot. Would recommend them to anyone and appreciated how thorough they were!"</blockquote>
           <div class="tc-meta">
             <div class="tc-name">Bailey Sexton</div>
-            </div>
+          </div>
         </div>
 
         <div class="tc-card" data-idx="1">
@@ -2505,7 +2435,7 @@
           <blockquote class="tc-quote">"These guys do a great job! This is my second time doing business with them, and I have to say, their detailing work is top notch."</blockquote>
           <div class="tc-meta">
             <div class="tc-name">David McCarthy</div>
-            </div>
+          </div>
         </div>
 
         <div class="tc-card" data-idx="2">
@@ -2513,7 +2443,7 @@
           <blockquote class="tc-quote">"Had a great experience with MaxDriveDetail! Very impressed with the attention to detail and the hustle, even in 90+ degree heat."</blockquote>
           <div class="tc-meta">
             <div class="tc-name">Jessica Wood Leigh</div>
-            </div>
+          </div>
         </div>
 
         <div class="tc-card" data-idx="3">
@@ -2521,7 +2451,7 @@
           <blockquote class="tc-quote">"My car hadn't been detailed in a couple of years, so it was definitely overdue. Booking on the MaxDriveDetail website was easy and Zach did an incredible job."</blockquote>
           <div class="tc-meta">
             <div class="tc-name">Carlen</div>
-            </div>
+          </div>
         </div>
 
         <div class="tc-card" data-idx="4">
@@ -2529,7 +2459,7 @@
           <blockquote class="tc-quote">"Very good clean — cleanest it's ever been. I like how smooth it feels."</blockquote>
           <div class="tc-meta">
             <div class="tc-name">Samuel Flannigan</div>
-            </div>
+          </div>
         </div>
 
       </div>
@@ -2582,13 +2512,7 @@
   font-family: 'Barlow Condensed'; font-weight: 600;
   font-size: 16px; text-transform: uppercase; letter-spacing: .1em; color: var(--white);
 }
-.tc-vehicle {
-  font-family: 'Barlow Condensed'; font-size: 11px; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--gold); padding: 4px 10px;
-  background: rgba(139,26,26,.1); border: 1px solid rgba(139,26,26,.25);
-  border-radius: 3px; display: inline-block; width: fit-content;
-}
+
 .tc-dots {
   display: flex; gap: 8px; justify-content: center; margin-top: 32px;
 }

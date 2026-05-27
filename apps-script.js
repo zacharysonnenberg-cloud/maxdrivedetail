@@ -1,8 +1,8 @@
 /**
- * 3S Detailing - Google Apps Script Backend
+ * MaxDriveDetail - Google Apps Script Backend
  *
  * SETUP:
- * 1. Go to script.google.com, create a new project named "3S Detailing Backend"
+ * 1. Go to script.google.com, create a new project named "MaxDriveDetail Backend"
  * 2. Paste this entire file, replacing the default code
  * 3. Fill in OWNER_EMAIL and SHEET_ID below
  * 4. Click Deploy > New deployment > Web App
@@ -146,7 +146,7 @@ function handleBooking(d) {
     + (d.notes ? '\nNOTES\n' + d.notes : '');
 
   cal.createEvent(
-    '3S Detailing - ' + d.service + ' - ' + d.name,
+    'MaxDriveDetail - ' + d.service + ' - ' + d.name,
     start,
     bufferedEnd,
     {
@@ -170,11 +170,11 @@ function getSheet() {
     return SpreadsheetApp.openById(SHEET_ID).getSheets()[0];
   }
   // Auto-find or auto-create sheet
-  var files = DriveApp.getFilesByName('3S Detailing Bookings');
+  var files = DriveApp.getFilesByName('MaxDriveDetail Bookings');
   if (files.hasNext()) {
     return SpreadsheetApp.open(files.next()).getSheets()[0];
   }
-  var ss = SpreadsheetApp.create('3S Detailing Bookings');
+  var ss = SpreadsheetApp.create('MaxDriveDetail Bookings');
   var sheet = ss.getSheets()[0];
   sheet.appendRow([
     'Timestamp', 'Name', 'Phone', 'Email', 'Address',
@@ -240,8 +240,8 @@ function sendOwnerBookingEmail(d, start, end) {
   var addonsStr = (d.addons && d.addons.length) ? d.addons.join(', ') : 'None';
 
   var html = '<div style="font-family:Arial,sans-serif;max-width:560px;color:#111;">'
-    + '<div style="background:#1566F5;padding:20px 28px;">'
-    + '<h1 style="color:#fff;margin:0;font-size:20px;">New Booking - 3S Detailing</h1>'
+    + '<div style="background:#8B1A1A;padding:20px 28px;">'
+    + '<h1 style="color:#fff;margin:0;font-size:20px;">New Booking — MaxDriveDetail</h1>'
     + '</div>'
     + '<div style="padding:28px;background:#f9f9f9;border:1px solid #e5e5e5;">'
     + '<table style="width:100%;border-collapse:collapse;font-size:14px;">'
@@ -264,12 +264,12 @@ function sendOwnerBookingEmail(d, start, end) {
     + (d.notes ? '<tr><td style="padding:8px 0;color:#888;vertical-align:top;">Notes</td><td style="padding:8px 0;">' + d.notes + '</td></tr>' : '')
     + '</table>'
     + '</div>'
-    + '<div style="padding:16px 28px;background:#fff;border:1px solid #e5e5e5;border-top:none;font-size:12px;color:#888;">Event added to your Google Calendar.</div>'
+    + '<div style="padding:16px 28px;background:#fff;border:1px solid #e5e5e5;border-top:none;font-size:12px;color:#888;">Event added to your Google Calendar · MaxDriveDetail, Vienna VA</div>'
     + '</div>';
 
   GmailApp.sendEmail(
     OWNER_EMAIL,
-    'New Booking: ' + d.name + ' - ' + d.service + ' on ' + dateStr,
+    'New Booking: ' + d.name + ' — ' + d.service + ' · ' + dateStr,
     'New booking from ' + d.name + ' for ' + d.service + ' on ' + dateStr,
     { htmlBody: html }
   );
@@ -285,9 +285,9 @@ function sendCustomerBookingEmail(d, start, end) {
     : '<p>A $' + d.deposit + ' deposit is due to confirm your appointment. Zach will reach out to collect it.</p>';
 
   var html = '<div style="font-family:Arial,sans-serif;max-width:560px;color:#111;">'
-    + '<div style="background:#1566F5;padding:24px 28px;">'
+    + '<div style="background:#8B1A1A;padding:24px 28px;">'
     + '<h1 style="color:#fff;margin:0;font-size:22px;">You\'re Booked.</h1>'
-    + '<p style="color:rgba(255,255,255,.75);margin:6px 0 0;font-size:14px;">3S Detailing confirmation</p>'
+    + '<p style="color:rgba(255,255,255,.75);margin:6px 0 0;font-size:14px;">MaxDriveDetail · Vienna, VA</p>'
     + '</div>'
     + '<div style="padding:28px;background:#f9f9f9;border:1px solid #e5e5e5;">'
     + '<p style="font-size:15px;margin:0 0 24px;">Hey ' + firstName + ', your detail is confirmed. Here\'s your summary:</p>'
@@ -308,22 +308,22 @@ function sendCustomerBookingEmail(d, start, end) {
     + '<p>You don\'t need to be home - just make sure the car is accessible.</p>'
     + '</div>'
     + '<div style="padding:16px 28px;background:#f5f5f5;border:1px solid #e5e5e5;border-top:none;font-size:11px;color:#aaa;">'
-    + '3S Detailing - Vienna, VA - (571) 278-7350'
+    + 'MaxDriveDetail · Vienna, VA · (571) 278-7350 · maxdrivedetail.com'
     + '</div>'
     + '</div>';
 
   GmailApp.sendEmail(
     d.email,
-    'Booking Confirmed - ' + d.service + ' on ' + dateStr,
-    'Your 3S Detailing appointment is confirmed for ' + dateStr + ' at ' + formatTime(start) + '. Total: $' + d.total + '. Questions? Text (571) 278-7350.',
+    'Booking Confirmed — ' + d.service + ' · ' + dateStr,
+    'Your MaxDriveDetail appointment is confirmed for ' + dateStr + ' at ' + formatTime(start) + '. Total: $' + d.total + '. Questions? Text Zach at (571) 278-7350.',
     { htmlBody: html, replyTo: OWNER_EMAIL }
   );
 }
 
 function handleContact(d) {
   var html = '<div style="font-family:Arial,sans-serif;max-width:560px;color:#111;">'
-    + '<div style="background:#1566F5;padding:20px 28px;">'
-    + '<h1 style="color:#fff;margin:0;font-size:18px;">New Contact Form - 3S Detailing</h1>'
+    + '<div style="background:#8B1A1A;padding:20px 28px;">'
+    + '<h1 style="color:#fff;margin:0;font-size:18px;">New Contact Message — MaxDriveDetail</h1>'
     + '</div>'
     + '<div style="padding:24px 28px;background:#f9f9f9;border:1px solid #e5e5e5;">'
     + '<table style="font-size:14px;width:100%;border-collapse:collapse;">'
