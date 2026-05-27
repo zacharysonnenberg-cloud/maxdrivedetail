@@ -1321,6 +1321,7 @@
       .about-inner, .faq-inner { padding-left: 24px; padding-right: 24px; }
       .policies-strip { padding: 0 24px; }
       .why-row { grid-template-columns: 48px 1fr; }
+      .why-desc { grid-column: 2; }
       .why-num { font-size: 40px; }
       .steps-grid { grid-template-columns: 1fr; border-radius: var(--radius); }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
@@ -2209,19 +2210,19 @@
     <div class="addons-table">
       <div class="addon-row">
         <span class="addon-name">Scent Restoration (Ozone)</span>
-        <span class="addon-price">$35</span>
+        <span class="addon-price">$60</span>
       </div>
       <div class="addon-row">
         <span class="addon-name">Pet Hair Removal</span>
         <span class="addon-price">$45</span>
       </div>
-      <div class="addon-row">
-        <span class="addon-name">Headlight Restoration</span>
-        <span class="addon-price">$50</span>
+      <div class="addon-row" style="opacity:.45;">
+        <span class="addon-name">Headlight Restoration <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:6px;">— Not currently available</span></span>
+        <span class="addon-price">$80</span>
       </div>
       <div class="addon-row">
         <span class="addon-name">Engine Bay Detail</span>
-        <span class="addon-price">$40</span>
+        <span class="addon-price">$60</span>
       </div>
     </div>
     <div class="service-note" style="margin-top:16px;">
@@ -2272,10 +2273,9 @@
       <div class="calc-group">
         <div class="calc-label">3 · ADD-ONS (optional)</div>
         <div class="calc-options" id="calcAddons">
-          <button class="calc-opt calc-toggle" data-add="35"  data-key="a">+ Scent Restoration · $35</button>
+          <button class="calc-opt calc-toggle" data-add="60"  data-key="a">+ Scent Restoration · $60</button>
           <button class="calc-opt calc-toggle" data-add="45"  data-key="a">+ Pet Hair Removal · $45</button>
-          <button class="calc-opt calc-toggle" data-add="50"  data-key="a">+ Headlight Restoration · $50</button>
-          <button class="calc-opt calc-toggle" data-add="40"  data-key="a">+ Engine Bay Detail · $40</button>
+          <button class="calc-opt calc-toggle" data-add="60"  data-key="a">+ Engine Bay Detail · $60</button>
           <button class="calc-opt calc-toggle" data-add="75"  data-key="a">+ Heavy Stain Treatment · $75</button>
           <button class="calc-opt calc-toggle" data-add="150" data-key="a">+ Paint Correction · $150+</button>
         </div>
