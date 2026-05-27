@@ -2,7 +2,7 @@
    MaxDriveDetail — Service Worker
    Caches the page shell for offline viewing
 ═══════════════════════════════════════════ */
-const CACHE = 'maxdrive-v9';
+const CACHE = 'maxdrive-v10';
 const SHELL = [
   '/',
   '/index.html',
@@ -13,8 +13,13 @@ const SHELL = [
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700;800;900&display=swap'
 ];
 
-// Assets that change often — always network-first
-const NETWORK_FIRST = ['/Logo.png'];
+// Always fetch fresh — never serve from cache
+const BYPASS_CACHE = pathname =>
+  pathname.endsWith('.html') ||
+  pathname === '/' ||
+  pathname.endsWith('.mp4') ||   // videos must always load fresh
+  pathname.endsWith('.MOV') ||
+  pathname === '/Logo.png';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -33,18 +38,22 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  // Network-first for HTML and frequently-updated assets
-  if (url.pathname.endsWith('.html') || url.pathname === '/' || NETWORK_FIRST.includes(url.pathname)) {
+
+  if (BYPASS_CACHE(url.pathname)) {
+    // Network-first: always try live, fall back to cache if offline
     e.respondWith(
       fetch(e.request)
         .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+          }
           return res;
         })
         .catch(() => caches.match(e.request))
     );
   } else {
+    // Cache-first for static assets (fonts, images, JS, CSS)
     e.respondWith(
       caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
         const clone = res.clone();

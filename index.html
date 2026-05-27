@@ -77,13 +77,19 @@
           "latitude": 38.9012,
           "longitude": -77.2653
         },
-        "openingHours": "Mo-Sa 08:00-18:00",
+        "openingHours": ["Mo-Fr 16:00-20:00", "Sa-Su 08:00-20:00"],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "16:00",
+            "closes": "20:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday","Sunday"],
             "opens": "08:00",
-            "closes": "18:00"
+            "closes": "20:00"
           }
         ],
         "aggregateRating": {
@@ -150,7 +156,7 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Do you need water or power at my location?",
+        "name": "Do you need water and power at my location?",
         "acceptedAnswer": { "@type": "Answer", "text": "Yes — we need access to both a water source (outdoor spigot or hose bib) and a standard power outlet. We bring everything else: pressure washer, all chemicals, and equipment." }
       },
       {
