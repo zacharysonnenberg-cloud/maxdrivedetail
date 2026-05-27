@@ -236,11 +236,18 @@
       .nav-right .btn { display: none; }
     }
     @media (max-width: 600px) {
+      :root { --nav-h: 60px; }
       .step-pill span:not(.step-num) { display: none; }
       .service-grid { grid-template-columns: 1fr; }
       .pick-grid.cols-3 { grid-template-columns: 1fr 1fr; }
       .time-grid { grid-template-columns: repeat(2, 1fr); }
       #nav { padding: 0 20px; }
+    }
+    @media (max-width: 430px) {
+      .form-grid.cols-3 { grid-template-columns: 1fr; }
+      .pick-grid.cols-3 { grid-template-columns: 1fr; }
+      .addons-grid { grid-template-columns: 1fr; }
+      .wizard-body { padding: 28px 16px 60px; }
     }
   </style>
 </head>
