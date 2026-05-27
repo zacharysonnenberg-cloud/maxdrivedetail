@@ -502,16 +502,11 @@
       </div>
       <div class="cal-grid" id="calGrid"></div>
 
-      <div class="section-label" style="margin-top:24px;">Start Time</div>
+      <div class="section-label" style="margin-top:24px;">Start Time
+        <span id="hoursHint" style="font-weight:400;font-size:11px;color:var(--gray);margin-left:8px;"></span>
+      </div>
       <div class="time-grid" id="timeGrid">
-        <div class="time-slot" data-hour="8"  onclick="selectTime(this,8)">8:00 AM</div>
-        <div class="time-slot" data-hour="9"  onclick="selectTime(this,9)">9:00 AM</div>
-        <div class="time-slot" data-hour="10" onclick="selectTime(this,10)">10:00 AM</div>
-        <div class="time-slot" data-hour="11" onclick="selectTime(this,11)">11:00 AM</div>
-        <div class="time-slot" data-hour="12" onclick="selectTime(this,12)">12:00 PM</div>
-        <div class="time-slot" data-hour="13" onclick="selectTime(this,13)">1:00 PM</div>
-        <div class="time-slot" data-hour="14" onclick="selectTime(this,14)">2:00 PM</div>
-        <div class="time-slot" data-hour="15" onclick="selectTime(this,15)">3:00 PM</div>
+        <p style="color:var(--gray);font-size:13px;grid-column:1/-1;margin:0;">← Select a date to see available times</p>
       </div>
       <p id="availStatus" style="font-size:11px;color:var(--gray);margin-top:10px;min-height:16px;"></p>
     </div>
@@ -741,13 +736,40 @@
         if (dt < today) return;
         B.date = dt;
         B.time = null;
-        document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+        generateTimeSlots(dt.getDay()); // build slots for this day-of-week FIRST
         renderCal();
         const pad2 = n => String(n).padStart(2,'0');
         loadAvailability(dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate()));
       });
       grid.appendChild(e);
     }
+  }
+
+  /* ── Time-slot generator (hours depend on day of week) ──────── */
+  // Mon–Fri: 4:00 PM – 7:30 PM  |  Sat–Sun: 8:00 AM – 7:30 PM
+  function generateTimeSlots(dayOfWeek) {
+    const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    const startH    = isWeekend ? 8 : 16;   // 8am or 4pm
+    const endH      = 19.5;                  // last slot 7:30 PM
+
+    const hint = document.getElementById('hoursHint');
+    if (hint) hint.textContent = isWeekend ? '(Sat–Sun · 8 AM – 8 PM)' : '(Mon–Fri · 4 PM – 8 PM)';
+
+    const grid = document.getElementById('timeGrid');
+    grid.innerHTML = '';
+    for (let h = startH; h <= endH; h += 0.5) {
+      const ampm  = h >= 12 ? 'PM' : 'AM';
+      const h12   = Math.floor(h) % 12 || 12;
+      const mins  = h % 1 >= 0.5 ? ':30' : ':00';
+      const label = h12 + mins + ' ' + ampm;
+      const div   = document.createElement('div');
+      div.className       = 'time-slot';
+      div.dataset.hour    = h;
+      div.textContent     = label;
+      div.addEventListener('click', () => selectTime(div, h));
+      grid.appendChild(div);
+    }
+    B.time = null; // clear any stale selection
   }
 
   function selectTime(el, h) {
@@ -792,7 +814,7 @@
   function markBlockedSlots() {
     const dur = (B.serviceDur || 60) / 60; // duration in decimal hours
     document.querySelectorAll('.time-slot').forEach(slot => {
-      const h       = parseInt(slot.dataset.hour);
+      const h       = parseFloat(slot.dataset.hour);
       // bEnd from the server already includes the 35-min buffer (calendar event ends at
       // service_end + 35 min), so do NOT add an extra buffer here — that would double-count.
       const slotEnd = h + dur;
@@ -863,7 +885,7 @@
     const total   = B.serviceBase + B.sizeAdj + B.condAdj + addonTotal;
     const deposit = Math.round(total * 0.15);
 
-    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; const h12 = h % 12 || 12; return h12 + ':00 ' + ampm; };
+    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; const h12 = Math.floor(h) % 12 || 12; const mins = h % 1 >= 0.5 ? ':30' : ':00'; return h12 + mins + ' ' + ampm; };
     const fmtDate = d => { const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; const months = ['January','February','March','April','May','June','July','August','September','October','November','December']; return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); };
     const fmtDur  = m => m >= 60 ? Math.floor(m/60) + 'h' + (m%60 ? ' ' + m%60 + 'min' : '') : m + ' min';
 
@@ -908,7 +930,7 @@
       cond:     B.condLabel,
       addons:   addonNames,
       date:     B.date.getFullYear() + '-' + pad(B.date.getMonth()+1) + '-' + pad(B.date.getDate()),
-      time:     pad(B.time) + ':00',
+      time:     pad(Math.floor(B.time)) + ':' + pad(B.time % 1 >= 0.5 ? 30 : 0),
       duration: B.serviceDur,
       name:     B.name,
       phone:    B.phone,
@@ -954,7 +976,7 @@
     const s = document.getElementById('successPanel');
     s.classList.add('show');
 
-    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; return (h % 12 || 12) + ':00 ' + ampm; };
+    const fmt12 = h => { const ampm = h >= 12 ? 'PM' : 'AM'; const h12 = Math.floor(h) % 12 || 12; const mins = h % 1 >= 0.5 ? ':30' : ':00'; return h12 + mins + ' ' + ampm; };
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     document.getElementById('successDetails').innerHTML =
       '<div style="display:flex;flex-direction:column;gap:10px;">' +
