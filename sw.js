@@ -2,7 +2,7 @@
    MaxDriveDetail — Service Worker
    Caches the page shell for offline viewing
 ═══════════════════════════════════════════ */
-const CACHE = 'maxdrive-v3';
+const CACHE = 'maxdrive-v4';
 const SHELL = [
   '/',
   '/index.html',
@@ -10,9 +10,11 @@ const SHELL = [
   '/gallery.html',
   '/contact.html',
   '/book.html',
-  '/Logo.png',
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700;800;900&display=swap'
 ];
+
+// Assets that change often — always network-first
+const NETWORK_FIRST = ['/Logo.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -31,8 +33,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  // Network-first for HTML; cache-first for assets
-  if (url.pathname.endsWith('.html') || url.pathname === '/') {
+  // Network-first for HTML and frequently-updated assets
+  if (url.pathname.endsWith('.html') || url.pathname === '/' || NETWORK_FIRST.includes(url.pathname)) {
     e.respondWith(
       fetch(e.request)
         .then(res => {
