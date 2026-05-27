@@ -57,7 +57,10 @@ function doGet(e) {
       if (dp.length < 3) throw new Error('Invalid date');
       var dayStart = new Date(parseInt(dp[0]), parseInt(dp[1])-1, parseInt(dp[2]), 0, 0, 0);
       var dayEnd   = new Date(parseInt(dp[0]), parseInt(dp[1])-1, parseInt(dp[2]), 23, 59, 59);
-      var evs = cal.getEvents(dayStart, dayEnd);
+      var evs = cal.getEvents(dayStart, dayEnd).filter(function(ev) {
+        var t = ev.getTitle();
+        return t.indexOf('MaxDriveDetail - ') === 0 || t.indexOf('3S Detailing - ') === 0;
+      });
       var busy = evs.map(function(ev) {
         var s = ev.getStartTime(), end = ev.getEndTime();
         return { startH: s.getHours(), startM: s.getMinutes(), endH: end.getHours(), endM: end.getMinutes() };

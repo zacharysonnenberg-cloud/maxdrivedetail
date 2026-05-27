@@ -789,13 +789,13 @@
     markBlockedSlots();
   }
 
-  const BUFFER_HRS = 35 / 60; // must match server-side buffer in apps-script.js
-
   function markBlockedSlots() {
     const dur = (B.serviceDur || 60) / 60; // duration in decimal hours
     document.querySelectorAll('.time-slot').forEach(slot => {
       const h       = parseInt(slot.dataset.hour);
-      const slotEnd = h + dur + BUFFER_HRS; // include buffer so client matches server
+      // bEnd from the server already includes the 35-min buffer (calendar event ends at
+      // service_end + 35 min), so do NOT add an extra buffer here — that would double-count.
+      const slotEnd = h + dur;
       const blocked = busySlots.some(b => {
         const bStart = b.startH + b.startM / 60;
         const bEnd   = b.endH   + b.endM   / 60;
