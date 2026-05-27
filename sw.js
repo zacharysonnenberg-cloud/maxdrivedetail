@@ -2,7 +2,7 @@
    MaxDriveDetail — Service Worker
    Caches the page shell for offline viewing
 ═══════════════════════════════════════════ */
-const CACHE = 'maxdrive-v10';
+const CACHE = 'maxdrive-v11';
 const SHELL = [
   '/',
   '/index.html',
@@ -40,18 +40,10 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
   if (BYPASS_CACHE(url.pathname)) {
-    // Network-first: always try live, fall back to cache if offline
-    e.respondWith(
-      fetch(e.request)
-        .then(res => {
-          if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE).then(c => c.put(e.request, clone));
-          }
-          return res;
-        })
-        .catch(() => caches.match(e.request))
-    );
+    // Network-only: pass straight through — never cache HTML or videos.
+    // Caching large video responses in the SW buffers the entire file
+    // before streaming it to the page, causing readyState to stay 0.
+    e.respondWith(fetch(e.request));
   } else {
     // Cache-first for static assets (fonts, images, JS, CSS)
     e.respondWith(
