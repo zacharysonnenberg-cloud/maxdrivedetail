@@ -439,7 +439,7 @@
     }
     .nav-logo-img {
       height: 36px; width: auto; display: block;
-      border-radius: 6px;
+      mix-blend-mode: screen;
     }
     .nav-logo-text {
       font-family: 'Bebas Neue', sans-serif; font-size: 18px;
@@ -1226,7 +1226,7 @@
     }
     .f-brand { }
     .f-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 16px; }
-    .f-logo-img { height: 32px; width: auto; display: block; border-radius: 6px; }
+    .f-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
     .f-logo-text {
       font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: .08em;
       color: var(--white);
@@ -1378,11 +1378,8 @@
       top: -1px;
     }
 
-    /* Hero vault watermark — hidden until transparent PNG available */
+    /* Hero vault watermark */
     .hero-vault-wrap {
-      display: none;
-    }
-    .hero-vault-wrap-hidden {
       position: absolute;
       right: 5%;
       top: 50%;
@@ -2774,9 +2771,14 @@
   function goTo(idx) {
     cards.forEach((c, i) => c.classList.toggle('active', i === idx));
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    track.style.transform = `translateX(calc(-${idx * 100}% - ${idx * 24}px))`;
+    // Each card = (wrap - 24px) wide with 24px gap, so step = wrap.clientWidth exactly
+    const step = track.parentElement.clientWidth;
+    track.style.transform = `translateX(-${idx * step}px)`;
     current = idx;
   }
+
+  // Recalculate on resize so pixel offset stays correct
+  window.addEventListener('resize', () => goTo(current));
 
   function next() { goTo((current + 1) % cards.length); }
   function prev() { goTo((current - 1 + cards.length) % cards.length); }
