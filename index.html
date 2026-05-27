@@ -151,7 +151,7 @@
       {
         "@type": "Question",
         "name": "Do you need water or power at my location?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Power yes, water no. We carry our own independent water bladder — no hose hookup needed. A standard outdoor or garage outlet is all we need." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — we need access to a water source (an outdoor spigot works great). We bring everything else: pressure washer, generator, all chemicals and equipment." }
       },
       {
         "@type": "Question",
@@ -439,7 +439,7 @@
     }
     .nav-logo-img {
       height: 36px; width: auto; display: block;
-      mix-blend-mode: screen;
+      border-radius: 6px;
     }
     .nav-logo-text {
       font-family: 'Bebas Neue', sans-serif; font-size: 18px;
@@ -530,7 +530,7 @@
     }
     .hero-headline {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(72px, 12vw, 164px);
+      font-size: clamp(60px, 7vw, 108px);
       letter-spacing: .03em; line-height: .88;
       color: var(--white);
       margin-bottom: 32px;
@@ -1226,7 +1226,7 @@
     }
     .f-brand { }
     .f-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 16px; }
-    .f-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
+    .f-logo-img { height: 32px; width: auto; display: block; border-radius: 6px; }
     .f-logo-text {
       font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: .08em;
       color: var(--white);
@@ -1378,8 +1378,11 @@
       top: -1px;
     }
 
-    /* Hero vault watermark — wrapper positions & clips the glint */
+    /* Hero vault watermark — hidden until transparent PNG available */
     .hero-vault-wrap {
+      display: none;
+    }
+    .hero-vault-wrap-hidden {
       position: absolute;
       right: 5%;
       top: 50%;
@@ -1602,8 +1605,8 @@
   </div>
 </section>
 
-<!-- ═══ BEFORE & AFTER ═══ -->
-<section id="results" style="padding:100px 0;">
+<!-- ═══ BEFORE & AFTER — hidden until real content ready ═══ -->
+<section id="results" style="display:none;">
   <div class="results-header reveal">
     <div>
       <span class="results-eyebrow">Real Results</span>
@@ -2447,7 +2450,7 @@
     <div class="step reveal reveal-d1">
       <div class="step-num">02</div>
       <h3>We Come to You</h3>
-      <p>Zach arrives at your home or office with all equipment — water bladder, chemicals, machines, everything.</p>
+      <p>Zach arrives at your home or office with all equipment — chemicals, machines, everything. Just have a hose bib accessible.</p>
     </div>
     <div class="step reveal reveal-d2">
       <div class="step-num">03</div>
@@ -2711,7 +2714,7 @@
   transition: background .2s, border-color .2s;
 }
 .tc-arrow:hover { background: rgba(139,26,26,.12); border-color: var(--gold); }
-.tc-track-wrap { overflow: hidden; }
+.tc-track-wrap { overflow: hidden; position: relative; width: 100%; }
 .tc-track {
   display: flex; gap: 24px;
   transition: transform .5s cubic-bezier(.16,1,.3,1);
@@ -2853,7 +2856,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-          <div class="faq-a-inner" itemprop="text">Power yes, water no. We carry our own independent water bladder — no hose hookup needed. A standard outdoor or garage outlet is all we need. We'll confirm at booking.</div>
+          <div class="faq-a-inner" itemprop="text">Yes — we need access to a water source (an outdoor spigot works great). We bring everything else: pressure washer, generator, all chemicals and equipment. Just make sure the hose bib is accessible before we arrive.</div>
         </div>
       </div>
       <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
