@@ -322,6 +322,7 @@ function sendCustomerBookingEmail(d, start, end) {
     + '<ul style="margin:0;padding-left:20px;color:#555;font-size:13px;line-height:1.8;">'
     + '<li>Remove personal items (chargers, sunglasses, garage keys, etc.)</li>'
     + '<li>Make sure the car is accessible — no need to be home</li>'
+    + '<li><strong>Have a hose bib (outdoor spigot) and a power outlet accessible</strong> — both are required</li>'
     + '<li>Park in shade or a covered spot if possible</li>'
     + '<li>Avoid washing the car in the 24 hrs before the appointment</li>'
     + '<li>Let Zach know about any specific problem areas when he arrives</li>'
