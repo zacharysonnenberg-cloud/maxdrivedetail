@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book — MaxDriveDetail · Vienna, VA</title>
-  <meta name="description" content="Book your mobile auto detail online. Pick your service, choose a time, and we come to you.">
+  <title>Book Your Detail — MaxDriveDetail · Vienna, VA</title>
+  <meta name="description" content="Book your mobile auto detail online — MaxDriveDetail, Vienna VA. Pick your service, choose a date, and we come to you. Fast online booking, no deposit up front.">
+  <link rel="canonical" href="https://maxdrivedetail.com/book.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Book Your Detail — MaxDriveDetail · Vienna, VA">
+  <meta property="og:description" content="Book mobile auto detailing online. Pick your service, choose a time, and we come to you — Vienna, McLean, Reston, and Northern Virginia.">
+  <meta property="og:url" content="https://maxdrivedetail.com/book.html">
+  <meta property="og:image" content="https://maxdrivedetail.com/Logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Book Your Detail — MaxDriveDetail · Vienna, VA">
+  <meta name="twitter:description" content="Book mobile auto detailing online. We come to you — Vienna, McLean, Reston, and Northern Virginia.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -244,7 +253,7 @@
     <ul class="nav-links">
       <li><a href="services.html">Services</a></li>
       <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="index.html#reviews">Reviews</a></li>
+      <li><a href="index.html#testimonials">Reviews</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-right">
@@ -260,7 +269,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="services.html" onclick="closeMM()">Services</a>
   <a href="gallery.html" onclick="closeMM()">Gallery</a>
-  <a href="index.html#reviews" onclick="closeMM()">Reviews</a>
+  <a href="index.html#testimonials" onclick="closeMM()">Reviews</a>
   <a href="contact.html" onclick="closeMM()">Contact</a>
   <div class="m-cta"><a href="book.html" class="btn btn-primary">Book Now →</a></div>
 </div>
@@ -610,7 +619,7 @@
 
 <footer>
   <div class="footer-bottom">
-    <span>© 2026 MaxDriveDetail LLC · Vienna, VA</span>
+    <span>© 2026 MaxDriveDetail · Vienna, VA</span>
     <div style="display:flex;gap:24px;"><a href="index.html">Home</a><a href="services.html">Services</a><a href="contact.html">Contact</a></div>
   </div>
 </footer>
@@ -643,6 +652,20 @@
     B.serviceBase = parseInt(base);
     B.serviceDur  = dur;
   }
+
+  /* ── Pre-select service from URL hash (#service=MaxClean) ── */
+  (function preSelectFromHash() {
+    const hash = decodeURIComponent(window.location.hash.replace(/^#service=/, ''));
+    if (!hash) return;
+    const cards = document.querySelectorAll('.svc-card');
+    cards.forEach(card => {
+      const nameEl = card.querySelector('.svc-name');
+      if (nameEl && nameEl.textContent.trim() === hash) {
+        card.click();
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  })();
 
   function toggleAddon(el, key, name, price) {
     el.classList.toggle('selected');
