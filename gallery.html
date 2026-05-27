@@ -405,10 +405,20 @@
   }, { threshold: 0.06 });
   document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-  /* ── Video hover play ────────────────────────────── */
+  /* ── Video viewport autoplay + hover play ─────────── */
+  const vidObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const vid = e.target.querySelector('video');
+      if (!vid) return;
+      if (e.isIntersecting) { vid.play().catch(() => {}); }
+      else { vid.pause(); vid.currentTime = 0; }
+    });
+  }, { threshold: 0.25 });
+
   document.querySelectorAll('.gallery-item.video').forEach(item => {
     const vid = item.querySelector('video');
     if (!vid) return;
+    vidObs.observe(item);
     item.addEventListener('mouseenter', () => vid.play());
     item.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
   });
