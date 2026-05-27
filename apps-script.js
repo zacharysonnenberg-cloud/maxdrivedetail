@@ -119,7 +119,7 @@ function handleBooking(d) {
 
   var start       = new Date(year, month - 1, day, hour, min, 0);
   var end         = new Date(start.getTime() + d.duration * 60 * 1000);
-  var bufferedEnd = new Date(end.getTime() + 30 * 60 * 1000); // 30-min buffer after service
+  var bufferedEnd = new Date(end.getTime() + 35 * 60 * 1000); // 35-min buffer after service
 
   // ── Conflict check — reject if anything overlaps this slot (including buffer) ──
   var conflicts = cal.getEvents(start, bufferedEnd);
