@@ -1266,7 +1266,7 @@
       .footer-main { padding: 48px 24px; }
       .footer-bottom { padding: 20px 24px; }
       .hero-vault-wrap { width: 240px; height: 240px; right: 3%; }
-      .hero-vault-mark { opacity: 1; filter: brightness(2.5); }
+      .hero-vault-mark { opacity: 1; mix-blend-mode: screen; filter: brightness(3) saturate(1.2); }
       /* FAQ tap targets — min 48px */
       .faq-q { min-height: 48px; padding: 14px 16px; }
       /* Pricing calc on mobile */
@@ -1348,8 +1348,8 @@
       object-fit: contain;
       display: block;
       opacity: 1;
-      mix-blend-mode: normal;
-      filter: brightness(2.5);
+      mix-blend-mode: screen;
+      filter: brightness(3) saturate(1.2);
       animation: vaultPulse 6s ease-in-out infinite;
     }
     @keyframes vaultFloat {
