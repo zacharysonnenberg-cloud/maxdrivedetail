@@ -372,13 +372,26 @@
           <div class="svc-time">~5 hrs</div>
           <div class="svc-desc">MaxCondition + MaxEnhance + ozone scent restoration. Show-quality detail, inside and out.</div>
         </div>
-        <div class="svc-card" onclick="selectService(this,'MaxMaintain','$129','129',60)" style="border-color:var(--gold-d);position:relative;">
+        <div class="svc-card" id="maintainCard" onclick="trySelectMaintain(event,this)" style="border-color:var(--gold-d);position:relative;">
           <div class="svc-check"></div>
           <div class="svc-name">MaxMaintain</div>
           <div class="svc-price">$129<span style="font-size:13px;font-weight:500;color:var(--gray);"> /visit</span></div>
           <div class="svc-time">~1 hr · Biweekly</div>
           <div class="svc-desc">Interior refresh + rinseless or contact wash as needed. Keeps your car detailed between full services.</div>
-          <div style="margin-top:8px;padding:6px 8px;background:rgba(139,26,26,.12);border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-l);">Returning clients only &mdash; available after MaxExpress or MaxSignature</div>
+          <!-- locked state -->
+          <div id="maintainLock" style="margin-top:8px;padding:6px 8px;background:rgba(139,26,26,.12);border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-l);cursor:pointer;">
+            🔒 Returning clients only &mdash; tap to verify
+          </div>
+          <!-- verify form — hidden until tapped -->
+          <div id="maintainVerify" style="display:none;margin-top:10px;" onclick="event.stopPropagation()">
+            <input id="maintainPhone" type="tel" placeholder="Phone number you booked with"
+              style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--white);font-family:'Barlow',sans-serif;font-size:13px;box-sizing:border-box;outline:none;">
+            <button onclick="checkMaintainEligibility()"
+              style="margin-top:6px;width:100%;padding:8px;background:var(--gold);color:#fff;border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.05em;cursor:pointer;">
+              Check Eligibility
+            </button>
+            <div id="maintainErr" style="display:none;margin-top:6px;font-size:11px;color:#ef4444;font-weight:600;"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -669,6 +682,60 @@
       B.addons[key] = { name, price: parseInt(price) };
     } else {
       delete B.addons[key];
+    }
+  }
+
+  /* ── MaxMaintain eligibility gate ───────────────────────── */
+  let maintainUnlocked = false;
+
+  function trySelectMaintain(e, el) {
+    if (maintainUnlocked) {
+      selectService(el, 'MaxMaintain', '$129', '129', 60);
+      return;
+    }
+    e.stopPropagation();
+    document.getElementById('maintainLock').style.display   = 'none';
+    document.getElementById('maintainVerify').style.display = 'block';
+    document.getElementById('maintainPhone').focus();
+  }
+
+  async function checkMaintainEligibility() {
+    const phone = document.getElementById('maintainPhone').value.trim();
+    const errEl = document.getElementById('maintainErr');
+    const btn   = document.querySelector('#maintainVerify button');
+
+    if (!phone) {
+      errEl.textContent    = 'Enter the phone number you booked with.';
+      errEl.style.display  = 'block';
+      return;
+    }
+
+    btn.textContent  = 'Checking...';
+    btn.disabled     = true;
+    errEl.style.display = 'none';
+
+    try {
+      const url = APPS_SCRIPT_URL + '?type=check_eligibility&phone=' + encodeURIComponent(phone);
+      const res  = await fetch(url);
+      const data = await res.json();
+
+      if (data.eligible) {
+        maintainUnlocked = true;
+        document.getElementById('maintainVerify').style.display = 'none';
+        const card = document.getElementById('maintainCard');
+        card.style.borderColor = 'var(--gold)';
+        selectService(card, 'MaxMaintain', '$129', '129', 60);
+      } else {
+        errEl.textContent   = 'No completed MaxExpress or MaxSignature found for that number. Text Zach at 571-278-7350 if you think this is an error.';
+        errEl.style.display = 'block';
+        btn.textContent     = 'Check Eligibility';
+        btn.disabled        = false;
+      }
+    } catch(err) {
+      errEl.textContent   = 'Could not verify right now. Text Zach at 571-278-7350 to book directly.';
+      errEl.style.display = 'block';
+      btn.textContent     = 'Check Eligibility';
+      btn.disabled        = false;
     }
   }
 
