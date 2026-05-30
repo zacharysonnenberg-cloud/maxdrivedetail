@@ -1238,6 +1238,24 @@
       .calc-opt { padding: 11px 14px; font-size: 12px; min-height: 44px; }
       /* Reviews carousel */
       .tc-arrow { width: 40px; height: 40px; }
+      /* Social proof bar — horizontal scroll on mobile */
+      .proof-bar-scroll { overflow-x:auto; flex-wrap:nowrap !important; justify-content:flex-start !important; padding:0 !important; scrollbar-width:none; }
+      .proof-bar-scroll::-webkit-scrollbar { display:none; }
+      .proof-bar-scroll > div { flex-shrink:0; padding:0 16px !important; }
+      /* Section scroll offset accounts for sticky bar */
+      section[id], div[id="baGrid"] { scroll-margin-top:110px; }
+      /* Hero sub text */
+      .hero-sub { font-size:14px; }
+      /* Why row stacks cleanly */
+      .why-row { grid-template-columns:36px 1fr; gap:12px; }
+      .why-num { font-size:32px; }
+      .why-title { font-size:17px; }
+      .why-desc { grid-column:1 / -1; padding-left:0; font-size:14px; line-height:1.6; }
+      /* Calc sub-labels */
+      .calc-sub-label { font-size:10px; padding:14px 0 6px; }
+      /* Gallery strip snap */
+      .gallery-strip { scroll-snap-type:x mandatory; }
+      .gallery-card { scroll-snap-align:start; }
     }
     /* 375px ultra-narrow adjustments */
     @media (max-width: 380px) {
@@ -1403,6 +1421,55 @@
       mix-blend-mode: screen;
     }
 
+    /* ── Mobile Section Bar ── */
+    .mobile-bar { display:none; }
+    @media (max-width:900px) {
+      .mobile-bar {
+        position:sticky;
+        top:var(--nav-h, 60px);
+        z-index:150;
+        display:block;
+        background:rgba(14,14,14,0.97);
+        border-bottom:1px solid rgba(139,26,26,.22);
+        backdrop-filter:blur(12px);
+        -webkit-backdrop-filter:blur(12px);
+        overflow-x:auto;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+      }
+      .mobile-bar::-webkit-scrollbar { display:none; }
+      .mobile-bar-inner {
+        display:flex;
+        align-items:center;
+        padding:9px 16px;
+        gap:8px;
+        min-width:max-content;
+      }
+      .mb-link {
+        display:inline-block;
+        padding:7px 14px;
+        border-radius:20px;
+        border:1px solid rgba(255,255,255,0.13);
+        color:rgba(255,255,255,0.55);
+        font-family:'Barlow Condensed',sans-serif;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:1.5px;
+        text-transform:uppercase;
+        text-decoration:none;
+        white-space:nowrap;
+        transition:background .18s,color .18s,border-color .18s;
+      }
+      .mb-link:active,
+      .mb-link.mb-active { background:rgba(255,255,255,0.09); border-color:rgba(255,255,255,0.25); color:#fff; }
+      .mb-link.mb-cta {
+        background:linear-gradient(135deg,#8B1A1A,#6B1010);
+        border-color:transparent;
+        color:#fff;
+        box-shadow:0 1px 8px rgba(139,26,26,.35);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1440,6 +1507,19 @@
   <a href="contact.html" onclick="closeMM()">Contact</a>
   <div class="m-cta">
     <a href="book.html" class="btn btn-primary">Book Your Detail <span class="arr">→</span></a>
+  </div>
+</div>
+
+<!-- Mobile Section Bar -->
+<div class="mobile-bar" id="mobileBar">
+  <div class="mobile-bar-inner">
+    <a href="#services" class="mb-link">Services</a>
+    <a href="#gallery" class="mb-link">Gallery</a>
+    <a href="#testimonials" class="mb-link">Reviews</a>
+    <a href="#process" class="mb-link">How It Works</a>
+    <a href="#about" class="mb-link">About</a>
+    <a href="#faq" class="mb-link">FAQ</a>
+    <a href="book.html" class="mb-link mb-cta">Book Now →</a>
   </div>
 </div>
 
@@ -1494,7 +1574,7 @@
 
 <!-- ═══ SOCIAL PROOF BAR ═══ -->
 <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;">
-  <div style="max-width:var(--max-w);margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;justify-content:center;gap:0;">
+  <div class="proof-bar-scroll" style="max-width:var(--max-w);margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;justify-content:center;gap:0;">
     <div style="display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid var(--border);">
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:var(--white);letter-spacing:.04em;">5 Stars on Google</span>
       <span style="font-size:15px;color:#C0392B;letter-spacing:1px;">★★★★★</span>
