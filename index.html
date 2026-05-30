@@ -1613,13 +1613,13 @@
     <div class="ba-slider-wrap reveal" data-pair="0">
       <div class="ba-slider" data-handle="50">
         <div class="ba-before">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+          <video muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;">
             <source src="media/post_27_minivan_food_disaster_before.mp4" type="video/mp4">
           </video>
           <span class="ba-badge ba-badge-before">Before</span>
         </div>
         <div class="ba-after">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+          <video muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;">
             <source src="media/post_28_minivan_clean_interior_after.mp4" type="video/mp4">
           </video>
           <span class="ba-badge ba-badge-after">After</span>
@@ -1639,13 +1639,13 @@
     <div class="ba-slider-wrap reveal reveal-d1" data-pair="1">
       <div class="ba-slider" data-handle="50">
         <div class="ba-before">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+          <video muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;">
             <source src="media/post_34_pet_hair_floor_mat_before.mp4" type="video/mp4">
           </video>
           <span class="ba-badge ba-badge-before">Before</span>
         </div>
         <div class="ba-after">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;">
+          <video muted loop playsinline preload="none" style="width:100%;height:100%;object-fit:cover;">
             <source src="media/post_35_floor_mat_foam_scrub_action.mp4" type="video/mp4">
           </video>
           <span class="ba-badge ba-badge-after">After</span>
@@ -1974,7 +1974,7 @@
 
   <div class="gallery-strip" id="galleryStrip">
     <div class="gallery-card">
-      <video autoplay muted loop playsinline>
+      <video muted loop playsinline preload="none" poster="media/thumb_contact_wash.jpg">
         <source src="media/post_contact_wash.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -1983,7 +1983,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline poster="media/thumb_sealant_dwell.jpg">
+      <video muted loop playsinline preload="none" poster="media/thumb_sealant_dwell.jpg">
         <source src="media/sealant_dwell.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -1992,7 +1992,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline>
+      <video muted loop playsinline preload="none" poster="media/thumb_interior_steam_clean.jpg">
         <source src="media/post_interior_steam_clean.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2001,7 +2001,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline>
+      <video muted loop playsinline preload="none" poster="media/thumb_foam_cannon_wheels.jpg">
         <source src="media/post_foam_cannon_wheels.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2010,7 +2010,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline>
+      <video muted loop playsinline preload="none" poster="media/thumb_sealant_foam.jpg">
         <source src="media/post_sealant_foam_application.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2019,7 +2019,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline poster="media/thumb_pre_wash_dirt_ripping.jpg">
+      <video muted loop playsinline preload="none" poster="media/thumb_pre_wash_dirt_ripping.jpg">
         <source src="media/pre_wash_dirt_ripping.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2028,7 +2028,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline poster="media/thumb_paint_enhancement_result.jpg">
+      <video muted loop playsinline preload="none" poster="media/thumb_paint_enhancement_result.jpg">
         <source src="media/paint_enhancement_result.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2037,7 +2037,7 @@
       </div>
     </div>
     <div class="gallery-card">
-      <video autoplay muted loop playsinline poster="media/thumb_paint_enhancement_v2.jpg">
+      <video muted loop playsinline preload="none" poster="media/thumb_paint_enhancement_v2.jpg">
         <source src="media/paint_enhancement_v2.mp4" type="video/mp4">
       </video>
       <div class="gallery-caption">
@@ -2668,7 +2668,7 @@
       <div class="hud-br" aria-hidden="true"></div>
       <!-- Vault watermark — bottom-right corner of video -->
       <img class="about-vault-bg" src="Logo.png" alt="" aria-hidden="true" loading="lazy">
-      <video autoplay muted loop playsinline poster="media/thumb_contact_wash_v2.jpg">
+      <video muted loop playsinline preload="none" poster="media/thumb_contact_wash_v2.jpg">
         <source src="media/contact_wash_v2.mp4" type="video/mp4">
       </video>
     </div>
@@ -2978,6 +2978,20 @@
     });
   }, { threshold: 0.5 });
   document.querySelectorAll('.step').forEach(el => stepObs.observe(el));
+
+  /* ── Smart video playback — only play when in viewport ── */
+  (function () {
+    const vObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.play().catch(() => {});
+        } else {
+          e.target.pause();
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('video').forEach(v => vObs.observe(v));
+  })();
 
 </script>
 </body>
