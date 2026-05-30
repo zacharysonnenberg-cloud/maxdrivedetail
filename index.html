@@ -2186,10 +2186,13 @@
       <div class="calc-group">
         <div class="calc-label">2 · SERVICE TIER</div>
         <div class="calc-options" id="calcService">
-          <button class="calc-opt active" data-base="129" data-key="s">MaxWash</button>
-          <button class="calc-opt"        data-base="159" data-key="s">MaxCondition</button>
+          <div class="calc-sub-label">Interior</div>
+          <button class="calc-opt active" data-base="159" data-key="s">MaxCondition</button>
           <button class="calc-opt"        data-base="259" data-key="s">MaxRestore</button>
+          <div class="calc-sub-label">Exterior</div>
+          <button class="calc-opt"        data-base="129" data-key="s">MaxWash</button>
           <button class="calc-opt"        data-base="379" data-key="s">MaxEnhance</button>
+          <div class="calc-sub-label">Packages</div>
           <button class="calc-opt"        data-base="259" data-key="s">MaxExpress</button>
           <button class="calc-opt"        data-base="489" data-key="s">MaxSignature</button>
         </div>
@@ -2209,10 +2212,10 @@
       <div class="calc-total-inner">
         <div>
           <div style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--chrome);margin-bottom:8px;">Estimated Starting Price</div>
-          <div class="calc-price-display" id="calcTotal">$129</div>
+          <div class="calc-price-display" id="calcTotal">$159</div>
           <div style="font-family:'Barlow';font-size:12px;color:var(--chrome);margin-top:6px;">Final price confirmed at booking based on vehicle condition</div>
         </div>
-        <a id="calcBookBtn" href="book.html#service=MaxWash" class="btn btn-primary" style="padding:16px 36px;font-size:12px;white-space:nowrap;">Book at This Price <span class="arr">→</span></a>
+        <a id="calcBookBtn" href="book.html#service=MaxCondition" class="btn btn-primary" style="padding:16px 36px;font-size:12px;white-space:nowrap;">Book at This Price <span class="arr">→</span></a>
       </div>
     </div>
   </div>
@@ -2227,6 +2230,12 @@
     margin-bottom: 14px;
   }
   .calc-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .calc-sub-label {
+    width: 100%; font-family: 'Barlow Condensed'; font-size: 9px; font-weight: 700;
+    letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+    padding-top: 10px; margin-bottom: -2px;
+  }
+  .calc-sub-label:first-child { padding-top: 0; }
   .calc-opt {
     font-family: 'Barlow Condensed'; font-size: 13px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase;
@@ -2259,7 +2268,7 @@
 </style>
 <script>
 (function() {
-  let vehicleMod = 0, serviceBase = 129, serviceName = 'MaxWash', addonTotal = 0;
+  let vehicleMod = 0, serviceBase = 159, serviceName = 'MaxCondition', addonTotal = 0;
   const activeAddons = new Set();
 
   function animatePrice(target) {
