@@ -1081,7 +1081,7 @@
     }
     .f-brand { }
     .f-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 16px; }
-    .f-logo-img { height: 32px; width: auto; display: block; mix-blend-mode: screen; }
+    .f-logo-img { height: 32px; width: auto; display: block; filter: brightness(1.7) saturate(1.3) drop-shadow(0 0 8px rgba(192,57,43,0.5)); }
     .f-logo-text {
       font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: .08em;
       color: var(--white);
@@ -1187,7 +1187,7 @@
       .footer-main { padding: 48px 24px; }
       .footer-bottom { padding: 20px 24px; }
       .hero-vault-wrap { width: 240px; height: 240px; right: 3%; }
-      .hero-vault-mark { opacity: 1; mix-blend-mode: screen; filter: brightness(3) saturate(1.2); }
+      .hero-vault-mark { mix-blend-mode: screen; }
       /* FAQ tap targets — min 48px */
       .faq-q { min-height: 48px; padding: 14px 16px; }
       /* Pricing calc on mobile */
@@ -1284,9 +1284,7 @@
       height: 100%;
       object-fit: contain;
       display: block;
-      opacity: 1;
       mix-blend-mode: screen;
-      filter: brightness(3) saturate(1.2);
       animation: vaultPulse 6s ease-in-out infinite;
     }
     @keyframes vaultFloat {
@@ -1294,8 +1292,8 @@
       50%       { transform: translateY(-50%); }
     }
     @keyframes vaultPulse {
-      0%, 100% { opacity: .20; filter: drop-shadow(0 0 0px rgba(139,26,26,0)); }
-      50%       { opacity: .28; filter: drop-shadow(0 0 24px rgba(139,26,26,.35)) drop-shadow(0 0 8px rgba(192,57,43,.2)); }
+      0%, 100% { opacity: .22; filter: brightness(2.5) saturate(1.3) drop-shadow(0 0 6px rgba(192,57,43,0.4)); }
+      50%       { opacity: .32; filter: brightness(3.5) saturate(1.4) drop-shadow(0 0 28px rgba(139,26,26,.55)) drop-shadow(0 0 10px rgba(192,57,43,.35)); }
     }
     @keyframes vaultGlint {
       0%, 55%, 100% { transform: skewX(-18deg) translateX(-300px); opacity: 0; }
@@ -1309,8 +1307,7 @@
       width: 72px;
       height: auto;
       margin: 0 auto 20px;
-      opacity: .85;
-      mix-blend-mode: screen;
+      filter: brightness(1.7) saturate(1.3) drop-shadow(0 0 8px rgba(192,57,43,0.5));
     }
 
     /* About section vault watermark */
@@ -1320,10 +1317,11 @@
       right: -12px;
       width: 130px;
       height: auto;
-      opacity: .12;
+      opacity: .18;
       pointer-events: none;
       z-index: 0;
       mix-blend-mode: screen;
+      filter: brightness(2) saturate(1.3) drop-shadow(0 0 12px rgba(192,57,43,0.4));
     }
 
     /* Reviews header vault mark */
@@ -1346,9 +1344,10 @@
       right: 0;
       width: 90px;
       height: auto;
-      opacity: .15;
+      opacity: .22;
       pointer-events: none;
       mix-blend-mode: screen;
+      filter: brightness(2) saturate(1.3) drop-shadow(0 0 12px rgba(192,57,43,0.4));
       animation: float-badge 6s ease-in-out infinite;
     }
 
