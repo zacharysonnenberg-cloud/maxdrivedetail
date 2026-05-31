@@ -1190,7 +1190,7 @@
       .footer-cta-btns .btn { width: 100%; justify-content: center; max-width: 300px; }
       .footer-main { padding: 48px 24px; }
       .footer-bottom { padding: 20px 24px; }
-      .hero-vault-wrap { width: 160px; height: 160px; right: 3%; opacity: .7; }
+      .hero-vault-wrap { display: none; }
       .hero-vault-mark { mix-blend-mode: screen; }
       /* FAQ tap targets — min 48px */
       .faq-q { min-height: 48px; padding: 14px 16px; }
@@ -1242,8 +1242,8 @@
       /* Gallery header: less bottom gap before the strip starts */
       .gallery-header { padding-bottom: 32px; }
 
-      /* About video: crop to upper-body area on the narrower mobile aspect ratio */
-      .about-video-wrap video { object-position: 50% 20%; }
+      /* About video: use centered crop on mobile */
+      .about-video-wrap video { object-position: 50% 50%; }
     }
     /* 375px ultra-narrow adjustments */
     @media (max-width: 380px) {
