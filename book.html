@@ -976,9 +976,14 @@
   function prevStep(from) { goToStep(from - 1); }
 
   function goToStep(n) {
+    const goingForward = n > currentStep;
     document.getElementById('panel' + currentStep).classList.remove('active');
     document.getElementById('sp' + currentStep).classList.remove('active');
-    document.getElementById('sp' + currentStep).classList.add('done');
+    if (goingForward) {
+      document.getElementById('sp' + currentStep).classList.add('done');
+    } else {
+      document.getElementById('sp' + currentStep).classList.remove('done');
+    }
     currentStep = n;
     document.getElementById('panel' + n).classList.add('active');
     document.getElementById('sp' + n).classList.remove('done');
