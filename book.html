@@ -899,19 +899,15 @@
     slots.forEach(s => { s.classList.remove('booked'); s.classList.add('checking'); });
     if (status) status.textContent = 'Checking availability…';
     const url = APPS_SCRIPT_URL + '?action=availability&date=' + dateStr;
-    console.log('[availability] fetching:', url);
     try {
       const res  = await fetch(url);
       const text = await res.text();
-      console.log('[availability] raw response:', text);
       const data = JSON.parse(text);
-      console.log('[availability] parsed:', data);
       busySlots = data.ok ? data.busy : [];
       if (status) status.textContent = data.ok
         ? (busySlots.length ? busySlots.length + ' booking(s) on this day — some slots may be unavailable.' : 'All slots available.')
         : 'Could not load live availability (script not redeployed?).';
     } catch(e) {
-      console.error('[availability] fetch failed:', e);
       busySlots = [];
       if (status) status.textContent = 'Could not check availability: ' + e.message;
     }
