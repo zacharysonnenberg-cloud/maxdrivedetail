@@ -475,7 +475,7 @@
        HERO
     ═══════════════════════════════════════════ */
     #hero {
-      position: relative; height: 100vh; min-height: 640px; overflow: hidden;
+      position: relative; height: 88vh; min-height: 580px; overflow: hidden;
       background: #1A1A1A;
     }
     .hero-overlay {
@@ -496,8 +496,11 @@
       pointer-events: none;
     }
     .hero-content {
-      position: absolute; bottom: 88px; left: 0; right: 0; z-index: 3;
+      position: absolute;
+      top: var(--nav-h); bottom: 70px;
+      left: 0; right: 0; z-index: 3;
       max-width: var(--max-w); margin: 0 auto; padding: 0 64px;
+      display: flex; flex-direction: column; justify-content: center;
     }
     .hero-location {
       font-family: 'Barlow Condensed', sans-serif;
@@ -1131,7 +1134,7 @@
     @media (max-width: 900px) {
       .hamburger { display: flex; }
       .nav-links { display: none; }
-      .hero-content { padding: 0 32px; }
+      .hero-content { padding: 0 32px; bottom: 64px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
       .results-header, .gallery-header, .services-top, .why-header,
       .process-header { grid-template-columns: 1fr; gap: 20px; padding-left: 32px; padding-right: 32px; }
@@ -1160,7 +1163,7 @@
     @media (max-width: 600px) {
       :root { --nav-h: 60px; }
       #nav { padding: 0 24px; }
-      .hero-content { padding: 0 24px; bottom: 60px; }
+      .hero-content { padding: 0 24px; bottom: 56px; }
       .hero-headline { font-size: clamp(52px, 17vw, 88px); }
       .hero-ctas { flex-direction: column; width: 100%; }
       .hero-ctas .btn { width: 100%; justify-content: center; max-width: 320px; }
