@@ -1167,8 +1167,9 @@
       .hero-headline { font-size: clamp(52px, 17vw, 88px); }
       .hero-ctas { flex-direction: column; width: 100%; }
       .hero-ctas .btn { width: 100%; justify-content: center; max-width: 320px; }
-      .hero-stats { flex-wrap: wrap; }
-      .h-stat { flex: 1 1 50%; }
+      .hero-stats { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; scrollbar-width: none; -ms-overflow-style: none; }
+      .hero-stats::-webkit-scrollbar { display: none; }
+      .h-stat { flex: 0 0 auto; min-width: 115px; }
       .results-header, .gallery-header, .services-top, .why-header,
       .process-header { padding-left: 24px; padding-right: 24px; }
       .ba-pair, .gallery-strip, .service-table, .service-note, .addons-table,
@@ -1189,7 +1190,7 @@
       .footer-cta-btns .btn { width: 100%; justify-content: center; max-width: 300px; }
       .footer-main { padding: 48px 24px; }
       .footer-bottom { padding: 20px 24px; }
-      .hero-vault-wrap { width: 240px; height: 240px; right: 3%; }
+      .hero-vault-wrap { width: 160px; height: 160px; right: 3%; opacity: .7; }
       .hero-vault-mark { mix-blend-mode: screen; }
       /* FAQ tap targets — min 48px */
       .faq-q { min-height: 48px; padding: 14px 16px; }
@@ -1216,11 +1217,38 @@
       /* Gallery strip snap */
       .gallery-strip { scroll-snap-type:x mandatory; }
       .gallery-card { scroll-snap-align:start; }
+
+      /* ── New mobile fixes ── */
+
+      /* Hide emojis in proof bar — text alone reads cleaner */
+      .proof-emoji { display: none; }
+
+      /* Proof bar scroll: start with breathing room on the left */
+      .proof-bar-scroll { padding: 0 0 0 16px !important; }
+
+      /* Use small viewport height so address-bar doesn't clip the hero */
+      #hero { height: 88svh; }
+
+      /* Tighten all section padding — 100px is too much vertical space on phone */
+      #gallery, #services, #why, #process, #about, #faq { padding: 60px 0; }
+      #calculator, #testimonials { padding: 60px 0 !important; }
+
+      /* Fix inline-styled inner wrappers that don't respect the 24px side padding rule */
+      #calculator > div, #testimonials > div { padding-left: 24px !important; padding-right: 24px !important; }
+
+      /* Gallery cards: slightly narrower so the next card peeks and invites a swipe */
+      .gallery-card { width: clamp(250px, 78vw, 340px); }
+
+      /* Gallery header: less bottom gap before the strip starts */
+      .gallery-header { padding-bottom: 32px; }
+
+      /* About video: crop to upper-body area on the narrower mobile aspect ratio */
+      .about-video-wrap video { object-position: 50% 20%; }
     }
     /* 375px ultra-narrow adjustments */
     @media (max-width: 380px) {
       .hero-headline { font-size: 15vw; }
-      .h-stat { flex: 1 1 100%; }
+      .h-stat { flex: 0 0 auto; min-width: 110px; }
       .calc-opt { width: 100%; }
     }
     /* Hover effects only on devices that support it */
@@ -1539,15 +1567,15 @@
       <span style="font-size:15px;color:#fff;letter-spacing:1px;">★★★★★</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(255,255,255,.2);">
-      <span style="font-size:16px;">📍</span>
+      <span class="proof-emoji" style="font-size:16px;">📍</span>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:#fff;letter-spacing:.04em;">Vienna, VA Owner-Operated</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;padding:0 28px;border-right:1px solid rgba(255,255,255,.2);">
-      <span style="font-size:16px;">🚗</span>
+      <span class="proof-emoji" style="font-size:16px;">🚗</span>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:#fff;letter-spacing:.04em;">We Come to You</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;padding:0 28px;">
-      <span style="font-size:16px;">🛡</span>
+      <span class="proof-emoji" style="font-size:16px;">🛡</span>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:#fff;letter-spacing:.04em;">48-Hour Satisfaction Guarantee</span>
     </div>
   </div>
