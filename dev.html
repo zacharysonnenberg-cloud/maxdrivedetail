@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaxDriveDetail — Dev Hub</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══ */
+:root {
+  --bg:        #111111;
+  --bg2:       #191919;
+  --surface:   #222222;
+  --surface2:  #2a2a2a;
+  --border:    #2e2e2e;
+  --border2:   rgba(255,255,255,.07);
+  --white:     #f0f0f0;
+  --gray:      #777;
+  --muted:     #444;
+  --red:       #8B1A1A;
+  --red-l:     #C0392B;
+  --red-dim:   rgba(139,26,26,.14);
+  --red-glow:  rgba(139,26,26,.35);
+  --green:     #22c55e;
+  --green-dim: rgba(34,197,94,.1);
+  --amber:     #f59e0b;
+  --amber-dim: rgba(245,158,11,.1);
+  --blue:      #3b82f6;
+  --blue-dim:  rgba(59,130,246,.1);
+  --r:         8px;
+  --r2:        12px;
+  --r3:        16px;
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ═══ LOCK SCREEN ═══ */
+#lock {
+  position:fixed; inset:0; z-index:900;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+}
+.lock-glow {
+  position:absolute; top:-200px; left:50%; transform:translateX(-50%);
+  width:700px; height:700px; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(139,26,26,.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.lock-box {
+  position:relative; z-index:1;
+  width:360px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r3);
+  padding:40px 32px 32px;
+  text-align:center;
+}
+.lock-icon {
+  width:52px; height:52px; border-radius:14px;
+  background:var(--red-dim); border:1px solid rgba(139,26,26,.3);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 20px;
+  font-size:22px;
+}
+.lock-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+.lock-sub   { font-size:13px; color:var(--gray); margin-bottom:28px; line-height:1.5; }
+.lock-input {
+  width:100%; padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif;
+  background:var(--surface2); border:1.5px solid var(--border);
+  border-radius:var(--r); color:var(--white); outline:none; text-align:center;
+  letter-spacing:.08em; transition:border-color .2s;
+}
+.lock-input:focus { border-color:var(--red); }
+.lock-input.shake { animation:shake .35s ease; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+.lock-btn {
+  width:100%; margin-top:12px; padding:13px; font-size:14px; font-weight:600;
+  font-family:'Inter',sans-serif; cursor:pointer; border:none; border-radius:var(--r);
+  background:var(--red); color:#fff; transition:background .2s, opacity .2s;
+}
+.lock-btn:hover { background:var(--red-l); }
+.lock-btn:disabled { opacity:.4; cursor:not-allowed; }
+.lock-err { min-height:20px; margin-top:10px; font-size:12px; color:#ef4444; }
+
+/* ═══ APP SHELL ═══ */
+#app { display:none; flex-direction:column; min-height:100vh; }
+
+/* Header */
+.app-header {
+  position:sticky; top:0; z-index:100;
+  background:rgba(17,17,17,.92); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:56px;
+}
+.app-logo {
+  display:flex; align-items:center; gap:10px;
+  font-size:15px; font-weight:700; letter-spacing:-.01em;
+}
+.app-logo-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--red); box-shadow:0 0 8px var(--red-glow);
+}
+.app-time { font-size:12px; color:var(--gray); font-variant-numeric:tabular-nums; }
+.app-logout {
+  font-size:12px; color:var(--gray); cursor:pointer; padding:6px 10px;
+  border-radius:6px; transition:background .15s, color .15s; border:none;
+  background:transparent; font-family:'Inter',sans-serif;
+}
+.app-logout:hover { background:var(--surface); color:var(--white); }
+
+/* Tab nav */
+.tab-nav {
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex; gap:4px; overflow-x:auto; scrollbar-width:none;
+}
+.tab-nav::-webkit-scrollbar { display:none; }
+.tab-btn {
+  display:flex; align-items:center; gap:7px;
+  padding:12px 14px; font-size:13px; font-weight:500; font-family:'Inter',sans-serif;
+  color:var(--gray); cursor:pointer; border:none; background:transparent;
+  border-bottom:2px solid transparent; white-space:nowrap;
+  transition:color .18s, border-color .18s;
+}
+.tab-btn:hover { color:var(--white); }
+.tab-btn.active { color:var(--white); border-bottom-color:var(--red); }
+.tab-btn svg { opacity:.7; }
+.tab-btn.active svg { opacity:1; }
+
+/* Content */
+.tab-panel { display:none; padding:28px 24px 60px; max-width:1200px; margin:0 auto; width:100%; }
+.tab-panel.active { display:block; }
+
+/* ═══ SHARED COMPONENTS ═══ */
+.section-title {
+  font-size:11px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--gray); margin-bottom:16px;
+}
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:20px;
+}
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; border-radius:20px;
+  font-size:11px; font-weight:600; letter-spacing:.02em;
+}
+.badge-green  { background:var(--green-dim); color:var(--green); }
+.badge-amber  { background:var(--amber-dim); color:var(--amber); }
+.badge-red    { background:var(--red-dim);   color:var(--red-l); }
+.badge-blue   { background:var(--blue-dim);  color:var(--blue); }
+.badge-gray   { background:rgba(255,255,255,.06); color:var(--gray); }
+
+.empty-state { text-align:center; padding:60px 20px; color:var(--gray); }
+.empty-state svg { opacity:.3; margin-bottom:16px; }
+.empty-state h3 { font-size:15px; font-weight:600; margin-bottom:6px; color:var(--white); opacity:.5; }
+.empty-state p  { font-size:13px; }
+
+/* ═══ OVERVIEW TAB ═══ */
+.stats-row {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px;
+}
+@media(max-width:800px) { .stats-row { grid-template-columns:1fr 1fr; } }
+@media(max-width:480px) { .stats-row { grid-template-columns:1fr; } }
+
+.stat-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:20px;
+}
+.stat-label { font-size:11px; font-weight:500; color:var(--gray); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px; }
+.stat-value { font-size:28px; font-weight:800; line-height:1; letter-spacing:-.02em; }
+.stat-value.green { color:var(--green); }
+.stat-value.red   { color:var(--red-l); }
+.stat-value.amber { color:var(--amber); }
+.stat-sub { font-size:12px; color:var(--gray); margin-top:6px; }
+
+.overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:720px) { .overview-grid { grid-template-columns:1fr; } }
+
+.next-job-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:22px; position:relative; overflow:hidden;
+}
+.next-job-card::before {
+  content:''; position:absolute; top:0; left:0; width:3px; bottom:0;
+  background:var(--red); border-radius:4px 0 0 4px;
+}
+.next-job-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--red-l); margin-bottom:14px; }
+.next-job-name  { font-size:18px; font-weight:700; margin-bottom:4px; }
+.next-job-service { font-size:14px; color:var(--gray); margin-bottom:12px; }
+.next-job-meta  { display:flex; flex-wrap:wrap; gap:10px; }
+.next-job-pill  {
+  display:flex; align-items:center; gap:6px;
+  font-size:12px; color:var(--gray);
+  background:var(--surface2); padding:5px 10px; border-radius:6px;
+}
+
+.recent-list { display:flex; flex-direction:column; gap:1px; }
+.recent-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.recent-row:last-child { border-bottom:none; }
+.recent-left { display:flex; flex-direction:column; gap:3px; }
+.recent-name    { font-size:14px; font-weight:600; }
+.recent-service { font-size:12px; color:var(--gray); }
+.recent-right   { text-align:right; }
+.recent-price   { font-size:14px; font-weight:700; color:var(--green); }
+.recent-date    { font-size:11px; color:var(--gray); margin-top:2px; }
+
+/* ═══ BOOKINGS TAB ═══ */
+.filter-row {
+  display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+}
+.filter-pill {
+  padding:7px 14px; font-size:12px; font-weight:500; font-family:'Inter',sans-serif;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:20px; cursor:pointer; color:var(--gray);
+  transition:all .15s;
+}
+.filter-pill:hover { border-color:rgba(255,255,255,.2); color:var(--white); }
+.filter-pill.active { background:var(--red-dim); border-color:var(--red); color:var(--red-l); }
+.search-input {
+  padding:8px 14px; font-size:13px; font-family:'Inter',sans-serif;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:20px; color:var(--white); outline:none; width:220px;
+  transition:border-color .2s;
+}
+.search-input:focus { border-color:var(--red); }
+.search-input::placeholder { color:var(--muted); }
+.export-btn {
+  margin-left:auto; padding:7px 14px; font-size:12px; font-weight:500;
+  font-family:'Inter',sans-serif; background:var(--surface2);
+  border:1px solid var(--border); border-radius:8px; cursor:pointer;
+  color:var(--gray); display:flex; align-items:center; gap:6px;
+  transition:color .15s, border-color .15s;
+}
+.export-btn:hover { color:var(--white); border-color:rgba(255,255,255,.2); }
+
+.bookings-table-wrap { overflow-x:auto; }
+.bookings-table {
+  width:100%; border-collapse:collapse; font-size:13px;
+}
+.bookings-table th {
+  text-align:left; padding:10px 14px; font-size:11px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--gray);
+  border-bottom:1px solid var(--border); white-space:nowrap;
+}
+.bookings-table td {
+  padding:13px 14px; border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.bookings-table tr:last-child td { border-bottom:none; }
+.bookings-table tr:hover td { background:rgba(255,255,255,.02); }
+.td-name   { font-weight:600; }
+.td-phone  { color:var(--gray); font-size:12px; }
+.td-service { font-size:13px; color:var(--white); }
+.td-vehicle { font-size:12px; color:var(--gray); }
+.td-addr   { font-size:12px; color:var(--gray); max-width:180px; }
+.td-price  { font-weight:700; color:var(--green); white-space:nowrap; }
+.td-deposit{ font-size:12px; color:var(--amber); }
+.td-notes  { font-size:12px; color:var(--gray); max-width:160px; font-style:italic; }
+.td-date   { white-space:nowrap; font-size:13px; }
+
+/* ═══ CUSTOMERS TAB ═══ */
+.customers-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px;
+}
+.customer-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:18px; cursor:pointer;
+  transition:border-color .18s, background .18s;
+}
+.customer-card:hover { border-color:rgba(255,255,255,.15); background:var(--surface2); }
+.customer-card.expanded { border-color:var(--red); }
+.cust-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.cust-name  { font-size:15px; font-weight:700; }
+.cust-meta  { display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
+.cust-line  { font-size:12px; color:var(--gray); display:flex; align-items:center; gap:7px; }
+.cust-line a { color:var(--red-l); text-decoration:none; }
+.cust-line a:hover { text-decoration:underline; }
+.cust-stats { display:flex; gap:16px; padding-top:12px; border-top:1px solid var(--border); }
+.cust-stat  { display:flex; flex-direction:column; gap:2px; }
+.cust-stat-val { font-size:16px; font-weight:800; }
+.cust-stat-lbl { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); }
+.cust-history { display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.customer-card.expanded .cust-history { display:block; }
+.hist-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:7px 0; border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:12px;
+}
+.hist-item:last-child { border-bottom:none; }
+.hist-service { color:var(--white); }
+.hist-date    { color:var(--gray); }
+.hist-price   { color:var(--green); font-weight:600; }
+
+/* ═══ CALENDAR TAB ═══ */
+.cal-layout { display:grid; grid-template-columns:1fr 320px; gap:20px; }
+@media(max-width:900px) { .cal-layout { grid-template-columns:1fr; } }
+
+.cal-wrap {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); overflow:hidden;
+}
+.cal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px; border-bottom:1px solid var(--border);
+}
+.cal-month-label { font-size:16px; font-weight:700; }
+.cal-nav-btn {
+  width:32px; height:32px; border-radius:8px; border:1px solid var(--border);
+  background:transparent; cursor:pointer; color:var(--gray);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; transition:border-color .15s, color .15s;
+}
+.cal-nav-btn:hover { border-color:rgba(255,255,255,.2); color:var(--white); }
+.cal-day-headers {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  padding:8px 12px 0;
+}
+.cal-day-hdr { text-align:center; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); padding:6px 0; }
+.cal-grid {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  padding:4px 12px 16px; gap:2px;
+}
+.cal-cell {
+  aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; border-radius:8px; cursor:pointer; position:relative;
+  transition:background .15s;
+  font-size:13px; font-weight:500;
+}
+.cal-cell:hover:not(.cal-empty) { background:rgba(255,255,255,.06); }
+.cal-cell.cal-empty { pointer-events:none; }
+.cal-cell.cal-today { background:var(--red-dim); color:var(--red-l); font-weight:700; }
+.cal-cell.cal-selected { background:var(--red); color:#fff; font-weight:700; }
+.cal-cell.cal-selected .cal-dot { background:#fff; }
+.cal-cell.cal-past { color:var(--muted); }
+.cal-dot {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--red-l); position:absolute; bottom:4px;
+}
+
+.cal-sidebar {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:20px;
+}
+.cal-sidebar-title { font-size:14px; font-weight:700; margin-bottom:16px; }
+.cal-day-jobs { display:flex; flex-direction:column; gap:10px; }
+.cal-job-card {
+  background:var(--surface2); border-radius:var(--r);
+  padding:12px; border-left:3px solid var(--red);
+}
+.cal-job-name    { font-size:14px; font-weight:600; margin-bottom:3px; }
+.cal-job-service { font-size:12px; color:var(--gray); margin-bottom:6px; }
+.cal-job-meta    { display:flex; gap:10px; font-size:11px; color:var(--gray); }
+
+/* ═══ INFO TAB ═══ */
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:720px) { .info-grid { grid-template-columns:1fr; } }
+
+.info-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r2); padding:22px;
+}
+.info-card-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--gray); margin-bottom:16px; }
+.info-row { display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+.info-row:last-child { border-bottom:none; }
+.info-key { font-size:13px; color:var(--gray); }
+.info-val { font-size:13px; font-weight:500; text-align:right; max-width:60%; }
+.info-val a { color:var(--red-l); text-decoration:none; }
+.info-val a:hover { text-decoration:underline; }
+.info-val.green { color:var(--green); }
+.info-val.amber { color:var(--amber); }
+
+.price-table { width:100%; font-size:13px; }
+.price-table tr { border-bottom:1px solid rgba(255,255,255,.04); }
+.price-table tr:last-child { border-bottom:none; }
+.price-table td { padding:8px 0; vertical-align:top; }
+.price-table .p-name { font-weight:500; }
+.price-table .p-desc { font-size:11px; color:var(--gray); margin-top:2px; }
+.price-table .p-price { text-align:right; font-weight:700; color:var(--green); white-space:nowrap; padding-left:12px; }
+.price-table .p-cat {
+  font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--red-l); padding:14px 0 6px; border-bottom:1px solid rgba(255,255,255,.04);
+}
+.price-table .p-cat td { padding:14px 0 6px; }
+
+.link-btn {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 16px; border-radius:var(--r); margin-bottom:8px;
+  background:var(--surface2); border:1px solid var(--border);
+  text-decoration:none; color:var(--white); font-size:13px;
+  transition:border-color .15s;
+}
+.link-btn:hover { border-color:rgba(255,255,255,.2); }
+.link-btn:last-child { margin-bottom:0; }
+.link-btn-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; }
+.link-btn-label { font-weight:600; }
+.link-btn-sub { font-size:11px; color:var(--gray); margin-top:1px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ LOCK ═══ -->
+<div id="lock">
+  <div class="lock-glow"></div>
+  <div class="lock-box">
+    <div class="lock-icon">🔑</div>
+    <div class="lock-title">MaxDriveDetail</div>
+    <div class="lock-sub">Dev Hub · Enter access key</div>
+    <input class="lock-input" type="password" id="keyInput" placeholder="••••••••••••" autocomplete="off">
+    <button class="lock-btn" id="lockBtn" onclick="unlock()">Unlock</button>
+    <div class="lock-err" id="lockErr"></div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+
+  <header class="app-header">
+    <div class="app-logo">
+      <div class="app-logo-dot"></div>
+      MaxDriveDetail Dev
+    </div>
+    <span class="app-time" id="appTime"></span>
+    <button class="app-logout" onclick="logout()">Sign out</button>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview', this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="tab-btn" data-tab="bookings" onclick="switchTab('bookings', this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Bookings
+    </button>
+    <button class="tab-btn" data-tab="customers" onclick="switchTab('customers', this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Customers
+    </button>
+    <button class="tab-btn" data-tab="calendar" onclick="switchTab('calendar', this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calendar
+    </button>
+    <button class="tab-btn" data-tab="info" onclick="switchTab('info', this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Info
+    </button>
+  </nav>
+
+  <main style="flex:1;">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="stat-label">Today's Jobs</div><div class="stat-value" id="statToday">–</div><div class="stat-sub" id="statTodaySub"></div></div>
+        <div class="stat-card"><div class="stat-label">This Week</div><div class="stat-value" id="statWeek">–</div><div class="stat-sub" id="statWeekSub"></div></div>
+        <div class="stat-card"><div class="stat-label">This Month Rev.</div><div class="stat-value green" id="statMonthRev">–</div><div class="stat-sub" id="statMonthSub"></div></div>
+        <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-value" id="statTotal">–</div><div class="stat-sub" id="statTotalSub">All time</div></div>
+      </div>
+      <div class="overview-grid">
+        <div>
+          <div class="section-title">Next Upcoming</div>
+          <div id="nextJobWrap"></div>
+        </div>
+        <div>
+          <div class="section-title">Recent Jobs</div>
+          <div class="card" id="recentList"><div class="empty-state" style="padding:30px"><p>Loading…</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BOOKINGS ── -->
+    <div class="tab-panel" id="tab-bookings">
+      <div class="filter-row">
+        <button class="filter-pill active" onclick="setBookingFilter('all',this)">All</button>
+        <button class="filter-pill" onclick="setBookingFilter('today',this)">Today</button>
+        <button class="filter-pill" onclick="setBookingFilter('week',this)">This Week</button>
+        <button class="filter-pill" onclick="setBookingFilter('upcoming',this)">Upcoming</button>
+        <button class="filter-pill" onclick="setBookingFilter('past',this)">Past</button>
+        <input class="search-input" type="text" id="bookingSearch" placeholder="Search name, service…" oninput="renderBookings()">
+        <button class="export-btn" onclick="exportCSV()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+      <div class="bookings-table-wrap">
+        <table class="bookings-table" id="bookingsTable">
+          <thead>
+            <tr>
+              <th>Date / Time</th>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Vehicle</th>
+              <th>Address</th>
+              <th>Total</th>
+              <th>Deposit</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTbody"></tbody>
+        </table>
+      </div>
+      <div id="bookingsEmpty" class="empty-state" style="display:none">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+        <h3>No bookings found</h3>
+        <p>Try a different filter or search term.</p>
+      </div>
+    </div>
+
+    <!-- ── CUSTOMERS ── -->
+    <div class="tab-panel" id="tab-customers">
+      <div class="filter-row">
+        <button class="filter-pill active" onclick="setCustFilter('all',this)">All</button>
+        <button class="filter-pill" onclick="setCustFilter('returning',this)">Returning</button>
+        <button class="filter-pill" onclick="setCustFilter('new',this)">New</button>
+        <input class="search-input" type="text" id="custSearch" placeholder="Search name, phone…" oninput="renderCustomers()">
+      </div>
+      <div class="customers-grid" id="customersGrid"></div>
+      <div id="custEmpty" class="empty-state" style="display:none">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <h3>No customers found</h3>
+        <p>Try a different search term.</p>
+      </div>
+    </div>
+
+    <!-- ── CALENDAR ── -->
+    <div class="tab-panel" id="tab-calendar">
+      <div class="cal-layout">
+        <div>
+          <div class="cal-wrap">
+            <div class="cal-header">
+              <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
+              <span class="cal-month-label" id="calMonthLabel"></span>
+              <button class="cal-nav-btn" onclick="changeCalMonth(1)">›</button>
+            </div>
+            <div class="cal-day-headers">
+              <div class="cal-day-hdr">Sun</div><div class="cal-day-hdr">Mon</div>
+              <div class="cal-day-hdr">Tue</div><div class="cal-day-hdr">Wed</div>
+              <div class="cal-day-hdr">Thu</div><div class="cal-day-hdr">Fri</div>
+              <div class="cal-day-hdr">Sat</div>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+        </div>
+        <div>
+          <div class="cal-sidebar">
+            <div class="cal-sidebar-title" id="calSidebarTitle">Select a date</div>
+            <div id="calDayJobs" class="cal-day-jobs">
+              <p style="font-size:13px;color:var(--gray);">Click a day to see bookings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INFO ── -->
+    <div class="tab-panel" id="tab-info">
+      <div class="info-grid">
+
+        <div class="info-card">
+          <div class="info-card-title">Business</div>
+          <div class="info-row"><span class="info-key">Name</span><span class="info-val">MaxDriveDetail</span></div>
+          <div class="info-row"><span class="info-key">Owner</span><span class="info-val">Zach Sonnenberg</span></div>
+          <div class="info-row"><span class="info-key">Phone</span><span class="info-val"><a href="tel:5712787350">(571) 278-7350</a></span></div>
+          <div class="info-row"><span class="info-key">Email</span><span class="info-val"><a href="mailto:zacharysonnenberg@gmail.com">zacharysonnenberg@gmail.com</a></span></div>
+          <div class="info-row"><span class="info-key">Base</span><span class="info-val">Vienna, VA 22180</span></div>
+          <div class="info-row"><span class="info-key">Hours (M–F)</span><span class="info-val">4:00 PM – 8:00 PM</span></div>
+          <div class="info-row"><span class="info-key">Hours (Sat–Sun)</span><span class="info-val">8:00 AM – 8:00 PM</span></div>
+          <div class="info-row"><span class="info-key">Deposit</span><span class="info-val amber">15% to hold slot</span></div>
+          <div class="info-row"><span class="info-key">Minimum job</span><span class="info-val">$119</span></div>
+          <div class="info-row"><span class="info-key">Payment</span><span class="info-val">Zelle · Venmo · Apple Pay · Cash</span></div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title">Travel Fees</div>
+          <div class="info-row"><span class="info-key">Under 6 mi</span><span class="info-val green">Free</span></div>
+          <div class="info-row"><span class="info-key">6 – 15 mi</span><span class="info-val amber">+$15</span></div>
+          <div class="info-row"><span class="info-key">15 – 25 mi</span><span class="info-val amber">+$25</span></div>
+          <div class="info-row"><span class="info-key">25+ mi</span><span class="info-val">By quote</span></div>
+          <div style="height:16px"></div>
+          <div class="info-card-title">Cancellation</div>
+          <div class="info-row"><span class="info-key">48+ hrs notice</span><span class="info-val green">Full refund</span></div>
+          <div class="info-row"><span class="info-key">24 – 48 hrs</span><span class="info-val amber">50% deposit kept</span></div>
+          <div class="info-row"><span class="info-key">Under 24 hrs</span><span class="info-val" style="color:var(--red-l)">Deposit forfeited</span></div>
+          <div class="info-row"><span class="info-key">Referral</span><span class="info-val green">Both get $20 off</span></div>
+          <div class="info-row"><span class="info-key">Satisfaction</span><span class="info-val">Rebook within 48 hrs</span></div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title">Services & Pricing</div>
+          <table class="price-table">
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:0 0 6px;">Interior</td></tr>
+            <tr><td><div class="p-name">MaxCondition</div><div class="p-desc">Steam · mats · plastic/leather conditioning</div></td><td class="p-price">$159</td></tr>
+            <tr><td><div class="p-name">MaxRestore</div><div class="p-desc">Steam · dry extraction · ozone scent</div></td><td class="p-price">$259</td></tr>
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:12px 0 6px;">Exterior</td></tr>
+            <tr><td><div class="p-name">MaxWash</div><div class="p-desc">Pre-wash · foam · clay · sealant · tire shine</div></td><td class="p-price">$129</td></tr>
+            <tr><td><div class="p-name">MaxEnhance</div><div class="p-desc">Full wash · swirl removal · gloss · sealant</div></td><td class="p-price">$379</td></tr>
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:12px 0 6px;">Packages</td></tr>
+            <tr><td><div class="p-name">MaxExpress</div><div class="p-desc">Interior refresh + MaxWash in one visit</div></td><td class="p-price">$259</td></tr>
+            <tr><td><div class="p-name">MaxSignature</div><div class="p-desc">MaxCondition + MaxEnhance + ozone</div></td><td class="p-price">$489</td></tr>
+            <tr><td><div class="p-name">MaxMaintain</div><div class="p-desc">Biweekly · returning clients only</div></td><td class="p-price">$129</td></tr>
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:12px 0 6px;">Add-Ons</td></tr>
+            <tr><td><div class="p-name">Scent Restoration (Ozone)</div></td><td class="p-price">+$60</td></tr>
+            <tr><td><div class="p-name">Pet Hair Removal</div></td><td class="p-price">+$45</td></tr>
+            <tr><td><div class="p-name">Engine Bay Detail</div></td><td class="p-price">+$60</td></tr>
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:12px 0 6px;">Size Upcharges</td></tr>
+            <tr><td><div class="p-name">SUV / Crossover</div></td><td class="p-price">+$15–20</td></tr>
+            <tr><td><div class="p-name">Truck / Full-size / Van</div></td><td class="p-price">+$25–35</td></tr>
+            <tr><td colspan="2" class="p-cat" style="color:var(--gray);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:12px 0 6px;">Condition Upcharges</td></tr>
+            <tr><td><div class="p-name">Moderate (visible soil)</div></td><td class="p-price">+$30</td></tr>
+            <tr><td><div class="p-name">Heavy (neglect / odor)</div></td><td class="p-price">+$50–75</td></tr>
+          </table>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title">Quick Links</div>
+          <a class="link-btn" href="index.html" target="_blank">
+            <div class="link-btn-icon" style="background:var(--red-dim)">🌐</div>
+            <div><div class="link-btn-label">Live Website</div><div class="link-btn-sub">maxdrivedetail.com</div></div>
+          </a>
+          <a class="link-btn" href="book.html" target="_blank">
+            <div class="link-btn-icon" style="background:var(--green-dim)">📅</div>
+            <div><div class="link-btn-label">Booking Page</div><div class="link-btn-sub">Send to clients</div></div>
+          </a>
+          <a class="link-btn" href="https://share.google/R7SeGQyOxR5cV5J1h" target="_blank">
+            <div class="link-btn-icon" style="background:var(--amber-dim)">⭐</div>
+            <div><div class="link-btn-label">Google Reviews</div><div class="link-btn-sub">Ask clients for a review</div></div>
+          </a>
+          <a class="link-btn" href="https://github.com/zacharysonnenberg-cloud/maxdrivedetail" target="_blank">
+            <div class="link-btn-icon" style="background:rgba(255,255,255,.05)">⚙️</div>
+            <div><div class="link-btn-label">GitHub Repo</div><div class="link-btn-sub">zacharysonnenberg-cloud/maxdrivedetail</div></div>
+          </a>
+          <a class="link-btn" href="tel:5712787350">
+            <div class="link-btn-icon" style="background:var(--blue-dim)">📞</div>
+            <div><div class="link-btn-label">Call / Text Zach</div><div class="link-btn-sub">(571) 278-7350</div></div>
+          </a>
+          <div style="height:16px"></div>
+          <div class="info-card-title">Dashboard Access</div>
+          <div class="info-row"><span class="info-key">Password</span><span class="info-val" style="font-family:monospace;letter-spacing:.04em;">3sdetailing2026</span></div>
+          <div class="info-row"><span class="info-key">Script URL</span><span class="info-val" style="font-size:11px;word-break:break-all;">AKfycbz…cxBt/exec</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div><!-- /app -->
+
+<script>
+/* ═══ CONFIG ═══ */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqGGGLx8-6MCl2o1uuDCcYN7XGilM8Z8LsYT7ZRNQbcJowBjqrYjo2kp9E2JPNcxBt/exec';
+const PW             = '3sdetailing2026';
+const SESSION_KEY    = 'mdd_dev_v1';
+const MAX_ATTEMPTS   = 5;
+const LOCKOUT_MS     = 30000;
+
+/* ═══ STATE ═══ */
+let bookings       = [];
+let customers      = {};
+let bookingFilter  = 'all';
+let custFilter     = 'all';
+let calYear, calMonth;
+let calSelected    = null;
+let failedAttempts = 0;
+let lockoutUntil   = 0;
+
+/* ═══ SECURITY ═══ */
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ═══ LOCK / UNLOCK ═══ */
+document.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem(SESSION_KEY) === btoa(PW)) { showApp(); return; }
+  document.getElementById('keyInput').focus();
+  document.getElementById('keyInput').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+  // clock
+  setInterval(() => {
+    const t = new Date();
+    const el = document.getElementById('appTime');
+    if (el) el.textContent = t.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  }, 1000);
+});
+
+function unlock() {
+  if (Date.now() < lockoutUntil) return;
+  const val = document.getElementById('keyInput').value.trim();
+  if (val === PW) {
+    failedAttempts = 0;
+    sessionStorage.setItem(SESSION_KEY, btoa(PW));
+    showApp();
+    loadData();
+  } else {
+    failedAttempts++;
+    document.getElementById('keyInput').value = '';
+    const inp = document.getElementById('keyInput');
+    inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
+    if (failedAttempts >= MAX_ATTEMPTS) {
+      lockoutUntil = Date.now() + LOCKOUT_MS;
+      document.getElementById('lockBtn').disabled = true;
+      inp.disabled = true;
+      setTimeout(() => {
+        document.getElementById('lockBtn').disabled = false;
+        inp.disabled = false; inp.focus();
+        failedAttempts = 0; lockoutUntil = 0;
+        document.getElementById('lockErr').textContent = '';
+      }, LOCKOUT_MS);
+      document.getElementById('lockErr').textContent = 'Too many attempts. Try again in 30s.';
+    } else {
+      const left = MAX_ATTEMPTS - failedAttempts;
+      document.getElementById('lockErr').textContent = `Incorrect. ${left} attempt${left===1?'':'s'} left.`;
+    }
+  }
+}
+
+function showApp() {
+  document.getElementById('lock').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  const now = new Date();
+  calYear = now.getFullYear(); calMonth = now.getMonth();
+  renderCal();
+  // clock tick
+  setInterval(() => {
+    const el = document.getElementById('appTime');
+    if (el) {
+      const t = new Date();
+      el.textContent = t.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    }
+  }, 1000);
+  document.getElementById('appTime').textContent = now.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+}
+
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+
+/* ═══ DATA LOADING ═══ */
+async function loadData() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?key=${PW}`);
+    const data = await res.json();
+    bookings = (data.bookings || data.data || data || []).filter(r => r && (r.name || r.Name));
+    buildCustomers();
+    renderOverview();
+    renderBookings();
+    renderCustomers();
+    renderCal();
+  } catch(e) {
+    // Show empty states gracefully — data might not be connected yet
+    renderOverview();
+    renderBookings();
+    renderCustomers();
+  }
+}
+
+/* ═══ NORMALISE BOOKING FIELDS ═══ */
+function norm(b) {
+  return {
+    name:    b.name    || b.Name    || '—',
+    email:   b.email   || b.Email   || '',
+    phone:   b.phone   || b.Phone   || '',
+    service: b.service || b.Service || '—',
+    vehicle: b.vehicle || b.Vehicle || '',
+    date:    b.date    || b.Date    || '',
+    time:    b.time    || b.Time    || '',
+    address: b.address || b.Address || '',
+    notes:   b.notes   || b.Notes   || '',
+    total:   parseFloat(b.total   || b.Total   || 0),
+    deposit: parseFloat(b.deposit || b.Deposit || 0),
+  };
+}
+
+function parseDate(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  return isNaN(d) ? null : d;
+}
+
+/* ═══ BUILD CUSTOMERS MAP ═══ */
+function buildCustomers() {
+  customers = {};
+  bookings.forEach(raw => {
+    const b = norm(raw);
+    const key = b.email || b.phone || b.name.toLowerCase();
+    if (!customers[key]) {
+      customers[key] = { name: b.name, email: b.email, phone: b.phone, jobs: [] };
+    }
+    customers[key].jobs.push(b);
+  });
+}
+
+/* ═══ OVERVIEW ═══ */
+function renderOverview() {
+  const now    = new Date();
+  const today  = now.toDateString();
+  const wStart = new Date(now); wStart.setDate(now.getDate() - now.getDay());
+  const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const todayJobs    = bookings.filter(r => { const d = parseDate(norm(r).date); return d && d.toDateString() === today; });
+  const weekJobs     = bookings.filter(r => { const d = parseDate(norm(r).date); return d && d >= wStart; });
+  const monthRev     = bookings.reduce((s,r) => { const b=norm(r); const d=parseDate(b.date); return d && d>=mStart ? s+b.total : s; }, 0);
+
+  document.getElementById('statToday').textContent    = todayJobs.length;
+  document.getElementById('statTodaySub').textContent = todayJobs.length === 1 ? '1 job scheduled' : `${todayJobs.length} jobs scheduled`;
+  document.getElementById('statWeek').textContent     = weekJobs.length;
+  document.getElementById('statWeekSub').textContent  = 'jobs this week';
+  document.getElementById('statMonthRev').textContent = '$' + monthRev.toLocaleString();
+  document.getElementById('statMonthSub').textContent = 'booked this month';
+  document.getElementById('statTotal').textContent    = bookings.length;
+
+  // Next job
+  const upcoming = bookings.map(r => ({ ...norm(r), _d: parseDate(norm(r).date) }))
+    .filter(b => b._d && b._d >= new Date())
+    .sort((a,b) => a._d - b._d);
+
+  const njw = document.getElementById('nextJobWrap');
+  if (upcoming.length) {
+    const n = upcoming[0];
+    const dateStr = n._d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    njw.innerHTML = `
+      <div class="next-job-card">
+        <div class="next-job-label">▶ Next Up</div>
+        <div class="next-job-name">${esc(n.name)}</div>
+        <div class="next-job-service">${esc(n.service)}</div>
+        <div class="next-job-meta">
+          <span class="next-job-pill">📅 ${esc(dateStr)}</span>
+          ${n.time ? `<span class="next-job-pill">🕐 ${esc(n.time)}</span>` : ''}
+          ${n.total ? `<span class="next-job-pill">💰 $${n.total}</span>` : ''}
+          ${n.phone ? `<span class="next-job-pill"><a href="tel:${esc(n.phone)}" style="color:inherit;text-decoration:none;">📞 ${esc(n.phone)}</a></span>` : ''}
+        </div>
+        ${n.address ? `<div style="margin-top:10px;font-size:12px;color:var(--gray);">📍 ${esc(n.address)}</div>` : ''}
+        ${n.notes ? `<div style="margin-top:6px;font-size:12px;color:var(--gray);font-style:italic;">${esc(n.notes)}</div>` : ''}
+      </div>`;
+  } else {
+    njw.innerHTML = `<div class="card" style="text-align:center;padding:40px;color:var(--gray)"><div style="font-size:28px;margin-bottom:12px">📅</div><div>No upcoming bookings</div></div>`;
+  }
+
+  // Recent
+  const recent = [...bookings].sort((a,b) => {
+    const da = parseDate(norm(a).date), db = parseDate(norm(b).date);
+    return (db||0) - (da||0);
+  }).slice(0,6);
+
+  const rl = document.getElementById('recentList');
+  if (recent.length) {
+    rl.innerHTML = `<div class="recent-list">${recent.map(r => {
+      const b = norm(r);
+      const d = parseDate(b.date);
+      const dateStr = d ? d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+      return `<div class="recent-row">
+        <div class="recent-left">
+          <div class="recent-name">${esc(b.name)}</div>
+          <div class="recent-service">${esc(b.service)}</div>
+        </div>
+        <div class="recent-right">
+          <div class="recent-price">${b.total ? '$'+b.total : '—'}</div>
+          <div class="recent-date">${dateStr}</div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  } else {
+    rl.innerHTML = `<div class="empty-state" style="padding:40px"><p>No booking data yet.</p></div>`;
+  }
+}
+
+/* ═══ BOOKINGS TAB ═══ */
+function setBookingFilter(f, el) {
+  bookingFilter = f;
+  document.querySelectorAll('#tab-bookings .filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderBookings();
+}
+
+function renderBookings() {
+  const q   = (document.getElementById('bookingSearch')?.value || '').toLowerCase();
+  const now = new Date();
+  const today = now.toDateString();
+  const wEnd  = new Date(now); wEnd.setDate(now.getDate() + (6 - now.getDay()));
+
+  let filtered = bookings.map(r => ({ ...norm(r), _d: parseDate(norm(r).date) }));
+
+  if (bookingFilter === 'today')    filtered = filtered.filter(b => b._d && b._d.toDateString() === today);
+  if (bookingFilter === 'week')     filtered = filtered.filter(b => b._d && b._d >= now && b._d <= wEnd);
+  if (bookingFilter === 'upcoming') filtered = filtered.filter(b => b._d && b._d >= now);
+  if (bookingFilter === 'past')     filtered = filtered.filter(b => b._d && b._d < now);
+
+  if (q) filtered = filtered.filter(b =>
+    b.name.toLowerCase().includes(q) ||
+    b.service.toLowerCase().includes(q) ||
+    b.vehicle.toLowerCase().includes(q) ||
+    b.phone.includes(q)
+  );
+
+  filtered.sort((a,b) => (b._d||0) - (a._d||0));
+
+  const tbody = document.getElementById('bookingsTbody');
+  const empty = document.getElementById('bookingsEmpty');
+
+  if (!filtered.length) {
+    tbody.innerHTML = '';
+    document.querySelector('.bookings-table-wrap').style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  document.querySelector('.bookings-table-wrap').style.display = '';
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(b => {
+    const dateStr = b._d ? b._d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'}) : '—';
+    const isToday = b._d && b._d.toDateString() === today;
+    return `<tr>
+      <td class="td-date">${isToday ? '<span class="badge badge-green" style="margin-bottom:4px;display:inline-flex;">Today</span><br>' : ''}${esc(dateStr)}<br><span style="font-size:11px;color:var(--gray)">${esc(b.time)}</span></td>
+      <td><div class="td-name">${esc(b.name)}</div><div class="td-phone">${b.phone ? `<a href="tel:${esc(b.phone)}" style="color:var(--red-l);text-decoration:none">${esc(b.phone)}</a>` : ''}</div></td>
+      <td class="td-service">${esc(b.service)}</td>
+      <td class="td-vehicle">${esc(b.vehicle)}</td>
+      <td class="td-addr">${esc(b.address)}</td>
+      <td><div class="td-price">${b.total ? '$'+b.total : '—'}</div><div class="td-deposit">${b.deposit ? 'Dep: $'+b.deposit : ''}</div></td>
+      <td>${b.deposit ? `<span class="badge badge-amber">$${b.deposit}</span>` : '—'}</td>
+      <td class="td-notes">${esc(b.notes)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ═══ CUSTOMERS TAB ═══ */
+function setCustFilter(f, el) {
+  custFilter = f;
+  document.querySelectorAll('#tab-customers .filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderCustomers();
+}
+
+function renderCustomers() {
+  const q = (document.getElementById('custSearch')?.value || '').toLowerCase();
+  let custs = Object.values(customers);
+
+  if (custFilter === 'returning') custs = custs.filter(c => c.jobs.length > 1);
+  if (custFilter === 'new')       custs = custs.filter(c => c.jobs.length === 1);
+  if (q) custs = custs.filter(c => c.name.toLowerCase().includes(q) || c.phone.includes(q) || c.email.toLowerCase().includes(q));
+
+  custs.sort((a,b) => b.jobs.length - a.jobs.length);
+
+  const grid  = document.getElementById('customersGrid');
+  const empty = document.getElementById('custEmpty');
+
+  if (!custs.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = custs.map((c,i) => {
+    const totalRev = c.jobs.reduce((s,j) => s + j.total, 0);
+    const sortedJobs = [...c.jobs].sort((a,b) => {
+      const da = parseDate(a.date), db = parseDate(b.date);
+      return (db||0) - (da||0);
+    });
+    const lastJob = parseDate(sortedJobs[0]?.date);
+    const lastStr = lastJob ? lastJob.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'}) : '—';
+    const isReturning = c.jobs.length > 1;
+
+    return `<div class="customer-card" id="cust-${i}" onclick="toggleCust(${i})">
+      <div class="cust-header">
+        <div class="cust-name">${esc(c.name)}</div>
+        ${isReturning ? '<span class="badge badge-green">Returning</span>' : '<span class="badge badge-gray">New</span>'}
+      </div>
+      <div class="cust-meta">
+        ${c.phone ? `<div class="cust-line">📞 <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></div>` : ''}
+        ${c.email ? `<div class="cust-line">✉️ <a href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>` : ''}
+        <div class="cust-line">🗓 Last: ${lastStr}</div>
+      </div>
+      <div class="cust-stats">
+        <div class="cust-stat"><div class="cust-stat-val">${c.jobs.length}</div><div class="cust-stat-lbl">Jobs</div></div>
+        <div class="cust-stat"><div class="cust-stat-val" style="color:var(--green)">$${totalRev}</div><div class="cust-stat-lbl">Revenue</div></div>
+        <div class="cust-stat"><div class="cust-stat-val">$${c.jobs.length ? Math.round(totalRev/c.jobs.length) : 0}</div><div class="cust-stat-lbl">Avg</div></div>
+      </div>
+      <div class="cust-history">
+        <div class="section-title" style="margin-bottom:10px">Job History</div>
+        ${sortedJobs.map(j => {
+          const d = parseDate(j.date);
+          const dStr = d ? d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'}) : '—';
+          return `<div class="hist-item">
+            <span class="hist-service">${esc(j.service)}</span>
+            <span class="hist-date">${dStr}</span>
+            <span class="hist-price">${j.total ? '$'+j.total : '—'}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCust(i) {
+  const el = document.getElementById('cust-'+i);
+  el.classList.toggle('expanded');
+}
+
+/* ═══ CALENDAR ═══ */
+function changeCalMonth(d) {
+  calMonth += d;
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0;  calYear++; }
+  renderCal();
+}
+
+function renderCal() {
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent = MONTHS[calMonth] + ' ' + calYear;
+
+  const grid   = document.getElementById('calGrid');
+  const today  = new Date(); today.setHours(0,0,0,0);
+  const first  = new Date(calYear, calMonth, 1).getDay();
+  const days   = new Date(calYear, calMonth+1, 0).getDate();
+
+  // Build booking date map
+  const bookingDates = {};
+  bookings.forEach(r => {
+    const d = parseDate(norm(r).date);
+    if (!d) return;
+    if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
+      const key = d.getDate();
+      bookingDates[key] = (bookingDates[key] || 0) + 1;
+    }
+  });
+
+  let html = '';
+  for (let i = 0; i < first; i++) html += '<div class="cal-cell cal-empty"></div>';
+  for (let d = 1; d <= days; d++) {
+    const dt = new Date(calYear, calMonth, d);
+    let cls = 'cal-cell';
+    if (dt < today) cls += ' cal-past';
+    if (dt.toDateString() === today.toDateString()) cls += ' cal-today';
+    if (calSelected && dt.toDateString() === new Date(calYear, calMonth, calSelected).toDateString()) cls += ' cal-selected';
+    const dot = bookingDates[d] ? '<div class="cal-dot"></div>' : '';
+    html += `<div class="${cls}" onclick="selectCalDay(${d})">${d}${dot}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function selectCalDay(day) {
+  calSelected = day;
+  renderCal();
+
+  const dt = new Date(calYear, calMonth, day);
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calSidebarTitle').textContent =
+    MONTHS[calMonth] + ' ' + day + ', ' + calYear;
+
+  const dayJobs = bookings.map(r => norm(r))
+    .filter(b => {
+      const d = parseDate(b.date);
+      return d && d.toDateString() === dt.toDateString();
+    });
+
+  const el = document.getElementById('calDayJobs');
+  if (!dayJobs.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--gray)">No bookings this day.</p>';
+    return;
+  }
+  el.innerHTML = dayJobs.map(b => `
+    <div class="cal-job-card">
+      <div class="cal-job-name">${esc(b.name)}</div>
+      <div class="cal-job-service">${esc(b.service)}</div>
+      <div class="cal-job-meta">
+        ${b.time ? `<span>🕐 ${esc(b.time)}</span>` : ''}
+        ${b.total ? `<span>💰 $${b.total}</span>` : ''}
+      </div>
+      ${b.phone ? `<div style="margin-top:8px;font-size:12px"><a href="tel:${esc(b.phone)}" style="color:var(--red-l);text-decoration:none">📞 ${esc(b.phone)}</a></div>` : ''}
+      ${b.address ? `<div style="margin-top:4px;font-size:11px;color:var(--gray)">📍 ${esc(b.address)}</div>` : ''}
+      ${b.notes ? `<div style="margin-top:4px;font-size:11px;color:var(--gray);font-style:italic">${esc(b.notes)}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ═══ TAB SWITCHING ═══ */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ═══ EXPORT CSV ═══ */
+function exportCSV() {
+  const headers = ['Date','Time','Name','Phone','Email','Service','Vehicle','Address','Total','Deposit','Notes'];
+  const rows = bookings.map(r => {
+    const b = norm(r);
+    return [b.date,b.time,b.name,b.phone,b.email,b.service,b.vehicle,b.address,b.total,b.deposit,b.notes]
+      .map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv,' + encodeURIComponent(csv);
+  a.download = `maxdrivedetail-bookings-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+</script>
+</body>
+</html>
