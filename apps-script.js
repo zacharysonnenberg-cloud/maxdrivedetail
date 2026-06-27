@@ -53,6 +53,11 @@ function doPost(e) {
 function doGet(e) {
   var params = (e && e.parameter) ? e.parameter : {};
 
+  // ── Referral eligibility endpoint ────────────────────────────
+  if (params.type === 'check_eligibility') {
+    return checkEligibility(params.phone);
+  }
+
   // ── Availability endpoint ────────────────────────────────────
   if (params.action === 'availability') {
     try {
@@ -106,6 +111,42 @@ function doGet(e) {
 
   return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// REFERRAL ELIGIBILITY
+// ─────────────────────────────────────────────────────────────
+
+// Eligible if the phone number has at least one completed MaxExpress or
+// MaxSignature booking on the sheet — used to gate a referral/loyalty perk.
+function checkEligibility(rawPhone) {
+  if (!rawPhone) return eligibilityResponse(false, false, 'No phone provided');
+  var phone = rawPhone.replace(/\D/g, '');
+  var sheet = getSheet();
+  if (!sheet) return eligibilityResponse(false, false, 'No sheet found');
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0].map(function(h) { return String(h).toLowerCase().trim(); });
+  var phoneCol  = headers.findIndex(function(h) { return h.indexOf('phone') !== -1; });
+  var svcCol    = headers.findIndex(function(h) { return h.indexOf('service') !== -1; });
+  var statusCol = headers.findIndex(function(h) { return h.indexOf('status') !== -1; });
+  if (phoneCol < 0) return eligibilityResponse(false, false, 'Phone column not found');
+  for (var i = 1; i < data.length; i++) {
+    var rowPhone = String(data[i][phoneCol]).replace(/\D/g, '');
+    if (rowPhone === phone) {
+      var svc    = svcCol    >= 0 ? String(data[i][svcCol]).toLowerCase()    : '';
+      var status = statusCol >= 0 ? String(data[i][statusCol]).toLowerCase() : '';
+      var qualifyingSvc = svc.indexOf('maxexpress') !== -1 || svc.indexOf('maxsignature') !== -1;
+      var completed     = status.indexOf('completed') !== -1;
+      if (qualifyingSvc && completed) return eligibilityResponse(true, true, 'Eligible');
+    }
+  }
+  return eligibilityResponse(true, false, 'No qualifying completed service found');
+}
+
+function eligibilityResponse(ok, eligible, message) {
+  var payload = JSON.stringify({ ok: ok, eligible: eligible, message: message });
+  return ContentService.createTextOutput(payload).setMimeType(ContentService.MimeType.JSON);
 }
 
 
