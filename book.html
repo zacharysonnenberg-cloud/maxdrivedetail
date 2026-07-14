@@ -903,7 +903,7 @@
     const slots = document.querySelectorAll('.time-slot');
     slots.forEach(s => { s.classList.remove('booked'); s.classList.add('checking'); });
     if (status) status.textContent = 'Checking availability…';
-    const url = APPS_SCRIPT_URL + '?action=availability&date=' + dateStr;
+    const url = APPS_SCRIPT_URL + '?type=availability&date=' + dateStr;
     try {
       const res  = await fetch(url);
       const text = await res.text();
