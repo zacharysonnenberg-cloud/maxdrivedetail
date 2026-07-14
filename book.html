@@ -826,6 +826,9 @@
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
     const today = new Date(); today.setHours(0,0,0,0);
+    // Beach trip — no bookings July 22 through August 1, 2026 (inclusive)
+    const blockStart = new Date(2026, 6, 22); // July 22
+    const blockEnd   = new Date(2026, 7, 1);  // August 1
     const first = new Date(calYear, calMonth, 1).getDay();
     const days  = new Date(calYear, calMonth+1, 0).getDate();
     for (let i = 0; i < first; i++) {
@@ -835,13 +838,15 @@
       const e = document.createElement('div');
       const dt = new Date(calYear, calMonth, d);
       const todayStr = today.toDateString();
+      const isBlocked = dt >= blockStart && dt <= blockEnd;
       e.className = 'cal-day';
-      if (dt < today) e.classList.add('cal-past');
+      if (dt < today || isBlocked) e.classList.add('cal-past');
+      if (isBlocked) e.title = 'Unavailable';
       if (dt.toDateString() === todayStr) e.classList.add('today');
       if (B.date && dt.toDateString() === B.date.toDateString()) e.classList.add('selected');
       e.textContent = d;
       e.addEventListener('click', () => {
-        if (dt < today) return;
+        if (dt < today || isBlocked) return;
         B.date = dt;
         B.time = null;
         generateTimeSlots(dt.getDay()); // build slots for this day-of-week FIRST
