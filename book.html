@@ -896,25 +896,27 @@
 
   async function loadAvailability(dateStr) {
     const status = document.getElementById('availStatus');
-    if (!APPS_SCRIPT_URL) {
-      if (status) status.textContent = 'No script URL set — availability check skipped.';
-      return;
-    }
     const slots = document.querySelectorAll('.time-slot');
     slots.forEach(s => { s.classList.remove('booked'); s.classList.add('checking'); });
-    if (status) status.textContent = 'Checking availability…';
+    if (status) status.textContent = '';
     const url = APPS_SCRIPT_URL + '?type=availability&date=' + dateStr;
     try {
       const res  = await fetch(url);
       const text = await res.text();
       const data = JSON.parse(text);
-      busySlots = data.ok ? data.busy : [];
-      if (status) status.textContent = data.ok
-        ? (busySlots.length ? busySlots.length + ' booking(s) on this day — some slots may be unavailable.' : 'All slots available.')
-        : 'Could not load live availability (script not redeployed?).';
+      if (data.ok) {
+        busySlots = data.busy || [];
+        if (status) status.textContent = busySlots.length
+          ? busySlots.length + ' booking(s) on this day — some slots may be unavailable.'
+          : 'All slots available.';
+      } else {
+        // Script doesn't support availability yet — show all slots open silently
+        busySlots = [];
+        if (status) status.textContent = '';
+      }
     } catch(e) {
       busySlots = [];
-      if (status) status.textContent = 'Could not check availability: ' + e.message;
+      if (status) status.textContent = '';
     }
     slots.forEach(s => s.classList.remove('checking'));
     markBlockedSlots();
